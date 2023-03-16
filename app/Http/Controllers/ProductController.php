@@ -14,6 +14,16 @@ class ProductController extends Controller
     public function index()
     {
         //
+        try {
+            // $products = (Auth::User()->role->name == 'user') ? Auth::User()->Enterprise->products : Product::all();
+            $products = Product::all();
+            return view('products.index', compact('products'));
+        } catch (Throwable $e) {
+            // report($e);
+            // Log::error($e->getMessage());
+
+            return false;
+        }
     }
 
     /**
