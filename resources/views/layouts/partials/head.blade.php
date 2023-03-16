@@ -1,15 +1,9 @@
-<meta charset="utf-8">
+{{-- <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <title>{{ __(config('app.name')) }}</title>
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-{{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
-
-<!-- favicon ============================================ -->
-<!-- <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico"> -->
-<link rel="shortcut icon" type="image/x-icon" href="{{ URL::asset('') }}img/logo/caci-logo.ico" />
-<!-- Google Fonts ============================================ -->
+<link rel="shortcut icon" type="image/x-icon" href="{{ URL::asset('') }}img/logo/caci-logo.ico" /> --}}
 
 
 
@@ -20,7 +14,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <!-- Favicon icon -->
-<link rel="icon" type="image/png" sizes="16x16" href="{{ URL::asset('assets/images/favicon.png') }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ URL::asset('img/logo.jpg') }}">
 <title>Adminmart Template - The Ultimate Multipurpose admin template</title>
 <!-- This page plugin CSS -->
 <link rel="stylesheet" href="{{ URL::asset('assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css') }}" />
