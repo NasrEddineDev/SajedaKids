@@ -8,9 +8,20 @@ use App\Models\Product;
 use App\Models\Company;
 use App\Models\Category;
 use App\Models\Brand;
+use App\Models\Store;
 
 class ProductController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -37,13 +48,13 @@ class ProductController extends Controller
         //
         try {
             $companies =  Company::all();
+            $stores =  Store::all();
             $categories =  Category::all();
-            $brands =  Brand::all();
-            return view('products.create', compact('categories', 'enterprises', 'brands'));
+            $brands = Brand::all(); //collect(['shoes', 'veste']);collect(['levis', 'lacoste']);
+            return view('products.create', compact('companies', 'stores', 'categories', 'brands'));
         } catch (Throwable $e) {
             // report($e);
             // Log::error($e->getMessage());
-
             return false;
         }
     }

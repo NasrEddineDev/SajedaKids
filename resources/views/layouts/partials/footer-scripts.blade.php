@@ -30,10 +30,9 @@
          },
          type: 'GET',
          async: false,
-         url: "setlocale/"+language,
+         url: "/setlocale/"+language,
          data: {},
          success: function(data) {
-            
             window.location.href = data.url;
             return true;
          },

@@ -1,4 +1,4 @@
-@extends('layouts.mainlayout')
+@extends('layouts.main')
 
 
 @Push('css')
@@ -22,196 +22,139 @@
 
     <div class="basic-form-area mg-b-15">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="sparkline12-list">
+                <div class="row">
+                    <div class="col-12">
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">{{ __('Add New Product') }}</h4>
-                                <br />
                                 <form class="form-sample" method="post" action="{{ route('products.store') }}">
                                     @csrf
-                                    <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                            <div class="form-group row">
-                                                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                                                    <input type="text" name="label" id="label" class="form-control"
-                                                        readonly required />
+                                    <div class="form-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>{{ __('SKU') }}</label>
+                                                    <input type="text" class="form-control" placeholder="{{ __('SKU') }}">
+                                                    <button type="button" class="btn btn-dark">{{ __('Cancel') }}</button>
+                                                    <button id="opener">Barcode scanner</button>
+                                                    <div id="modal" title="Barcode scanner">
+                                                        <span class="found"></span>
+                                                        <div id="interactive" class="viewport"></div>
+                                                    </div>
+                                                    <div id="reader" width="600px"></div>
+                                                    <input type="file" id="qr-input-file" accept="image/*">
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>{{ __('Code') }}</label>
+                                                    <input type="text" class="form-control" placeholder="{{ __('Code') }}">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div
-                                            class="col-lg-6 col-md-6 col-sm-12 col-xs-12 {{ App()->currentLocale() == 'ar' ? 'pull-right' : '' }}">
-                                            <div class="form-group row">
-                                                <label
-                                                    class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-form-label {{ App()->currentLocale() == 'ar' ? 'pull-right' : '' }}">
-                                                    {{ __('HS Code') }}</label>
-                                                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                                                    <input name="hs_code" id="hs_code" type="text"
-                                                        class="form-control" />
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>{{ __('Name In Arabic') }}</label>
+                                                    <input type="text" class="form-control" placeholder="{{ __('Name In Arabic') }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>{{ __('Name In English') }}</label>
+                                                    <input type="text" class="form-control" placeholder="{{ __('Name In English') }}">
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                            <div class="form-group row">
-                                                <label
-                                                    class="required col-lg-4 col-md-4 col-sm-12 col-xs-12 col-form-label {{ App()->currentLocale() == 'ar' ? 'pull-right' : '' }}">
-                                                    {{ __('Product Name In French') }}</label>
-                                                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                                                    <input type="text" name="name_fr" id="name_fr" class="form-control"
-                                                        required />
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>{{ __('Name In French') }}</label>
+                                                    <input type="text" class="form-control" placeholder="{{ __('Name In Arabic') }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>{{ __('Image') }}</label>
+                                                    <input type="text" class="form-control" placeholder="{{ __('Image') }}">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                            <div class="form-group row">
-                                                <label
-                                                    class="required col-lg-4 col-md-4 col-sm-12 col-xs-12 col-form-label {{ App()->currentLocale() == 'ar' ? 'pull-right' : '' }}">
-                                                    {{ __('Product Name In Arabic') }}</label>
-                                                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                                                    <input type="text" name="name_ar" id="name_ar" class="form-control"
-                                                        required />
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>{{ __('Price') }}</label>
+                                                    <input type="text" class="form-control" placeholder="{{ __('Price') }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>{{ __('Discount') }}</label>
+                                                    <input type="text" class="form-control" placeholder="{{ __('Discount') }}">
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div
-                                            class="col-lg-6 col-md-6 col-sm-12 col-xs-12 {{ App()->currentLocale() == 'ar' ? 'pull-right' : '' }}">
-                                            <div class="form-group row">
-                                                <label
-                                                    class="required col-lg-4 col-md-4 col-sm-12 col-xs-12 col-form-label {{ App()->currentLocale() == 'ar' ? 'pull-right' : '' }}">
-                                                    {{ __('Product Name In English') }}</label>
-                                                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                                                    <input type="text" name="name_en" id="name_en" class="form-control"
-                                                        required />
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>{{ __('Description') }}</label>
+                                                    <input type="text" class="form-control" placeholder="{{ __('Description') }}">
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 {{ App()->currentLocale() == 'ar' ? 'pull-right' : '' }}">
-                                            <div class="form-group row">
-                                                <label
-                                                    class="required col-lg-4 col-md-4 col-sm-12 col-xs-12 col-form-label {{ App()->currentLocale() == 'ar' ? 'pull-right' : '' }}">{{ __('Measure Unit') }}</label>
-                                                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                                                    <select name="measure_unit" id="measure_unit" class="form-control"
-                                                        required>
-                                                        <option value="" selected disabled>
-                                                            {{ __('Select The Measure Unit') }}</option>
-                                                        <option value="KG">{{ __('Kilogram (kg), for mass (weight)') }}
-                                                        </option>
-                                                        <option value="T">{{ __('Tonne (T), for mass (weight)') }}
-                                                        </option>
-                                                        <option value="U">{{ __('Unit (u), for number of units') }}
-                                                        </option>
-                                                        <option value="L">{{ __('Litre (L), for capacity (volume)') }}
-                                                        </option>
-                                                        <option value="M">{{ __('Metre (M), for length (distance)') }}
-                                                        </option>
-                                                        <option value="M²">{{ __('Square Metre (M²), for area') }}
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div
-                                            class="col-lg-6 col-md-6 col-sm-12 col-xs-12 {{ App()->currentLocale() == 'ar' ? 'pull-right' : '' }}">
-                                            <div class="form-group row">
-                                                <label
-                                                    class="required col-lg-4 col-md-4 col-sm-12 col-xs-12 col-form-label {{ App()->currentLocale() == 'ar' ? 'pull-right' : '' }}">{{ __('Product Category') }}</label>
-                                                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>{{ __('Store') }}</label>
                                                     <select name="category_id" id="category_id" class="form-control"
                                                         required>
                                                         <option value="0" disabled selected>
-                                                            {{ __('Select The Category') }}</option>
-                                                        @foreach ($categories as $category)
-                                                            <option value="{{ $category->id }}">
-                                                                {{ $category->number . ' ' . $category->name }}
+                                                            {{ __('Select The Store') }}</option>
+                                                        @foreach ($stores as $store)
+                                                            <option value="{{ $store->id }}">
+                                                                {{ $store->name }}
                                                             </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                            <div class="form-group row">
-                                                <label
-                                                    class="required col-lg-4 col-md-4 col-sm-12 col-xs-12 col-form-label {{ App()->currentLocale() == 'ar' ? 'pull-right' : '' }}">{{ __('Product SubCategory') }}</label>
-                                                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                                                    <select name="sub_category_id" id="sub_category_id" class="form-control"
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>{{ __('Brand') }}</label>
+                                                    <select name="brand_id" id="brand_id" class="form-control"
                                                         required>
-                                                        <option value="0" disabled>
-                                                            {{ __('Select The SubCategory') }}</option>
+                                                        <option value="0" disabled selected>
+                                                            {{ __('Select The Brand') }}</option>
+                                                        @foreach ($brands as $brand)
+                                                            <option value="{{ $brand->id }}">
+                                                                {{ $brand->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>{{ __('Category') }}</label>
+                                                    <select name="category_id" id="category_id" class="form-control"
+                                                        required>
+                                                        <option value="0" disabled selected>
+                                                            {{ __('Select The Category') }}</option>
+                                                        @foreach ($categories as $category)
+                                                            <option value="{{ $category->id }}">
+                                                                {{ $category->name }}
+                                                            </option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        @can('view-enterprises', App\Models\Product::class)
-                                            <div
-                                                class="col-lg-6 col-md-6 col-sm-12 col-xs-12 {{ App()->currentLocale() == 'ar' ? 'pull-right' : '' }}">
-                                                <div class="form-group row">
-                                                    <label
-                                                        class="required col-lg-4 col-md-4 col-sm-12 col-xs-12 col-form-label {{ App()->currentLocale() == 'ar' ? 'pull-right' : '' }}">
-                                                        {{ __('Enterprise') }}</label>
-                                                    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                                                        <select name="enterprise_id" id="enterprise_id" class="form-control"
-                                                            required>
-                                                            <option selected disabled>{{ __('Select The Enterprise') }}
-                                                            </option>
-                                                            @foreach ($enterprises as $enterprise)
-                                                                <option value="{{ $enterprise->id }}">
-                                                                    {{ __($enterprise->name) }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endcan
-                                    </div>
-                                    <div class="row">
-                                        <div
-                                            class="col-lg-6 col-md-6 col-sm-12 col-xs-12 {{ App()->currentLocale() == 'ar' ? 'pull-right' : '' }}">
-                                            <div class="form-group row">
-                                                <label
-                                                    class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-form-label {{ App()->currentLocale() == 'ar' ? 'pull-right' : '' }}">{{ __('Product Brand') }}</label>
-                                                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                                                    <input type="text" name="brand" id="brand" class="form-control"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                            <div class="form-group row">
-                                                <label
-                                                    class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-form-label {{ App()->currentLocale() == 'ar' ? 'pull-right' : '' }}">{{ __('Description') }}</label>
-                                                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                                                    <input name="description" id="description" type="text"
-                                                        class="form-control" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="form-group-inner">
-                                        <div class="login-btn-inner">
-                                            <div class="row">
-                                                <div class="col-lg-6 {{ App()->currentLocale() == 'ar' ? 'pull-right' : 'pull-left' }}"
-                                                    style="text-align: center">
-                                                    <div class="login-horizental cancel-wp form-bc-ele">
-                                                        <button type="button" class="btn btn-white">
-                                                            <a href="{{ route('products.index') }}"
-                                                                style="color: inherit;">{{ __('Cancel') }}</a>
-                                                        </button>
-                                                        <button type="submit"
-                                                            class="btn btn-primary login-submit-cs">{{ __('Save Change') }}</button>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <div class="form-actions">
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-info">{{ __('Save') }}</button>
+                                            <button type="button" class="btn btn-dark">{{ __('Cancel') }}</button>
                                         </div>
                                     </div>
                                 </form>
@@ -219,7 +162,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+
         </div>
     </div>
 
@@ -230,13 +173,15 @@
     <script type="text/javascript" src="{{ URL::asset('js/lang/messages_' . App()->currentLocale() . '.js') }}"></script>
     <script src="{{ URL::asset('js/input-mask/jquery.inputmask.min.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript">
+
     <script type="text/javascript">
         $(document).ready(function() {
 
             $("#hs_code").autocomplete({
                 source: function(request, response) {
                     $.ajax({
-                        url: "{{ route('products.searchproductsbyhscode') }}",
+                        url: "route('products.searchproductsbyhscode') }}",
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },

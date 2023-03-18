@@ -68,6 +68,7 @@
                                 <ol class="breadcrumb m-0 p-0">
                                     <li class="breadcrumb-item"><a href="/" class="text-muted">{{ __('Home') }}</a></li>
                                     <li class="breadcrumb-item text-muted active" aria-current="page">{{ __(ucfirst(explode('.', \Request::route()->getName())[0])) }}</li>
+                                    <li class="breadcrumb-item text-muted active" aria-current="page">{{ __(ucfirst(explode('.', \Request::route()->getName())[1])) }}</li>
                                 </ol>
                             </nav>
                         </div>
