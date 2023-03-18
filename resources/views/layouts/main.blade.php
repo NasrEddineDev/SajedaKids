@@ -19,9 +19,7 @@
         <!-- Start Welcome area -->
     <div class="all-content-wrapper {{$locale == 'ar' ? 'all-content-wrapper-rtl' : ''}}">
         @include('layouts.partials.header')
-
         @yield('content')
-
         @include('layouts.partials.footer')
     </div>
 
@@ -57,7 +55,48 @@
         <!-- Page wrapper  -->
         <!-- ============================================================== -->
         <div class="page-wrapper">
+            <!-- Static Table Start -->
+            <!-- ============================================================== -->
+            <!-- Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <div class="page-breadcrumb">
+                <div class="row">
+                    <div class="col-7 align-self-center">
+                        <!-- <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Basic Initialisation</h4> -->
+                        <div class="d-flex align-items-center">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb m-0 p-0">
+                                    <li class="breadcrumb-item"><a href="/" class="text-muted">{{ __('Home') }}</a></li>
+                                    <li class="breadcrumb-item text-muted active" aria-current="page">{{ __(ucfirst(explode('.', \Request::route()->getName())[0])) }}</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                    <!-- <div class="col-5 align-self-center">
+                        <div class="customize-input float-right">
+                            <select class="custom-select custom-select-set form-control bg-white border-0 custom-shadow custom-radius">
+                                <option selected>Aug 19</option>
+                                <option value="1">July 19</option>
+                                <option value="2">Jun 19</option>
+                            </select>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
             @yield('content')
+            <!-- ============================================================== -->
+            <!-- footer -->
+            <!-- ============================================================== -->
+            <footer class="footer text-center text-muted">
+                All Rights Reserved by Mesbah Company. Designed and Developed by <a
+                    href="https://mesbah.dz">Mesbah High Tech</a>.
+            </footer>
+            <!-- ============================================================== -->
+            <!-- End footer -->
+            <!-- ============================================================== -->
 
         </div>
         <!-- ============================================================== -->

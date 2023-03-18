@@ -139,12 +139,31 @@
                 <li class="nav-item d-none d-md-block">
                     <a class="nav-link" href="javascript:void(0)">
                         <div class="customize-input">
-                            <select
+                            <select onchange="changeLanguage()" id="changeLanguage"
                                 class="custom-select form-control bg-white custom-radius custom-shadow border-0">
-                                <option selected>EN</option>
-                                <option value="1">AB</option>
-                                <option value="2">AK</option>
-                                <option value="3">BE</option>
+                                <option value='ar' {{ $locale == 'ar' ? 'selected' : '' }}>
+                                <!-- <span class="edu-icon edu-home-admin author-log-ic">
+                                <img class="flag-icon"
+                                            src="{{ URL::asset('img/flag/algeria.png') }}"
+                                            alt="" />    
+                                        
+                                    </span> -->
+                                    العربية
+                                </option>
+                                <option value="en" {{ $locale == 'en' ? 'selected' : '' }}>
+                                    <!-- <img class="flag-icon" src="{{ URL::asset('') }}img/flag/united-states.png" alt="" />
+                                    <span
+                                        class="edu-icon edu-user-rounded author-log-ic lang-image">
+                                    </span> -->
+                                    English
+                                </option>
+                                <option value="fr" {{ $locale == 'fr' ? 'selected' : '' }}>
+                                    <!-- <img class="flag-icon"
+                                        src="{{ URL::asset('') }}img/flag/france.png" alt="" />
+                                    <span class="edu-icon edu-money author-log-ic">
+                                    </span> -->
+                                    Français
+                                </option>
                             </select>
                         </div>
                     </a>
@@ -162,7 +181,7 @@
                         <form>
                             <div class="customize-input">
                                 <input class="form-control custom-shadow custom-radius border-0 bg-white"
-                                    type="search" placeholder="Search" aria-label="Search">
+                                    type="search" placeholder="{{ __('Search') }}" aria-label="{{ __('Search') }}">
                                 <i class="form-control-icon" data-feather="search"></i>
                             </div>
                         </form>
@@ -176,31 +195,37 @@
                         aria-haspopup="true" aria-expanded="false">
                         <img src="../assets/images/users/profile-pic.jpg" alt="user" class="rounded-circle"
                             width="40">
-                        <span class="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
-                                class="text-dark">Jason Doe</span> <i data-feather="chevron-down"
+                        <span class="ml-2 d-none d-lg-inline-block"><span>{{ __('Hello,') }}</span> <span
+                                class="text-dark">{{ Auth::check() ? Auth::user()->name : '' }}</span> <i data-feather="chevron-down"
                                 class="svg-icon"></i></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
-                        <a class="dropdown-item" href="javascript:void(0)"><i data-feather="user"
+                        <a class="dropdown-item" href="{{ route('profile.edit') }}"><i data-feather="user"
                                 class="svg-icon mr-2 ml-1"></i>
-                            My Profile</a>
-                        <a class="dropdown-item" href="javascript:void(0)"><i data-feather="credit-card"
+                           {{ __('My Profile') }}</a>
+                        <!-- <a class="dropdown-item" href="javascript:void(0)"><i data-feather="credit-card"
                                 class="svg-icon mr-2 ml-1"></i>
                             My Balance</a>
                         <a class="dropdown-item" href="javascript:void(0)"><i data-feather="mail"
                                 class="svg-icon mr-2 ml-1"></i>
                             Inbox</a>
-                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-divider"></div> -->
                         <a class="dropdown-item" href="javascript:void(0)"><i data-feather="settings"
                                 class="svg-icon mr-2 ml-1"></i>
-                            Account Setting</a>
+                                {{ __('Account Setting') }}</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="javascript:void(0)"><i data-feather="power"
-                                class="svg-icon mr-2 ml-1"></i>
-                            Logout</a>
+                        <a class="dropdown-item" href="{{ route('logout') }}" 
+                        onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                        <i data-feather="power" class="svg-icon mr-2 ml-1"></i>
+                        {{ __('Logout') }}
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </a>
+<!-- 
                         <div class="dropdown-divider"></div>
-                        <div class="pl-4 p-3"><a href="javascript:void(0)" class="btn btn-sm btn-info">View
-                                Profile</a></div>
+                        <div class="pl-4 p-3"><a href="{{ route('profile.edit') }}" class="btn btn-sm btn-info">View
+                                Profile</a></div> -->
                     </div>
                 </li>
                 <!-- ============================================================== -->

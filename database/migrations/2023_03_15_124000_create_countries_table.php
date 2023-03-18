@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name_en',100);
             $table->string('name_ar',100);
             $table->string('name_fr',100);
-            $table->string('nationality',100);
-            $table->string('nationality_ar',100);
+            $table->string('nationality',100)->nullable();
+            $table->string('nationality_ar',100)->nullable();
             $table->char('iso3',3)->nullable();
             $table->char('iso2',2)->nullable();
             $table->string('phonecode')->nullable();

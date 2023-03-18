@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('states', function (Blueprint $table) {
             $table->increments('id', true);
-            $table->string('name_en');
-            $table->string('name_ar');
-            $table->string('name_fr');
+            $table->string('name_en')->nullable();
+            $table->string('name_ar')->nullable();
+            $table->string('name_fr')->nullable();
             $table->char('country_code',2);
             $table->string('fips_code')->nullable();
             $table->string('iso2')->nullable();

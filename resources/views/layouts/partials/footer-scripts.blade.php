@@ -22,5 +22,25 @@
     <script src="{{ URL::asset('dist/js/pages/datatable/datatable-basic.init.js') }}"></script>
 
    <script type="text/javascript">
-
+   function changeLanguage() {
+      var language = document.getElementById("changeLanguage").value;
+      $.ajax({
+         headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         },
+         type: 'GET',
+         async: false,
+         url: "setlocale/"+language,
+         data: {},
+         success: function(data) {
+            
+            window.location.href = data.url;
+            return true;
+         },
+         error: function(data) {
+            return false;
+         }
+      });
+      
+   }
    </script>

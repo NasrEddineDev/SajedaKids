@@ -18,5 +18,19 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        $this->call([
+            CountrySeeder::class,
+            StateSeeder::class,
+            CitySeeder::class,
+            RoleSeeder::class,
+            PermissionSeeder::class,
+            CompanySeeder::class,
+            StoreSeeder::class,
+            UserSeeder::class,
+            ProductSeeder::class,
+            CustomerSeeder::class,
+            SettingSeeder::class,
+        ]);
+        $this->command->info('All tables are seeded!');
     }
 }

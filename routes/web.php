@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotificationController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -39,16 +39,23 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
 Route::get('/', function () {
     return view('index');
-})->name('home');
+})->middleware(['auth'])->name('home');
 
 Route::resource('customers', CustomerController::class);
 Route::resource('products', ProductController::class);
 Route::resource('profiles', ProfileController::class);
+Route::resource('settings', SettingController::class);
+Route::resource('orders', OrderController::class);
+Route::resource('purchases', PurchaseController::class);
+Route::resource('users', UserController::class);
 
-Route::get('setlocale/{lang}', [DashboardController::class, 'setlocale'])->name('lang');
+Route::get('setlocale/{lang}', [HomeController::class, 'setlocale'])->name('lang');
 Route::get('notifications-mark-as-read', [NotificationController::class, 'setlocale'])->name('notifications.mark-as-read');
 
 require __DIR__.'/auth.php';
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

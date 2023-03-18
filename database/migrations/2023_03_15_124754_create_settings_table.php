@@ -16,8 +16,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('value');
             $table->string('description');
+            $table->integer('company_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         });
     }
 
