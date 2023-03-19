@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @Push('css')
     <style>
-        #addProduct {
+        #addCustomer {
             margin: 10px;
             margin-top: 10px;
             margin-top: -10px;
@@ -30,12 +30,12 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <h4 class="card-title">{{ __('Products List') }}</h4>
+                                <h4 class="card-title">{{ __('Customers List') }}</h4>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <a href="{{ route('products.create') }}">
-                                    <button id="addProduct" type="button" class="btn btn-success btn-rounded float-right">
-                                        <i class="fas fa-plus-circle"></i>{{ __('New Product') }}</button></a>
+                                <a href="{{ route('customers.create') }}">
+                                    <button id="addCustomer" type="button" class="btn btn-success btn-rounded float-right">
+                                        <i class="fas fa-plus-circle"></i>{{ __('New Customer') }}</button></a>
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -55,41 +55,41 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($products as $product)
-                                        <tr id="{{ $product->id }}">
-                                            <td>{{ $product->id }}</td>
-                                            <td>{{ $product->name }}</td>
-                                            <td>{{ $product->SKU }}</td>
+                                    @foreach ($customers as $customer)
+                                        <tr id="{{ $customer->id }}">
+                                            <td>{{ $customer->id }}</td>
+                                            <td>{{ $customer->name }}</td>
+                                            <td>{{ $customer->SKU }}</td>
                                             <td class="showedImage">
                                                 <img class="img-thumbnail"
                                                     src="https://t4.ftcdn.net/jpg/03/18/30/85/360_F_318308547_FALKncfWsTmjzwd0y0muNeCFOULPLB7Q.webp"
                                                     alt="...">
                                             </td>
-                                            <td>{{ $product->price }}</td>
-                                            <td>{{ $product->discount }}</td>
-                                            <td>{{ $product->category->name }}</td>
-                                            <td>{{ $product->brand->name }}</td>
+                                            <td>{{ $customer->price }}</td>
+                                            <td>{{ $customer->discount }}</td>
+                                            <td>{{ $customer->category->name }}</td>
+                                            <td>{{ $customer->brand->name }}</td>
                                             <td id="status"><button
-                                                class="btn {{ $product->active ? 'btn-success' : 'btn-danger' }}"
+                                                class="btn {{ $customer->active ? 'btn-success' : 'btn-danger' }}"
                                                 style="width:50px;border-radius:5px;font-size: 14px;padding:0px;padding-right:5px;padding-left:5px;">
-                                                {{ $product->active ? __("Yes") : __("No") }}</button>
+                                                {{ $customer->active ? __("Yes") : __("No") }}</button>
                                             </td>
                                             <td class="datatable-ct">
-                                                @can('update',  App\Models\Product::class)
-                                                <a rel="tooltip" class="" href="{{ route('products.edit',$product->id) }}" data-original-title="" title="Edit">
+                                                @can('update',  App\Models\Customer::class)
+                                                <a rel="tooltip" class="" href="{{ route('customers.edit',$customer->id) }}" data-original-title="" title="Edit">
                                                     <i class="fa fa-pencil-square-o fa-lg warning"></i>
                                                 </a>
                                                 @endcan
-                                                @can('delete',  App\Models\Product::class)
-                                                <a rel="tooltip" class=" pd-setting-ed" href="#" data-url="{{ route('products.destroy',$product->id) }}"
-                                                data-product_name="{{ $product->name }}" data-original-title="" title="Delete" data-toggle="modal"
+                                                @can('delete',  App\Models\Customer::class)
+                                                <a rel="tooltip" class=" pd-setting-ed" href="#" data-url="{{ route('customers.destroy',$customer->id) }}"
+                                                data-customer_name="{{ $customer->name }}" data-original-title="" title="Delete" data-toggle="modal"
                                                 data-target="#DangerModalhdbgcl" style="">
                                                     <i class="fa fa-trash fa-lg" style="color:red;" aria-hidden="true"></i>
                                                 </a>
                                                 @endcan
                                             </td>
-                                            @can('view-company', App\Models\product::class)
-                                                <td>{{ $product->company->name }}</td>
+                                            @can('view-company', App\Models\customer::class)
+                                                <td>{{ $customer->company->name }}</td>
                                             @endcan
                                         </tr>
                                     @endforeach

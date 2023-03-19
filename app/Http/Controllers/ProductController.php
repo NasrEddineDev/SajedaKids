@@ -79,7 +79,7 @@ class ProductController extends Controller
             //     ]
             // );
             $product = new Product([
-                'SKU' => $request->input('sku'),
+                'SKU' => $request->input('SKU'),
                 'name_ar' => $request->input('name_ar') ? $request->input('name_ar') : '',
                 'name_en' => $request->input('name_en') ? $request->input('name_en') : '',
                 'name_fr' => $request->input('name_fr') ? $request->input('name_fr') : '',
@@ -91,8 +91,7 @@ class ProductController extends Controller
                 'description' => $request->input('description') ? $request->input('description') : '',
                 'price' => $request->input('price') ? $request->input('price') : '',
                 'discount' => $request->input('discount') ? $request->input('discount') : '',
-                'store_id' => $request->input('store_id') ? $request->input('store_id') : ( Auth::User()->company ?
-                                Auth::User()->company->store->id : null)
+                'company_id' => Auth::User()->company->id
             ]);
             $product->save();
 
@@ -102,10 +101,12 @@ class ProductController extends Controller
 
             $destinationPath = 'companies/' . (Auth::User()->company->id) . '/' . 'products/';
             $file = $request->file('image');
-            $fileName = $product->id . '.' . $file->getClientOriginalExtension();
-            Storage::disk('public')->put($destinationPath . $fileName, file_get_contents($file));
-            $product->image = $fileName;
-            $product->update(['image' => $fileName]);
+            if ($file){
+                $fileName = $product->id . '.' . $file->getClientOriginalExtension();
+                Storage::disk('public')->put($destinationPath . $fileName, file_get_contents($file));
+                $product->image = $fileName;
+                $product->update(['image' => $fileName]);    
+            }
 
             return redirect()->route('products.index')
                 ->with('success', 'Product created successfully.');
@@ -144,10 +145,9 @@ class ProductController extends Controller
             $product = Product::find($id);
             if ($product) {
                 $companies =  Company::all();
-                $stores =  Store::all();
                 $categories =  Category::all();
                 $brands = Brand::all();
-                return view('products.edit', compact('product', 'categories', 'brands', 'companies', 'stores'));
+                return view('products.edit', compact('product', 'categories', 'brands', 'companies'));
             }
             return redirect()->route('products.index')
                 ->with('error', 'Product can\'t eddited.');
@@ -162,20 +162,32 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(UpdateProductRequest $request)
     {
         //
         try {
-            $product = Product::find($id);
-            $product->name = $request->input('name');
-            $product->description = $request->input('description');
-            $product->brand = $request->input('brand');
-            $product->hs_code = $request->input('hs_code');
-            $product->measure_unit = $request->input('measure_unit');
-            $product->sub_category_id = $request->input('sub_category_id');
-            if (Auth::User()->role->name != 'user'){
-                $product->enterprise_id = $request->input('enterprise_id');
+            $product = Product::find($request->product_id);
+            $product->SKU = $request->input('SKU');
+            $product->name_ar = $request->input('name_ar');
+            $product->name_en = $request->input('name_en');
+            $product->name_fr = $request->input('name_fr');
+            $product->description = $request->input('description') ? $request->input('description') : '';
+            $product->code = $request->input('code') ? $request->input('code') : '';
+            $product->price = $request->input('price') ? $request->input('price') : '';
+            $product->discount = $request->input('discount') ? $request->input('discount') : '';
+            $product->category_id = $request->input('category_id') ? $request->input('category_id') : null;
+            $product->brand_id = $request->input('brand_id') ? $request->input('brand_id') : null;
+
+            $destinationPath = 'companies/' . (Auth::User()->company->id) . '/' . 'products/';
+            $file = $request->file('image');
+            //to do: delete old image
+            if ($file){
+                $fileName = $product->id . '.' . $file->getClientOriginalExtension();
+                Storage::disk('public')->put($destinationPath . $fileName, file_get_contents($file));
+                $product->image = $fileName;
+                $product->update(['image' => $fileName]);    
             }
+
             $product->save();
             return redirect()->route('products.index')
                 ->with('success', 'Product updated successfully');

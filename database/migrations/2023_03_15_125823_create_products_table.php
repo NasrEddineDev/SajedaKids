@@ -23,12 +23,12 @@ return new class extends Migration
             $table->double('price');
             $table->double('discount');
             $table->string('description');
-            $table->integer('store_id')->unsigned();
+            $table->integer('company_id')->unsigned();
             $table->integer('brand_id')->unsigned()->nullable();
             $table->integer('category_id')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
             $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             // $table->id();

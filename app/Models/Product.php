@@ -17,14 +17,14 @@ class Product extends Model
         'name_en',
         'name_fr',
         'active',
-        'brand_id',
         'image',
-        'category_id',
         'code',
         'description',
         'price',
         'discount',
-        'store_id'
+        'brand_id',
+        'category_id',
+        'company_id'
     ];
 
     public function getNameAttribute()
@@ -52,11 +52,10 @@ class Product extends Model
     }
     public function stores()
     {
-        return $this->hasMany(Store::class);
+        return null;//$this->hasMany(Store::class);
     }
     public function company()
     {
-            // return $this->hasMany(::class)->where('type', 'invoice')->first();
-            // return $this->hasMany(Store::class);
+        return $this->belongsTo(Category::class);
     }
 }

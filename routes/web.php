@@ -2,7 +2,11 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotificationController;
 use Illuminate\Foundation\Application;
@@ -43,7 +47,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/', function () {
     // Auth::guard('web')->logout();
 
-    return view('index');
+    return view('dashboards.index');
 })->middleware(['auth'])->name('home');
 
 Route::resource('customers', CustomerController::class);
@@ -56,6 +60,7 @@ Route::resource('users', UserController::class);
 
 Route::get('setlocale/{lang}', [HomeController::class, 'setlocale'])->name('lang');
 Route::get('notifications-mark-as-read', [NotificationController::class, 'setlocale'])->name('notifications.mark-as-read');
+Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboards.index');
 
 require __DIR__.'/auth.php';
 

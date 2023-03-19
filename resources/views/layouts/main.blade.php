@@ -67,8 +67,12 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb m-0 p-0">
                                     <li class="breadcrumb-item"><a href="/" class="text-muted">{{ __('Home') }}</a></li>
+                                    @if(count(explode('.', \Request::route()->getName())) >= 1)
                                     <li class="breadcrumb-item text-muted active" aria-current="page">{{ __(ucfirst(explode('.', \Request::route()->getName())[0])) }}</li>
+                                    @endif
+                                    @if(count(explode('.', \Request::route()->getName())) >= 2 && ucfirst(explode('.', \Request::route()->getName())[0]) != "Dashboards")
                                     <li class="breadcrumb-item text-muted active" aria-current="page">{{ __(ucfirst(explode('.', \Request::route()->getName())[1])) }}</li>
+                                    @endif
                                 </ol>
                             </nav>
                         </div>
