@@ -54,9 +54,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public function enterprise()
+    public function company()
     {
-        return $this->belongsTo(Enterprise::class);
+        return $this->belongsTo(Company::class);
     }
 
     public function role()

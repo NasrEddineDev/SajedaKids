@@ -18,6 +18,9 @@
 <title>Adminmart Template - The Ultimate Multipurpose admin template</title>
 <!-- This page plugin CSS -->
 <link rel="stylesheet" href="{{ URL::asset('assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css') }}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 <!-- Custom CSS -->
 <link rel="stylesheet" href="{{ URL::asset('dist/css/style.min.css') }}" />
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -33,6 +36,16 @@
 </style>
 @if (App::currentLocale() == 'ar')
     <style>
+        @media (min-width: 768px) {
+            #main-wrapper[data-layout="vertical"][data-sidebartype="full"] .page-wrapper {
+                margin-left: 0px;
+                margin-right: 260px;
+            }
 
+            #main-wrapper[data-layout="vertical"][data-sidebar-position="fixed"][data-sidebartype="full"] .topbar .top-navbar .navbar-collapse {
+                margin-left: 0px;
+                margin-right: 260px;
+            }
+        }
     </style>
 @endif

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use Illuminate\Support\Facades\Auth;
+use File;
+use Storage;
 use App\Models\Product;
 use App\Models\Company;
 use App\Models\Category;
@@ -66,21 +69,43 @@ class ProductController extends Controller
     {
         //
         try {
+            // $request->validate(
+            //     [
+            //         'image' => 'required|max:10240|mimes:doc,pdf,docx,jpeg,jpg,png',
+            //     ],
+            //     // custom messages
+            //     [
+            //         'image.required' => __('Image file is required'),
+            //     ]
+            // );
             $product = new Product([
-                'name' => $request->input('name'),
-                'brand' => $request->input('brand') ? $request->input('brand') : '',
-                'type' => $request->input('type'),
-                'sub_category_id' => $request->input('sub_category_id') ? $request->input('sub_category_id') : '',
-                'hs_code' => $request->input('hs_code'),
+                'SKU' => $request->input('sku'),
+                'name_ar' => $request->input('name_ar') ? $request->input('name_ar') : '',
+                'name_en' => $request->input('name_en') ? $request->input('name_en') : '',
+                'name_fr' => $request->input('name_fr') ? $request->input('name_fr') : '',
+                'brand_id' => $request->input('brand_id') ? $request->input('brand_id') : '',
+                'image' => '',
+                'active' => true,
+                'category_id' => $request->input('category_id') ? $request->input('category_id') : '',
+                'code' => $request->input('code') ? $request->input('code') : '',
                 'description' => $request->input('description') ? $request->input('description') : '',
-                'package_type' => '',
-                'package_count' => '',
-                'measure_unit' => $request->input('measure_unit'),
-                'customs_tariff_id' => null,
-                'enterprise_id' => (Auth::User()->role->name == 'user') ? (Auth::User()->Enterprise ? Auth::User()->Enterprise->id : null) 
-                                    : $request->input('enterprise_id')
+                'price' => $request->input('price') ? $request->input('price') : '',
+                'discount' => $request->input('discount') ? $request->input('discount') : '',
+                'store_id' => $request->input('store_id') ? $request->input('store_id') : ( Auth::User()->company ?
+                                Auth::User()->company->store->id : null)
             ]);
             $product->save();
+
+            // if (!file_exists('data/' . $destinationPath)) {
+            //     File::makeDirectory('data/' . $destinationPath, $mode = 0777, true, true);
+            // }
+
+            $destinationPath = 'companies/' . (Auth::User()->company->id) . '/' . 'products/';
+            $file = $request->file('image');
+            $fileName = $product->id . '.' . $file->getClientOriginalExtension();
+            Storage::disk('public')->put($destinationPath . $fileName, file_get_contents($file));
+            $product->image = $fileName;
+            $product->update(['image' => $fileName]);
 
             return redirect()->route('products.index')
                 ->with('success', 'Product created successfully.');
@@ -112,16 +137,17 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit($id)
     {
         //
         try {
             $product = Product::find($id);
             if ($product) {
-                $enterprises =  Enterprise::all();
+                $companies =  Company::all();
+                $stores =  Store::all();
                 $categories =  Category::all();
-                $sub_categories = SubCategory::all()->where('category_id', '=', $product->subCategory->category_id);
-                return view('products.edit', compact('product', 'categories', 'sub_categories', 'enterprises'));
+                $brands = Brand::all();
+                return view('products.edit', compact('product', 'categories', 'brands', 'companies', 'stores'));
             }
             return redirect()->route('products.index')
                 ->with('error', 'Product can\'t eddited.');
@@ -188,7 +214,7 @@ class ProductController extends Controller
 
     public function getProducts()
     {
-        //        
+        //
         try {
 
             $data = [];

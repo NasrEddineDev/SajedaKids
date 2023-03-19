@@ -8,6 +8,7 @@ use App\Http\Controllers\NotificationController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/', function () {
+    // Auth::guard('web')->logout();
+
     return view('index');
 })->middleware(['auth'])->name('home');
 

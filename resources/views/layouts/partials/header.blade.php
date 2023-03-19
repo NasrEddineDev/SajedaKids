@@ -46,7 +46,7 @@
             <!-- ============================================================== -->
             <ul class="navbar-nav float-left mr-auto ml-3 pl-1">
                 <!-- Notification -->
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown {{ App::currentLocale() != 'ar' ? 'float-left  mr-auto ml-3 pl-1' : 'pull-right float-right mr-3 pr-1' }}">
                     <a class="nav-link dropdown-toggle pl-md-3 position-relative" href="javascript:void(0)"
                         id="bell" role="button" data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
@@ -145,8 +145,8 @@
                                 <!-- <span class="edu-icon edu-home-admin author-log-ic">
                                 <img class="flag-icon"
                                             src="{{ URL::asset('img/flag/algeria.png') }}"
-                                            alt="" />    
-                                        
+                                            alt="" />
+
                                     </span> -->
                                     العربية
                                 </option>
@@ -214,7 +214,7 @@
                                 class="svg-icon mr-2 ml-1"></i>
                                 {{ __('Account Setting') }}</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ route('logout') }}" 
+                        <a class="dropdown-item" href="{{ route('logout') }}"
                         onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                         <i data-feather="power" class="svg-icon mr-2 ml-1"></i>
                         {{ __('Logout') }}
@@ -222,7 +222,7 @@
                                 @csrf
                             </form>
                         </a>
-<!-- 
+<!--
                         <div class="dropdown-divider"></div>
                         <div class="pl-4 p-3"><a href="{{ route('profile.edit') }}" class="btn btn-sm btn-info">View
                                 Profile</a></div> -->

@@ -34,7 +34,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label class="text-dark" for="email">{{ __("Email Address") }}</label>
+                                    <label class="text-dark {{ App()->currentLocale() == 'ar' ? 'pull-right' : 'pull-left' }}" for="email">{{ __("Email Address") }}</label>
                                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="{{ __('enter your email address') }}">
                                     @error('email')
                                     <span class="invalid-feedback" role="alert">
