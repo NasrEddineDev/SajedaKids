@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePurchaseRequest;
-use App\Http\Requests\UpdatePurchaseRequest;
+use App\Http\Requests\StoreSaleRequest;
+use App\Http\Requests\UpdateSaleRequest;
 use Illuminate\Support\Facades\Auth;
 use File;
 use Storage;
-use App\Models\Purchase;
+use App\Models\Sale;
 use App\Models\Company;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Store;
 
-class PurchaseController extends Controller
+class SaleController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -32,13 +32,12 @@ class PurchaseController extends Controller
     {
         //
         try {
-            // $purchases = (Auth::User()->role->name == 'user') ? Auth::User()->Enterprise->purchases : Purchase::all();
-            $purchases = Purchase::all();
-            return view('purchases.index', compact('purchases'));
+            // $sales = (Auth::User()->role->name == 'user') ? Auth::User()->Enterprise->sales : Sale::all();
+            $sales = Sale::all();
+            return view('sales.index', compact('sales'));
         } catch (Throwable $e) {
             // report($e);
             // Log::error($e->getMessage());
-
             return false;
         }
     }
@@ -54,7 +53,7 @@ class PurchaseController extends Controller
             $stores =  Store::all();
             $categories =  Category::all();
             $brands = Brand::all(); //collect(['shoes', 'veste']);collect(['levis', 'lacoste']);
-            return view('purchases.create', compact('companies', 'stores', 'categories', 'brands'));
+            return view('sales.create', compact('companies', 'stores', 'categories', 'brands'));
         } catch (Throwable $e) {
             // report($e);
             // Log::error($e->getMessage());
@@ -65,7 +64,7 @@ class PurchaseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePurchaseRequest $request)
+    public function store(StoreSaleRequest $request)
     {
         //
         try {
@@ -78,7 +77,7 @@ class PurchaseController extends Controller
             //         'image.required' => __('Image file is required'),
             //     ]
             // );
-            $purchase = new Purchase([
+            $sale = new Sale([
                 'SKU' => $request->input('SKU'),
                 'name_ar' => $request->input('name_ar') ? $request->input('name_ar') : '',
                 'name_en' => $request->input('name_en') ? $request->input('name_en') : '',
@@ -93,23 +92,23 @@ class PurchaseController extends Controller
                 'discount' => $request->input('discount') ? $request->input('discount') : '',
                 'company_id' => Auth::User()->company->id
             ]);
-            $purchase->save();
+            $sale->save();
 
             // if (!file_exists('data/' . $destinationPath)) {
             //     File::makeDirectory('data/' . $destinationPath, $mode = 0777, true, true);
             // }
 
-            $destinationPath = 'companies/' . (Auth::User()->company->id) . '/' . 'purchases/';
+            $destinationPath = 'companies/' . (Auth::User()->company->id) . '/' . 'sales/';
             $file = $request->file('image');
             if ($file){
-                $fileName = $purchase->id . '.' . $file->getClientOriginalExtension();
+                $fileName = $sale->id . '.' . $file->getClientOriginalExtension();
                 Storage::disk('public')->put($destinationPath . $fileName, file_get_contents($file));
-                $purchase->image = $fileName;
-                $purchase->update(['image' => $fileName]);
+                $sale->image = $fileName;
+                $sale->update(['image' => $fileName]);
             }
 
-            return redirect()->route('purchases.index')
-                ->with('success', 'Purchase created successfully.');
+            return redirect()->route('sales.index')
+                ->with('success', 'Sale created successfully.');
         } catch (Throwable $e) {
             report($e);
             Log::error($e->getMessage());
@@ -121,12 +120,12 @@ class PurchaseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Purchase $purchase)
+    public function show(Sale $sale)
     {
         //
         try {
-            $purchase = Purchase::find($id);
-            return view('purchases.show', compact('purchase'));
+            $sale = Sale::find($id);
+            return view('sales.show', compact('sale'));
         } catch (Throwable $e) {
             report($e);
             Log::error($e->getMessage());
@@ -142,15 +141,15 @@ class PurchaseController extends Controller
     {
         //
         try {
-            $purchase = Purchase::find($id);
-            if ($purchase) {
+            $sale = Sale::find($id);
+            if ($sale) {
                 $companies =  Company::all();
                 $categories =  Category::all();
                 $brands = Brand::all();
-                return view('purchases.edit', compact('purchase', 'categories', 'brands', 'companies'));
+                return view('sales.edit', compact('sale', 'categories', 'brands', 'companies'));
             }
-            return redirect()->route('purchases.index')
-                ->with('error', 'Purchase can\'t eddited.');
+            return redirect()->route('sales.index')
+                ->with('error', 'Sale can\'t eddited.');
         } catch (Throwable $e) {
             report($e);
             Log::error($e->getMessage());
@@ -162,35 +161,35 @@ class PurchaseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePurchaseRequest $request)
+    public function update(UpdateSaleRequest $request)
     {
         //
         try {
-            $purchase = Purchase::find($request->purchase_id);
-            $purchase->SKU = $request->input('SKU');
-            $purchase->name_ar = $request->input('name_ar');
-            $purchase->name_en = $request->input('name_en');
-            $purchase->name_fr = $request->input('name_fr');
-            $purchase->description = $request->input('description') ? $request->input('description') : '';
-            $purchase->code = $request->input('code') ? $request->input('code') : '';
-            $purchase->price = $request->input('price') ? $request->input('price') : '';
-            $purchase->discount = $request->input('discount') ? $request->input('discount') : '';
-            $purchase->category_id = $request->input('category_id') ? $request->input('category_id') : null;
-            $purchase->brand_id = $request->input('brand_id') ? $request->input('brand_id') : null;
+            $sale = Sale::find($request->sale_id);
+            $sale->SKU = $request->input('SKU');
+            $sale->name_ar = $request->input('name_ar');
+            $sale->name_en = $request->input('name_en');
+            $sale->name_fr = $request->input('name_fr');
+            $sale->description = $request->input('description') ? $request->input('description') : '';
+            $sale->code = $request->input('code') ? $request->input('code') : '';
+            $sale->price = $request->input('price') ? $request->input('price') : '';
+            $sale->discount = $request->input('discount') ? $request->input('discount') : '';
+            $sale->category_id = $request->input('category_id') ? $request->input('category_id') : null;
+            $sale->brand_id = $request->input('brand_id') ? $request->input('brand_id') : null;
 
-            $destinationPath = 'companies/' . (Auth::User()->company->id) . '/' . 'purchases/';
+            $destinationPath = 'companies/' . (Auth::User()->company->id) . '/' . 'sales/';
             $file = $request->file('image');
             //to do: delete old image
             if ($file){
-                $fileName = $purchase->id . '.' . $file->getClientOriginalExtension();
+                $fileName = $sale->id . '.' . $file->getClientOriginalExtension();
                 Storage::disk('public')->put($destinationPath . $fileName, file_get_contents($file));
-                $purchase->image = $fileName;
-                $purchase->update(['image' => $fileName]);
+                $sale->image = $fileName;
+                $sale->update(['image' => $fileName]);
             }
 
-            $purchase->save();
-            return redirect()->route('purchases.index')
-                ->with('success', 'Purchase updated successfully');
+            $sale->save();
+            return redirect()->route('sales.index')
+                ->with('success', 'Sale updated successfully');
         } catch (Throwable $e) {
             report($e);
             Log::error($e->getMessage());
@@ -202,19 +201,19 @@ class PurchaseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Purchase $purchase)
+    public function destroy(Sale $sale)
     {
         //
         try {
-            $purchase = Purchase::find($id);
-            if ($purchase) {
-                $purchase->delete();
+            $sale = Sale::find($id);
+            if ($sale) {
+                $sale->delete();
                 return response()->json([
-                    'message' => 'Purchase deleted successfully'
+                    'message' => 'Sale deleted successfully'
                 ], 200);
             }
             return response()->json([
-                'message' => 'Purchase not found'
+                'message' => 'Sale not found'
             ], 404);
         } catch (Throwable $e) {
             report($e);
@@ -224,15 +223,15 @@ class PurchaseController extends Controller
         }
     }
 
-    public function getPurchases()
+    public function getSales()
     {
         //
         try {
 
             $data = [];
-            $purchases = (Auth::User()->role->name == 'user') ? Auth::User()->Enterprise->purchases : Purchase::all();
+            $sales = (Auth::User()->role->name == 'user') ? Auth::User()->Enterprise->sales : Sale::all();
 
-            return response()->json(['purchases' => $purchases]); //->select('id AS value', 'name AS text')]);//->pluck('id' as 'value', 'name' . ' '. 'brand' as 'text')], 404);
+            return response()->json(['sales' => $sales]); //->select('id AS value', 'name AS text')]);//->pluck('id' as 'value', 'name' . ' '. 'brand' as 'text')], 404);
         } catch (Throwable $e) {
             report($e);
             Log::error($e->getMessage());

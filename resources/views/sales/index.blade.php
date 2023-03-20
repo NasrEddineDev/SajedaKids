@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @Push('css')
     <style>
-        #addOrder {
+        #addSale {
             margin: 10px;
             margin-top: 10px;
             margin-top: -10px;
@@ -30,12 +30,12 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <h4 class="card-title">{{ __('Orders List') }}</h4>
+                                <h4 class="card-title">{{ __('Sales List') }}</h4>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <a href="{{ route('orders.create') }}">
-                                    <button id="addOrder" type="button" class="btn btn-success btn-rounded float-right">
-                                        <i class="fas fa-plus-circle"></i>{{ __('New Order') }}</button></a>
+                                <a href="{{ route('sales.create') }}">
+                                    <button id="addSale" type="button" class="btn btn-success btn-rounded float-right">
+                                        <i class="fas fa-plus-circle"></i>{{ __('New Sale') }}</button></a>
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -55,41 +55,41 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($orders as $order)
-                                        <tr id="{{ $order->id }}">
-                                            <td>{{ $order->id }}</td>
-                                            <td>{{ $order->name }}</td>
-                                            <td>{{ $order->SKU }}</td>
+                                    @foreach ($sales as $sale)
+                                        <tr id="{{ $sale->id }}">
+                                            <td>{{ $sale->id }}</td>
+                                            <td>{{ $sale->name }}</td>
+                                            <td>{{ $sale->SKU }}</td>
                                             <td class="showedImage">
                                                 <img class="img-thumbnail"
                                                     src="https://t4.ftcdn.net/jpg/03/18/30/85/360_F_318308547_FALKncfWsTmjzwd0y0muNeCFOULPLB7Q.webp"
                                                     alt="...">
                                             </td>
-                                            <td>{{ $order->price }}</td>
-                                            <td>{{ $order->discount }}</td>
-                                            <td>{{ $order->category->name }}</td>
-                                            <td>{{ $order->brand->name }}</td>
+                                            <td>{{ $sale->price }}</td>
+                                            <td>{{ $sale->discount }}</td>
+                                            <td>{{ $sale->category->name }}</td>
+                                            <td>{{ $sale->brand->name }}</td>
                                             <td id="status"><button
-                                                class="btn {{ $order->active ? 'btn-success' : 'btn-danger' }}"
+                                                class="btn {{ $sale->active ? 'btn-success' : 'btn-danger' }}"
                                                 style="width:50px;border-radius:5px;font-size: 14px;padding:0px;padding-right:5px;padding-left:5px;">
-                                                {{ $order->active ? __("Yes") : __("No") }}</button>
+                                                {{ $sale->active ? __("Yes") : __("No") }}</button>
                                             </td>
                                             <td class="datatable-ct">
-                                                @can('update',  App\Models\Order::class)
-                                                <a rel="tooltip" class="" href="{{ route('orders.edit',$order->id) }}" data-original-title="" title="Edit">
+                                                @can('update',  App\Models\Sale::class)
+                                                <a rel="tooltip" class="" href="{{ route('sales.edit',$sale->id) }}" data-original-title="" title="Edit">
                                                     <i class="fa fa-pencil-square-o fa-lg warning"></i>
                                                 </a>
                                                 @endcan
-                                                @can('delete',  App\Models\Order::class)
-                                                <a rel="tooltip" class=" pd-setting-ed" href="#" data-url="{{ route('orders.destroy',$order->id) }}"
-                                                data-order_name="{{ $order->name }}" data-original-title="" title="Delete" data-toggle="modal"
+                                                @can('delete',  App\Models\Sale::class)
+                                                <a rel="tooltip" class=" pd-setting-ed" href="#" data-url="{{ route('sales.destroy',$sale->id) }}"
+                                                data-sale_name="{{ $sale->name }}" data-original-title="" title="Delete" data-toggle="modal"
                                                 data-target="#DangerModalhdbgcl" style="">
                                                     <i class="fa fa-trash fa-lg" style="color:red;" aria-hidden="true"></i>
                                                 </a>
                                                 @endcan
                                             </td>
-                                            @can('view-company', App\Models\order::class)
-                                                <td>{{ $order->company->name }}</td>
+                                            @can('view-company', App\Models\sale::class)
+                                                <td>{{ $sale->company->name }}</td>
                                             @endcan
                                         </tr>
                                     @endforeach

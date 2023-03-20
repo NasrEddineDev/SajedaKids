@@ -16,13 +16,13 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->integer('user_id')->unsigned();
-            $table->integer('order_id')->unsigned()->nullable();
+            $table->integer('sale_id')->unsigned()->nullable();
             $table->integer('purchase_id')->unsigned()->nullable();
             $table->integer('store_id')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+            $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');
             $table->foreign('purchase_id')->references('id')->on('purchases')->onDelete('cascade');
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
         });

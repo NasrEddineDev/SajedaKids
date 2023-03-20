@@ -26,26 +26,26 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">{{ __('Edit Customer') }}</h4>
-                        <form class="form-sample" method="post" action="{{ route('customers.update', $customer->id) }}"
+                        <h4 class="card-title">{{ __('Edit Supplier') }}</h4>
+                        <form class="form-sample" method="post" action="{{ route('suppliers.update', $supplier->id) }}"
                             enctype="multipart/form-data">
                             @csrf
                             @method('put')
-                            <input hidden type="text" class="form-control" value="{{ $customer->id ?? '' }}"
-                                id="customer_id" name="customer_id">
+                            <input hidden type="text" class="form-control" value="{{ $supplier->id ?? '' }}"
+                                id="supplier_id" name="supplier_id">
                                 <div class="form-body">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>{{ __('Name In Arabic') }}</label>
                                                 <input type="text" class="form-control" id="name_ar" name="name_ar"
-                                                placeholder="{{ __('Name In Arabic') }}" value="{{ $customer->name_ar }}" required>
+                                                placeholder="{{ __('Name In Arabic') }}" value="{{ $supplier->name_ar }}" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>{{ __('Name In Latin') }}</label>
-                                                <input type="text" class="form-control" id="name_lt" name="name_lt" value="{{ $customer->name_lt }}"
+                                                <input type="text" class="form-control" id="name_lt" name="name_lt" value="{{ $supplier->name_lt }}"
                                                     placeholder="{{ __('Name In Latin') }}">
                                             </div>
                                         </div>
@@ -55,14 +55,14 @@
                                             <div class="form-group">
                                                 <label>{{ __('Mobile') }}</label>
                                                 <input type="mobile" class="form-control" id="mobile" name="mobile"
-                                                placeholder="{{ __('Mobile') }}" value="{{ $customer->mobile }}" required>
+                                                placeholder="{{ __('Mobile') }}" value="{{ $supplier->mobile }}" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>{{ __('Email Address') }}</label>
                                                 <input type="email" class="form-control" id="email" name="email"
-                                                placeholder="{{ __('Email Address') }}" value="{{ $customer->email }}" required>
+                                                placeholder="{{ __('Email Address') }}" value="{{ $supplier->email }}" required>
                                             </div>
                                         </div>
                                     </div>
@@ -75,7 +75,7 @@
                                                         {{ __('Select The State') }}
                                                     </option>
                                                     @foreach ($states as $state)
-                                                    <option value="{{ $state->id }}" {{ $customer->city->state->id == $state->id ? 'selected' : '' }}>
+                                                    <option value="{{ $state->id }}" {{ $supplier->city->state->id == $state->id ? 'selected' : '' }}>
                                                         {{ $state->iso2 . ' ' . $state->name }}
                                                     </option>
                                                     @endforeach
@@ -90,7 +90,7 @@
                                                         {{ __('Select The City') }}
                                                     </option>
                                                     @foreach ($cities as $city)
-                                                    <option value="{{ $city->id }}" {{ $customer->city->id == $city->id ? 'selected' : '' }}>
+                                                    <option value="{{ $city->id }}" {{ $supplier->city->id == $city->id ? 'selected' : '' }}>
                                                         {{ $city->name }}
                                                     </option>
                                                     @endforeach
@@ -103,14 +103,14 @@
                                             <div class="form-group">
                                                 <label>{{ __('Address In Arabic') }}</label>
                                                 <input type="text" class="form-control" id="address_ar" name="address_ar"
-                                                placeholder="{{ __('Address In Arabic') }}" value="{{ $customer->address_ar }}" required>
+                                                placeholder="{{ __('Address In Arabic') }}" value="{{ $supplier->address_ar }}" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>{{ __('Address In Latin') }}</label>
                                                 <input type="text" class="form-control" id="address_lt" name="address_lt"
-                                                placeholder="{{ __('Address In Latin') }}" value="{{ $customer->address_lt }}">
+                                                placeholder="{{ __('Address In Latin') }}" value="{{ $supplier->address_lt }}">
                                             </div>
                                         </div>
                                     </div>
@@ -119,7 +119,7 @@
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-info">{{ __('Save') }}</button>
 
-                                    <a href="{{ route('customers.index') }}">
+                                    <a href="{{ route('suppliers.index') }}">
                                         <button type="button" class="btn btn-dark">{{ __('Cancel') }}</button>
                                     </a>
                                 </div>

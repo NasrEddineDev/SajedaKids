@@ -10,7 +10,7 @@
 
                             <li class="list-divider"></li>
                 <li class="nav-small-cap"><span class="hide-menu">{{ __("Main") }}</span></li>
-                <li class="sidebar-item"> <a class="sidebar-link" href="{{ route('orders.index')}}"
+                <li class="sidebar-item"> <a class="sidebar-link" href="{{ route('sales.index')}}"
                         aria-expanded="false"><i data-feather="tag" class="feather-icon"></i><span
                             class="hide-menu">{{ __("Sales") }}
                         </span></a>
@@ -29,6 +29,9 @@
                 <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="{{ route('customers.index')}}"
                         aria-expanded="false"><i data-feather="message-square" class="feather-icon"></i><span
                             class="hide-menu">{{ __("Customers") }}</span></a></li>
+                <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="{{ route('suppliers.index')}}"
+                        aria-expanded="false"><i data-feather="message-square" class="feather-icon"></i><span
+                            class="hide-menu">{{ __("Suppliers") }}</span></a></li>
                 <li class="sidebar-item"> <a class="sidebar-link" href="{{ route('users.index')}}"
                         aria-expanded="false"><i data-feather="tag" class="feather-icon"></i><span
                             class="hide-menu">{{ __("Users") }}

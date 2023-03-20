@@ -26,78 +26,117 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">{{ __('Add New User') }}</h4>
-                        <form class="form-sample" method="post" action="{{ route('users.store') }}" enctype="multipart/form-data">
+                        <h4 class="card-title">{{ __('Add New Sales') }}</h4>
+                        <form class="form-sample" method="post" action="{{ route('products.store') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-body">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>{{ __('Userame') }}</label>
-                                            <input type="text" class="form-control" id="name" name="name"
-                                            placeholder="{{ __('Username') }}" required>
+                                            <label>{{ __('Date') }}</label>
+                                            <input type="text" class="form-control" id="date" name="date"
+                                            placeholder="{{ __('Date') }}" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>{{ __('Email Address') }}</label>
-                                            <input type="email" class="form-control" id="email" name="email"
-                                            placeholder="{{ __('Email Address') }}" required>
+                                            <label>{{ __('Customer') }}</label>
+                                            <input type="text" class="form-control" id="customer" name="customer" placeholder="{{ __('Customer') }}"
+                                             required>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>{{ __('Password') }}</label>
-                                            <input type="password" class="form-control" id="password" name="password" required placeholder="{{ __('Pasword') }}">
-                                        </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <h4 class="card-title">{{ __('Products List') }}</h4>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>{{ __('Password Confirmation') }}</label>
-                                            <input type="password" class="form-control" id="password_confirmation" required name="password_confirmation" placeholder="{{ __('Pasword Confirmation') }}">
-                                        </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <button id="addProduct" type="button" class="btn btn-success btn-rounded float-right">
+                                                <i class="fas fa-plus-circle"></i>{{ __('New Product') }}</button>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>{{ __('Store') }}</label>
-                                            <select name="store_id" id="store_id" class="form-control" required>
-                                                <option value="" disabled selected>
-                                                    {{ __('Select The Store') }}
-                                                </option>
-                                                @foreach ($stores as $store)
-                                                <option value="{{ $store->id }}">
-                                                    {{ $store->name }}
-                                                </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>{{ __('Role') }}</label>
-                                            <select name="role_id" id="role_id" class="form-control" required>
-                                                <option value="" disabled selected>
-                                                    {{ __('Select The Role') }}
-                                                </option>
-                                                @foreach ($roles as $role)
-                                                <option value="{{ $role->id }}">
-                                                    {{ $role->name }}
-                                                </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
+
+                        <div class="table-responsive">
+                            <table id="zero_config" class="table table-striped table-bordered no-wrap">
+                                <thead>
+                                    <tr>
+                                        <th>{{ __('Id') }}</th>
+                                        <th>{{ __('SKU') }}</th>
+                                        <th>{{ __('Name') }}</th>
+                                        <th>{{ __('Price') }}</th>
+                                        <th>{{ __('Discount') }}</th>
+                                        <th>{{ __('Category') }}</th>
+                                        <th>{{ __('Brand') }}</th>
+                                        <th>{{ __('Action') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (isset($products))
+                                    @foreach ($products as $product)
+                                        <tr id="{{ $product->id }}">
+                                            <td>{{ $product->id }}</td>
+                                            <td>{{ $product->SKU }}</td>
+                                            <td>{{ $product->name }}</td>
+                                            <td>{{ $product->price }}</td>
+                                            <td>{{ $product->discount }}</td>
+                                            <td>{{ $product->category->name }}</td>
+                                            <td>{{ $product->brand->name }}</td>
+                                            <td class="datatable-ct">
+                                                @can('update',  App\Models\SaleItem::class)
+                                                <a rel="tooltip" class="" href="{{ route('sales.edit',$sale->id) }}" data-original-title="" title="Edit">
+                                                    <i class="fa fa-pencil-square-o fa-lg warning"></i>
+                                                </a>
+                                                @endcan
+                                                @can('delete',  App\Models\SaleItem::class)
+                                                <a rel="tooltip" class=" pd-setting-ed" href="#" data-url="{{ route('sales.destroy',$sale->id) }}"
+                                                data-sale_name="{{ $sale->name }}" data-original-title="" title="Delete" data-toggle="modal"
+                                                data-target="#DangerModalhdbgcl" style="">
+                                                    <i class="fa fa-trash fa-lg" style="color:red;" aria-hidden="true"></i>
+                                                </a>
+                                                @endcan
+                                            </td>
+                                            @can('view-company', App\Models\sale::class)
+                                                <td>{{ $product->company->name }}</td>
+                                            @endcan
+                                        </tr>
+                                    @endforeach
+                                    @endif
+                                    <!-- <tr>
+                                        <td>Tiger Nixon</td>
+                                        <td>System Architect</td>
+                                        <td>Edinburgh</td>
+                                        <td>61</td>
+                                        <td>2011/04/25</td>
+                                        <td>$320,800</td>
+                                        <td>Sirwal</td>
+                                        <td>Levis</td>
+                                        <td>Yes</td>
+                                        <td></td>
+                                    </tr> -->
+                                </tbody>
+                                <!-- <tfoot>
+                                    <tr>
+                                        <th>{{ __('Id') }}</th>
+                                        <th>{{ __('Name') }}</th>
+                                        <th>{{ __('SKU') }}</th>
+                                        <th>{{ __('Image') }}</th>
+                                        <th>{{ __('Price') }}</th>
+                                        <th>{{ __('Discount') }}</th>
+                                        <th>{{ __('Category') }}</th>
+                                        <th>{{ __('Brand') }}</th>
+                                        <th>{{ __('Active') }}</th>
+                                        <th>{{ __('Action') }}</th>
+                                    </tr>
+                                </tfoot> -->
+                            </table>
+                        </div>
                             </div>
                             <div class="form-actions">
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-info">{{ __('Save') }}</button>
 
-                                    <a href="{{ route('users.index') }}">
+                                    <a href="{{ route('products.index') }}">
                                         <button type="button" class="btn btn-dark">{{ __('Cancel') }}</button>
                                     </a>
                                 </div>

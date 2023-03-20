@@ -42,9 +42,9 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function orderItems()
+    public function saleItems()
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->hasMany(SaleItem::class);
     }
     public function purchaseItems()
     {

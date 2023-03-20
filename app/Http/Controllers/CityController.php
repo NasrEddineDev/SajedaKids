@@ -17,7 +17,7 @@ class CityController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     /**
      * Display a listing of the resource.
      */
@@ -72,5 +72,35 @@ class CityController extends Controller
     public function destroy(City $city)
     {
         //
+    }
+
+    public function getCities($state_id)
+    {
+        //
+        try {
+        // $data = [];
+        // $cities = AlgeriaCity::all()->where('wilaya_code', '=', $state_code);
+        // $cities = $cities->map(function($items){
+        //     $data['value'] = $items->id;
+        //     $data['text'] = App()->currentLocale() == 'ar' ? $items->commune_name : $items->commune_name_ascii;
+        //     return $data;
+        //     });
+
+
+        $cities = City::where('state_id', '=', $state_id)->orderBy('name_ar')->get();
+        $cities = $cities->map(function ($items) {
+            $data['value'] = $items->id;
+            $data['text'] = $items->name;
+            return $data;
+        });
+
+
+        return response()->json([ 'cities' => $cities]);
+    } catch (Throwable $e) {
+        report($e);
+        Log::error($e->getMessage());
+
+        return false;
+    }
     }
 }

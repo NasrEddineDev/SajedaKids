@@ -16,7 +16,7 @@ class ProductSeeder extends Seeder
         // DB::table('products')->insert([[
         //     'name'  => 'TV',
         //     'description' => 'TV Extra plat',
-        //     // 'order_number'  => '12545cx',
+        //     // 'sale_number'  => '12545cx',
         //     'brand' => '2',
         //     'hs_code' => '74785',
         //     'measure_unit' => 'U',
@@ -28,7 +28,7 @@ class ProductSeeder extends Seeder
         // ],[
         //     'name'  => 'Laptop',
         //     'description' => 'Laptop HP',
-        //     // 'order_number'  => '1245cx',
+        //     // 'sale_number'  => '1245cx',
         //     'brand' => '1',
         //     'hs_code' => '74785',
         //     'measure_unit' => 'U',
@@ -40,7 +40,7 @@ class ProductSeeder extends Seeder
         // ],[
         //     'name'  => 'PC',
         //     'description' => 'PC Desktop',
-        //     // 'order_number'  => 'fd45444',
+        //     // 'sale_number'  => 'fd45444',
         //     'brand' => '2',
         //     'hs_code' => '74785',
         //     'measure_unit' => 'U',
@@ -52,7 +52,7 @@ class ProductSeeder extends Seeder
         // ],[
         //     'name'  => 'Printer',
         //     'description' => 'Epson SX130',
-        //     // 'order_number'  => '12545cx',
+        //     // 'sale_number'  => '12545cx',
         //     'brand' => '2',
         //     'hs_code' => '74785',
         //     'measure_unit' => 'U',

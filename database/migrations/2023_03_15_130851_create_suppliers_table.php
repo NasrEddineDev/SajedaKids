@@ -20,10 +20,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('mobile')->unique();
             $table->string('tel');
+            $table->integer('company_id')->unsigned();
             $table->integer('city_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         });
     }
 

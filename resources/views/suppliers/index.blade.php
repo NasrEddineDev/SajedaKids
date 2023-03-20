@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @Push('css')
     <style>
-        #addCustomer {
+        #addSupplier {
             margin: 10px;
             margin-top: 10px;
             margin-top: -10px;
@@ -30,12 +30,12 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <h4 class="card-title">{{ __('Customers List') }}</h4>
+                                <h4 class="card-title">{{ __('Suppliers List') }}</h4>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <a href="{{ route('customers.create') }}">
-                                    <button id="addCustomer" type="button" class="btn btn-success btn-rounded float-right">
-                                        <i class="fas fa-plus-circle"></i>{{ __('New Customer') }}</button></a>
+                                <a href="{{ route('suppliers.create') }}">
+                                    <button id="addSupplier" type="button" class="btn btn-success btn-rounded float-right">
+                                        <i class="fas fa-plus-circle"></i>{{ __('New Supplier') }}</button></a>
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -53,31 +53,31 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($customers as $customer)
-                                        <tr id="{{ $customer->id }}">
-                                            <td>{{ $customer->id }}</td>
-                                            <td>{{ $customer->name }}</td>
-                                            <td>{{ $customer->email }}</td>
-                                            <td>{{ $customer->mobile }}</td>
-                                            <td>{{ $customer->city->name }}</td>
-                                            <td>{{ $customer->city->state->name }}</td>
-                                            <td>{{ $customer->address }}</td>
+                                    @foreach ($suppliers as $supplier)
+                                        <tr id="{{ $supplier->id }}">
+                                            <td>{{ $supplier->id }}</td>
+                                            <td>{{ $supplier->name }}</td>
+                                            <td>{{ $supplier->email }}</td>
+                                            <td>{{ $supplier->mobile }}</td>
+                                            <td>{{ $supplier->city->name }}</td>
+                                            <td>{{ $supplier->city->state->name }}</td>
+                                            <td>{{ $supplier->address }}</td>
                                             <td class="datatable-ct">
-                                                @can('update',  App\Models\Customer::class)
-                                                <a rel="tooltip" class="" href="{{ route('customers.edit',$customer->id) }}" data-original-title="" title="Edit">
+                                                @can('update',  App\Models\Supplier::class)
+                                                <a rel="tooltip" class="" href="{{ route('suppliers.edit',$supplier->id) }}" data-original-title="" title="Edit">
                                                     <i class="fa fa-pencil-square-o fa-lg warning"></i>
                                                 </a>
                                                 @endcan
-                                                @can('delete',  App\Models\Customer::class)
-                                                <a rel="tooltip" class=" pd-setting-ed" href="#" data-url="{{ route('customers.destroy',$customer->id) }}"
-                                                data-customer_name="{{ $customer->name }}" data-original-title="" title="Delete" data-toggle="modal"
+                                                @can('delete',  App\Models\Supplier::class)
+                                                <a rel="tooltip" class=" pd-setting-ed" href="#" data-url="{{ route('suppliers.destroy',$supplier->id) }}"
+                                                data-supplier_name="{{ $supplier->name }}" data-original-title="" title="Delete" data-toggle="modal"
                                                 data-target="#DangerModalhdbgcl" style="">
                                                     <i class="fa fa-trash fa-lg" style="color:red;" aria-hidden="true"></i>
                                                 </a>
                                                 @endcan
                                             </td>
-                                            @can('view-company', App\Models\customer::class)
-                                                <td>{{ $customer->company->name }}</td>
+                                            @can('view-company', App\Models\supplier::class)
+                                                <td>{{ $supplier->company->name }}</td>
                                             @endcan
                                         </tr>
                                     @endforeach

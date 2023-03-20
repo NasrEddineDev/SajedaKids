@@ -35,22 +35,23 @@
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <label class="text-dark {{ App()->currentLocale() == 'ar' ? 'pull-right' : 'pull-left' }}" for="email">{{ __("Email Address") }}</label>
-                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="{{ __('enter your email address') }}">
+                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror
+                                    {{ App()->currentLocale() == 'ar' ? 'pull-right' : 'pull-left' }}" name="email" value="{{ old('email') }}"
+                                    required autocomplete="email" autofocus placeholder="{{ __('enter your email address') }}">
                                     @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                 </div>
-
-
 
                             </div>
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label class="text-dark" for="password">{{ __("Password") }}</label>
-                                    <input class="form-control @error('password') is-invalid @enderror" name="password" id="password" type="password" required autocomplete="current-password" placeholder="{{ __('enter your password') }}">
-
+                                    <label class="text-dark {{ App()->currentLocale() == 'ar' ? 'pull-right' : 'pull-left' }}" for="password">{{ __("Password") }}</label>
+                                    <input  type="password" required class="form-control @error('password') is-invalid @enderror
+                                        {{ App()->currentLocale() == 'ar' ? 'pull-right' : 'pull-left' }}" name="password" id="password"
+                                        autocomplete="current-password" placeholder="{{ __('enter your password') }}">
 
                                     @error('password')
                                     <span class="invalid-feedback" role="alert">

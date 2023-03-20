@@ -2,8 +2,9 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -51,13 +52,15 @@ Route::get('/', function () {
 })->middleware(['auth'])->name('home');
 
 Route::resource('customers', CustomerController::class);
+Route::resource('suppliers', SupplierController::class);
 Route::resource('products', ProductController::class);
 Route::resource('profiles', ProfileController::class);
 Route::resource('settings', SettingController::class);
-Route::resource('orders', OrderController::class);
+Route::resource('sales', SaleController::class);
 Route::resource('purchases', PurchaseController::class);
 Route::resource('users', UserController::class);
 
+Route::get('getcities/{id}', [\App\Http\Controllers\CityController::class, 'getCities'])->name('cities.getcities');
 Route::get('setlocale/{lang}', [HomeController::class, 'setlocale'])->name('lang');
 Route::get('notifications-mark-as-read', [NotificationController::class, 'setlocale'])->name('notifications.mark-as-read');
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboards.index');

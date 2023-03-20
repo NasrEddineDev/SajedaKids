@@ -44,12 +44,10 @@
                                     <tr>
                                         <th>{{ __('Id') }}</th>
                                         <th>{{ __('Name') }}</th>
-                                        <th>{{ __('SKU') }}</th>
-                                        <th>{{ __('Image') }}</th>
-                                        <th>{{ __('Price') }}</th>
-                                        <th>{{ __('Discount') }}</th>
-                                        <th>{{ __('Active') }}</th>
-                                        <th>{{ __('Action') }}</th>
+                                        <th>{{ __('Email') }}</th>
+                                        <th>{{ __('Role') }}</th>
+                                        <th>{{ __('Store') }}</th>
+                                        <th>{{ __('Actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -57,19 +55,22 @@
                                         <tr id="{{ $user->id }}">
                                             <td>{{ $user->id }}</td>
                                             <td>{{ $user->name }}</td>
-                                            <td>{{ $user->SKU }}</td>
-                                            <td class="showedImage">
-                                                <img class="img-thumbnail"
-                                                    src="https://t4.ftcdn.net/jpg/03/18/30/85/360_F_318308547_FALKncfWsTmjzwd0y0muNeCFOULPLB7Q.webp"
-                                                    alt="...">
+                                            <td>{{ $user->email }}</td>
+                                            <td id="role"><button
+                                                class="btn
+                                                {{ $user->role->name == 'user'
+                                                            ? 'btn-default'
+                                                            : ($user->role->name == 'seller_company'
+                                                                ? 'btn-info'
+                                                                : ($user->role->name == 'admin_company'
+                                                                    ? 'btn-success'
+                                                                    : ($user->role->name == 'manager_company'
+                                                                        ? 'btn-warning'
+                                                                        : 'btn-danger'))) }}"
+                                                style="width:135px;border-radius:5px;font-size: 14px;padding:0px;padding-right:5px;padding-left:5px;">
+                                                {{ __($user->role->name) }}</button>
                                             </td>
-                                            <td>{{ $user->price }}</td>
-                                            <td>{{ $user->discount }}</td>
-                                            <td id="status"><button
-                                                class="btn {{ $user->active ? 'btn-success' : 'btn-danger' }}"
-                                                style="width:50px;border-radius:5px;font-size: 14px;padding:0px;padding-right:5px;padding-left:5px;">
-                                                {{ $user->active ? __("Yes") : __("No") }}</button>
-                                            </td>
+                                            <td>{{ $user->store?->name }}</td>
                                             <td class="datatable-ct">
                                                 @can('update',  App\Models\User::class)
                                                 <a rel="tooltip" class="" href="{{ route('users.edit',$user->id) }}" data-original-title="" title="Edit">
