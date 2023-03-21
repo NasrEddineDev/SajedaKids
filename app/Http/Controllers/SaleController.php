@@ -68,6 +68,7 @@ class SaleController extends Controller
     {
         //
         try {
+            dd($request->all());
             // $request->validate(
             //     [
             //         'image' => 'required|max:10240|mimes:doc,pdf,docx,jpeg,jpg,png',

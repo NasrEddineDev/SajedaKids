@@ -60,6 +60,7 @@ Route::resource('sales', SaleController::class);
 Route::resource('purchases', PurchaseController::class);
 Route::resource('users', UserController::class);
 
+Route::get('getproductbysku/{sku}', [ProductController::class, 'getProductBySKU'])->name('products.getproductbysku');
 Route::get('getcities/{id}', [\App\Http\Controllers\CityController::class, 'getCities'])->name('cities.getcities');
 Route::get('setlocale/{lang}', [HomeController::class, 'setlocale'])->name('lang');
 Route::get('notifications-mark-as-read', [NotificationController::class, 'setlocale'])->name('notifications.mark-as-read');

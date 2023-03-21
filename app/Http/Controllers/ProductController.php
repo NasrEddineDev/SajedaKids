@@ -105,7 +105,7 @@ class ProductController extends Controller
                 $fileName = $product->id . '.' . $file->getClientOriginalExtension();
                 Storage::disk('public')->put($destinationPath . $fileName, file_get_contents($file));
                 $product->image = $fileName;
-                $product->update(['image' => $fileName]);    
+                $product->update(['image' => $fileName]);
             }
 
             return redirect()->route('products.index')
@@ -185,7 +185,7 @@ class ProductController extends Controller
                 $fileName = $product->id . '.' . $file->getClientOriginalExtension();
                 Storage::disk('public')->put($destinationPath . $fileName, file_get_contents($file));
                 $product->image = $fileName;
-                $product->update(['image' => $fileName]);    
+                $product->update(['image' => $fileName]);
             }
 
             $product->save();
@@ -233,6 +233,24 @@ class ProductController extends Controller
             $products = (Auth::User()->role->name == 'user') ? Auth::User()->Enterprise->products : Product::all();
 
             return response()->json(['products' => $products]); //->select('id AS value', 'name AS text')]);//->pluck('id' as 'value', 'name' . ' '. 'brand' as 'text')], 404);
+        } catch (Throwable $e) {
+            report($e);
+            Log::error($e->getMessage());
+
+            return false;
+        }
+    }
+
+    public function getProductBySKU($SKU)
+    {
+        //
+        try {
+
+            $product = Product::where('SKU', $SKU)->first();
+            if ($product) {
+                return response()->json(['exist' => true, 'product' => $product]);
+            }
+            return response()->json(['exist' => false, 'product' => $product]);
         } catch (Throwable $e) {
             report($e);
             Log::error($e->getMessage());
