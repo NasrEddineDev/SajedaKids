@@ -11,6 +11,8 @@ use App\Models\Sale;
 use App\Models\Company;
 use App\Models\Category;
 use App\Models\Brand;
+use App\Models\Product;
+use App\Models\SaleItem;
 use App\Models\Store;
 
 class SaleController extends Controller
@@ -68,45 +70,53 @@ class SaleController extends Controller
     {
         //
         try {
-            dd($request->all());
-            // $request->validate(
-            //     [
-            //         'image' => 'required|max:10240|mimes:doc,pdf,docx,jpeg,jpg,png',
-            //     ],
-            //     // custom messages
-            //     [
-            //         'image.required' => __('Image file is required'),
-            //     ]
-            // );
+
             $sale = new Sale([
-                'SKU' => $request->input('SKU'),
-                'name_ar' => $request->input('name_ar') ? $request->input('name_ar') : '',
-                'name_en' => $request->input('name_en') ? $request->input('name_en') : '',
-                'name_fr' => $request->input('name_fr') ? $request->input('name_fr') : '',
-                'brand_id' => $request->input('brand_id') ? $request->input('brand_id') : '',
-                'image' => '',
-                'active' => true,
-                'category_id' => $request->input('category_id') ? $request->input('category_id') : '',
-                'code' => $request->input('code') ? $request->input('code') : '',
-                'description' => $request->input('description') ? $request->input('description') : '',
-                'price' => $request->input('price') ? $request->input('price') : '',
-                'discount' => $request->input('discount') ? $request->input('discount') : '',
-                'company_id' => Auth::User()->company->id
+                'status' => "Completed",
+                'date' => $request->input('date') ? $request->input('date') : '',
+                'description' => '',
+                'type' => 'Normal',
+                'net_amount' => 0,
+                'tax' => 0,
+                'total_amount' => 0,
+                'user_id' => Auth::User()->id,
+                'customer_id' => null,
+                'store_id' => Auth::User()->store->id,
             ]);
             $sale->save();
+           
+            $net_amount = 0;
+            $saledProducts = collect((array)json_decode($request->input('products')));
+            foreach ($saledProducts as $saledProduct) {
 
-            // if (!file_exists('data/' . $destinationPath)) {
-            //     File::makeDirectory('data/' . $destinationPath, $mode = 0777, true, true);
-            // }
-
-            $destinationPath = 'companies/' . (Auth::User()->company->id) . '/' . 'sales/';
-            $file = $request->file('image');
-            if ($file){
-                $fileName = $sale->id . '.' . $file->getClientOriginalExtension();
-                Storage::disk('public')->put($destinationPath . $fileName, file_get_contents($file));
-                $sale->image = $fileName;
-                $sale->update(['image' => $fileName]);
+                $product = Product::where('SKU', $saledProduct->SKU)->first();
+                $total = ($product->price - $saledProduct->discount)*$saledProduct->quantity;
+                $saleItem = new SaleItem([
+                    'total_amount' => $total,
+                    'Quantity' => $saledProduct->quantity,
+                    'discount' => $saledProduct->discount,
+                    'date' => $request->input('date') ? $request->input('date') : '',
+                    'description' => '',
+                    'product_price' => $product->price,
+                    'product_discount' => $product->discount,
+                    'product_sku' => $product->SKU,
+                    'product_name' => $product->name,
+                    'user_id' => Auth::User()->id,
+                    'sale_id' => $sale->id,
+                    'product_id' => $product->id,
+                ]);
+                $saleItem->save();
+                $net_amount += $total;
             }
+            $sale->net_amount = $net_amount;
+            $sale->total_amount = $net_amount;
+            $sale->save();
+
+            return response()->json([
+                'message' => 'Sale saved successfully',
+                'result' => 'success',
+                'url' => route('sales.index')
+            ], 200);
 
             return redirect()->route('sales.index')
                 ->with('success', 'Sale created successfully.');

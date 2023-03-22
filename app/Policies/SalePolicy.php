@@ -14,14 +14,16 @@ class SalePolicy
     public function viewAny(User $user): bool
     {
         //
+        return true;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Sale $sale): bool
+    public function view(User $user): bool
     {
         //
+        return true;
     }
 
     /**
@@ -30,37 +32,42 @@ class SalePolicy
     public function create(User $user): bool
     {
         //
+        return true;
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Sale $sale): bool
+    public function update(User $user): bool
     {
         //
+        return true;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Sale $sale): bool
+    public function delete(User $user): bool
     {
         //
+        return true;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Sale $sale): bool
+    public function restore(User $user): bool
     {
         //
+        return true;
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Sale $sale): bool
+    public function forceDelete(User $user): bool
     {
         //
+        return true;
     }
 }
