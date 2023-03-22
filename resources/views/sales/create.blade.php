@@ -312,6 +312,8 @@ Html5Qrcode.getCameras().then(devices => {
     <script type="text/javascript">
         $(document).ready(function() {
             // Denotes total number of rows.
+            document.getElementById('date').valueAsDate = new Date();
+
             var rowIdx = 0;
             var total = 0;
 
@@ -353,7 +355,7 @@ Html5Qrcode.getCameras().then(devices => {
 
                 //setup before functions
                 var typingTimer; //timer identifier
-                var doneTypingInterval = 2000; //time in ms, 5 seconds for example
+                var doneTypingInterval = 1000; //time in ms, 5 seconds for example
 
 
 
@@ -571,22 +573,24 @@ Html5Qrcode.getCameras().then(devices => {
                 // });
                 // console.log(data);
 
-                $("#$('#sale_table')").find('tr').each(function (i, el) {
-                   var id = $(this).attr('id', `R${dig - 1}`);
+                $("#sale_table").find('tr').each(function (i, el) {
+                   var id = $(this).attr('id');
                     var SKU = $("#" + id + ' #SKU').val();
-                    var dicount = $("#" + id + ' #dicount').val();
+                    var discount = $("#" + id + ' #discount').val();
                     var quantity = $("#" + id + ' #quantity').val();
-                    products.push({
-                        SKU: SKU,
-                        discount: dicount,
-                        quantity: quantity,
-                    });
-        // var $tds = $(this).find('td'),
-        //     productId = $tds.eq(0).text(),
-        //     product = $tds.eq(1).text(),
-        //     Quantity = $tds.eq(2).text();
-        // do something with productId, product, Quantity
-    });
+                    if (SKU & quantity){
+                        products.push({
+                            SKU: SKU,
+                            discount: discount,
+                            quantity: quantity,
+                        });
+                    }
+                    // var $tds = $(this).find('td'),
+                    //     productId = $tds.eq(0).text(),
+                    //     product = $tds.eq(1).text(),
+                    //     Quantity = $tds.eq(2).text();
+                    // do something with productId, product, Quantity
+                });
 
                 console.log(products);
 
