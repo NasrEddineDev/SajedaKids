@@ -51,11 +51,7 @@ class SaleController extends Controller
     {
         //
         try {
-            $companies =  Company::all();
-            $stores =  Store::all();
-            $categories =  Category::all();
-            $brands = Brand::all(); //collect(['shoes', 'veste']);collect(['levis', 'lacoste']);
-            return view('sales.create', compact('companies', 'stores', 'categories', 'brands'));
+            return view('sales.create');
         } catch (Throwable $e) {
             // report($e);
             // Log::error($e->getMessage());
@@ -84,7 +80,7 @@ class SaleController extends Controller
                 'store_id' => Auth::User()->store->id,
             ]);
             $sale->save();
-           
+
             $net_amount = 0;
             $saledProducts = collect((array)json_decode($request->input('products')));
             foreach ($saledProducts as $saledProduct) {
@@ -152,12 +148,9 @@ class SaleController extends Controller
     {
         //
         try {
-            $sale = Sale::find($id);
+            $sale = Sale::where('id','=',$id)->withCount('SaleItems')->first();
             if ($sale) {
-                $companies =  Company::all();
-                $categories =  Category::all();
-                $brands = Brand::all();
-                return view('sales.edit', compact('sale', 'categories', 'brands', 'companies'));
+                return view('sales.edit', compact('sale'));
             }
             return redirect()->route('sales.index')
                 ->with('error', 'Sale can\'t eddited.');
@@ -177,28 +170,69 @@ class SaleController extends Controller
         //
         try {
             $sale = Sale::find($request->sale_id);
-            $sale->SKU = $request->input('SKU');
-            $sale->name_ar = $request->input('name_ar');
-            $sale->name_en = $request->input('name_en');
-            $sale->name_fr = $request->input('name_fr');
-            $sale->description = $request->input('description') ? $request->input('description') : '';
-            $sale->code = $request->input('code') ? $request->input('code') : '';
-            $sale->price = $request->input('price') ? $request->input('price') : '';
-            $sale->discount = $request->input('discount') ? $request->input('discount') : '';
-            $sale->category_id = $request->input('category_id') ? $request->input('category_id') : null;
-            $sale->brand_id = $request->input('brand_id') ? $request->input('brand_id') : null;
+            if($sale){
+                if ($request->input('date')) $sale->date =  $request->input('date');
+                $sale->user_id = Auth::User()->id;
+                $sale->save();
 
-            $destinationPath = 'companies/' . (Auth::User()->company->id) . '/' . 'sales/';
-            $file = $request->file('image');
-            //to do: delete old image
-            if ($file){
-                $fileName = $sale->id . '.' . $file->getClientOriginalExtension();
-                Storage::disk('public')->put($destinationPath . $fileName, file_get_contents($file));
-                $sale->image = $fileName;
-                $sale->update(['image' => $fileName]);
+                $sale->saleItems()->delete();
+                $net_amount = 0;
+                $saledProducts = collect((array)json_decode($request->input('products')));
+                foreach ($saledProducts as $saledProduct) {
+
+                    $product = Product::where('SKU', $saledProduct->SKU)->first();
+                    $total = ($product->price - $saledProduct->discount)*$saledProduct->quantity;
+                    $saleItem = new SaleItem([
+                        'total_amount' => $total,
+                        'Quantity' => $saledProduct->quantity,
+                        'discount' => $saledProduct->discount,
+                        'date' => $request->input('date') ? $request->input('date') : '',
+                        'description' => '',
+                        'product_price' => $product->price,
+                        'product_discount' => $product->discount,
+                        'product_sku' => $product->SKU,
+                        'product_name' => $product->name,
+                        'user_id' => Auth::User()->id,
+                        'sale_id' => $sale->id,
+                        'product_id' => $product->id,
+                    ]);
+                    $saleItem->save();
+                    $net_amount += $total;
+                }
+                $sale->net_amount = $net_amount;
+                $sale->total_amount = $net_amount;
+                $sale->save();
             }
 
-            $sale->save();
+            return response()->json([
+                'message' => 'Sale saved successfully',
+                'result' => 'success',
+                'url' => route('sales.index')
+            ], 200);
+
+
+            // $sale->SKU = $request->input('SKU');
+            // $sale->name_ar = $request->input('name_ar');
+            // $sale->name_en = $request->input('name_en');
+            // $sale->name_fr = $request->input('name_fr');
+            // $sale->description = $request->input('description') ? $request->input('description') : '';
+            // $sale->code = $request->input('code') ? $request->input('code') : '';
+            // $sale->price = $request->input('price') ? $request->input('price') : '';
+            // $sale->discount = $request->input('discount') ? $request->input('discount') : '';
+            // $sale->category_id = $request->input('category_id') ? $request->input('category_id') : null;
+            // $sale->brand_id = $request->input('brand_id') ? $request->input('brand_id') : null;
+
+            // $destinationPath = 'companies/' . (Auth::User()->company->id) . '/' . 'sales/';
+            // $file = $request->file('image');
+            // //to do: delete old image
+            // if ($file){
+            //     $fileName = $sale->id . '.' . $file->getClientOriginalExtension();
+            //     Storage::disk('public')->put($destinationPath . $fileName, file_get_contents($file));
+            //     $sale->image = $fileName;
+            //     $sale->update(['image' => $fileName]);
+            // }
+
+            // $sale->save();
             return redirect()->route('sales.index')
                 ->with('success', 'Sale updated successfully');
         } catch (Throwable $e) {
@@ -212,7 +246,7 @@ class SaleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Sale $sale)
+    public function destroy($id)
     {
         //
         try {
@@ -220,6 +254,7 @@ class SaleController extends Controller
             if ($sale) {
                 $sale->delete();
                 return response()->json([
+                    'done' => true,
                     'message' => 'Sale deleted successfully'
                 ], 200);
             }
@@ -246,6 +281,29 @@ class SaleController extends Controller
         } catch (Throwable $e) {
             report($e);
             Log::error($e->getMessage());
+
+            return false;
+        }
+    }
+
+    public function getSaleDetails($id)
+    {
+
+        try {
+            $sale = Sale::find($id);
+            if ($sale) {
+                return response()->json([
+                    'message' => 'success',
+                    'sale' => $sale,
+                    'sale_items' => $sale->saleItems
+                ], 200);
+            }
+            return response()->json([
+                'message' => 'Sale not found'
+            ], 404);
+        } catch (Throwable $e) {
+            // report($e);
+            // Log::error($e->getMessage());
 
             return false;
         }

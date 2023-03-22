@@ -60,6 +60,7 @@ Route::resource('sales', SaleController::class);
 Route::resource('purchases', PurchaseController::class);
 Route::resource('users', UserController::class);
 
+Route::get('getsaledetails/{sku}', [SaleController::class, 'getSaleDetails'])->name('sales.getsaledetails');
 Route::get('getproductbysku/{sku}', [ProductController::class, 'getProductBySKU'])->name('products.getproductbysku');
 Route::get('getcities/{id}', [\App\Http\Controllers\CityController::class, 'getCities'])->name('cities.getcities');
 Route::get('setlocale/{lang}', [HomeController::class, 'setlocale'])->name('lang');

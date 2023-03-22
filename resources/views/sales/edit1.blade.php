@@ -26,7 +26,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">{{ __('Edit Product') }}</h4>
+                            <h4 class="card-title">{{ __('Edit Sale') }}</h4>
                             <form class="form-sample" method="post" action="{{ route('products.update', $product->id) }}"
                                 enctype="multipart/form-data">
                                 @csrf

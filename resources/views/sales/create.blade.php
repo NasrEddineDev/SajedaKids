@@ -24,16 +24,20 @@
         }
 
         .form-control {
-            margin: -10px !important;
+            margin: -8px !important;
+        }
+
+        .input-group, td input {
+            /* margin-top: +2px !important; */
         }
 
         .input-group {
-            margin-bottom: -10px !important;
+            margin-bottom: -8px !important;
         }
 
         td button {
-            margin: -10px;
-            margin-left: +10px !important;
+            margin: -8px;
+            margin-left: +8px !important;
         }
     </style>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
@@ -399,7 +403,6 @@ Html5Qrcode.getCameras().then(devices => {
                                 var product_total = (data.product.price - discount) * quantity;
                                 var old_product_total = $("#" + id + " .product_total").text();
                                 if (!old_product_total) old_product_total = '0';
-                                console.log(old_product_total);
                                 total = total - parseInt(old_product_total) + product_total;
                                 $("#" + id + " .product_total").text(`${product_total}`);
                                 $("#total").text(total + " DA");
@@ -441,7 +444,6 @@ Html5Qrcode.getCameras().then(devices => {
                         url: "/getproductbysku/" + SKU,
                         type: "GET",
                         success: function(data) {
-                            console.log(data);
                             if (data.exist) {
 
                                 var discount = $("#" + id + ' #discount').val();
@@ -451,7 +453,6 @@ Html5Qrcode.getCameras().then(devices => {
                                 var product_total = (data.product.price - discount) * quantity;
                                 var old_product_total = $("#" + id + " .product_total").text();
                                 if (!old_product_total) old_product_total = '0';
-                                console.log(old_product_total);
                                 total = total - parseInt(old_product_total) + product_total;
                                 $("#" + id + " .product_total").text(`${product_total}`);
                                 $("#total").text(total + " DA");
@@ -490,7 +491,6 @@ Html5Qrcode.getCameras().then(devices => {
                         url: "/getproductbysku/" + SKU,
                         type: "GET",
                         success: function(data) {
-                            console.log(data);
                             if (data.exist) {
 
                                 var discount = $("#" + id + ' #discount').val();
@@ -500,7 +500,6 @@ Html5Qrcode.getCameras().then(devices => {
                                 var product_total = (data.product.price - discount) * quantity;
                                 var old_product_total = $("#" + id + " .product_total").text();
                                 if (!old_product_total) old_product_total = '0';
-                                console.log(old_product_total);
                                 total = total - parseInt(old_product_total) + product_total;
                                 $("#" + id + " .product_total").text(`${product_total}`);
                                 $("#total").text(total + " DA");
@@ -519,22 +518,27 @@ Html5Qrcode.getCameras().then(devices => {
                 // row containing the clicked button
                 var child = $(this).closest('tr').nextAll();
 
+                    var row = $(this).closest('tr');
+                    var id = row.attr('id');
+                    var old_product_total = $("#" + id + " .product_total").text();
+                    total = total - parseInt(old_product_total);
+                    $("#total").text(total + " DA");
+
                 // Iterating across all the rows
                 // obtained to change the index
                 child.each(function() {
-
                     // Getting <tr> id.
-                    var id = $(this).attr('id');
+                    id = $(this).attr('id');
+
+
+
 
                     // Getting the <p> inside the .row-index class.
                     var idx = $(this).children('.row-index').children('p');
-
                     // Gets the row number from <tr> id.
                     var dig = parseInt(id.substring(1));
-
                     // Modifying row index.
                     idx.html(`Row ${dig - 1}`);
-
                     // Modifying row id.
                     $(this).attr('id', `R${dig - 1}`);
                 });
@@ -566,17 +570,6 @@ Html5Qrcode.getCameras().then(devices => {
 
                 // geting data
                 var products = [];
-                // var data = products_table.rows().data();
-                // data.each(function(value, index) {
-                //     console.log(`For index ${index}, data value is ${value}`);
-                //     products.push({
-                //         SKU: '1111111',
-                //         discount: '10',
-                //         quantity: '1',
-                //     });
-                // });
-                // console.log(data);
-
                 $("#sale_table").find('tr').each(function (i, el) {
                     var id = $(this).attr('id');
                 //    var id = $(this).attr('id', `R${dig - 1}`);
@@ -590,15 +583,7 @@ Html5Qrcode.getCameras().then(devices => {
                             quantity: quantity,
                         });
                     }
-
-                    // var $tds = $(this).find('td'),
-                    //     productId = $tds.eq(0).text(),
-                    //     product = $tds.eq(1).text(),
-                    //     Quantity = $tds.eq(2).text();
-                    // do something with productId, product, Quantity
                 });
-
-                console.log(products);
 
                 var formdata = false;
                 formdata = new FormData();
