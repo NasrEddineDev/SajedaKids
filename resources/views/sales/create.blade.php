@@ -245,6 +245,10 @@
     <script src="{{ URL::asset('dist/js/html5-qrcode.min.js') }}"></script>
     {{-- <script>
         $(document).ready(function() {
+            var today = moment().format('MM/DD/YYYY');
+            $('#date').val(today);
+            alert(today);
+
             function onScanSuccess(decodedText, decodedResult) {
   // handle the scanned code as you like, for example:
   console.log(`Code matched = ${decodedText}`, decodedResult);
@@ -574,17 +578,19 @@ Html5Qrcode.getCameras().then(devices => {
                 // console.log(data);
 
                 $("#sale_table").find('tr').each(function (i, el) {
-                   var id = $(this).attr('id');
+                    var id = $(this).attr('id');
+                //    var id = $(this).attr('id', `R${dig - 1}`);
                     var SKU = $("#" + id + ' #SKU').val();
                     var discount = $("#" + id + ' #discount').val();
                     var quantity = $("#" + id + ' #quantity').val();
-                    if (SKU & quantity){
+                    if (SKU && quantity){
                         products.push({
                             SKU: SKU,
                             discount: discount,
                             quantity: quantity,
                         });
                     }
+
                     // var $tds = $(this).find('td'),
                     //     productId = $tds.eq(0).text(),
                     //     product = $tds.eq(1).text(),
@@ -615,7 +621,6 @@ Html5Qrcode.getCameras().then(devices => {
                         } else if (data.result == 'failed') {
 
                         }
-                        console.log("success");
                     },
                     error: function(data) {
                         var errors;

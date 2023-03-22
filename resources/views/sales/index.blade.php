@@ -43,14 +43,13 @@
                                 <thead>
                                     <tr>
                                         <th>{{ __('Id') }}</th>
-                                        <th>{{ __('Name') }}</th>
-                                        <th>{{ __('SKU') }}</th>
-                                        <th>{{ __('Image') }}</th>
-                                        <th>{{ __('Price') }}</th>
-                                        <th>{{ __('Discount') }}</th>
-                                        <th>{{ __('Category') }}</th>
-                                        <th>{{ __('Brand') }}</th>
-                                        <th>{{ __('Active') }}</th>
+                                        <th>{{ __('Date') }}</th>
+                                        <th>{{ __('Type') }}</th>
+                                        <th>{{ __('Total Amount') }}</th>
+                                        <th>{{ __('User') }}</th>
+                                        <th>{{ __('Customer') }}</th>
+                                        <th>{{ __('Store') }}</th>
+                                        <th>{{ __('Status') }}</th>
                                         <th>{{ __('Action') }}</th>
                                     </tr>
                                 </thead>
@@ -58,21 +57,16 @@
                                     @foreach ($sales as $sale)
                                         <tr id="{{ $sale->id }}">
                                             <td>{{ $sale->id }}</td>
-                                            <td>{{ $sale->name }}</td>
-                                            <td>{{ $sale->SKU }}</td>
-                                            <td class="showedImage">
-                                                <img class="img-thumbnail"
-                                                    src="https://t4.ftcdn.net/jpg/03/18/30/85/360_F_318308547_FALKncfWsTmjzwd0y0muNeCFOULPLB7Q.webp"
-                                                    alt="...">
-                                            </td>
-                                            <td>{{ $sale->price }}</td>
-                                            <td>{{ $sale->discount }}</td>
-                                            <td>{{ $sale->category->name }}</td>
-                                            <td>{{ $sale->brand->name }}</td>
+                                            <td>{{ $sale->date }}</td>
+                                            <td>{{ $sale->type }}</td>
+                                            <td>{{ $sale->total_amount }}</td>
+                                            <td>{{ $sale->user->name }}</td>
+                                            <td>{{ $sale->customer?->name }}</td>
+                                            <td>{{ $sale->store->name }}</td>
                                             <td id="status"><button
-                                                class="btn {{ $sale->active ? 'btn-success' : 'btn-danger' }}"
-                                                style="width:50px;border-radius:5px;font-size: 14px;padding:0px;padding-right:5px;padding-left:5px;">
-                                                {{ $sale->active ? __("Yes") : __("No") }}</button>
+                                                class="btn {{ $sale->status == 'Completed' ? 'btn-success' : 'btn-danger' }}"
+                                                style="width:100px;border-radius:5px;font-size: 14px;padding:0px;padding-right:5px;padding-left:5px;">
+                                                {{ __($sale->status) }}</button>
                                             </td>
                                             <td class="datatable-ct">
                                                 @can('update',  App\Models\Sale::class)
