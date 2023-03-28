@@ -145,8 +145,8 @@
                                 <!-- <span class="edu-icon edu-home-admin author-log-ic">
                                 <img class="flag-icon"
                                             src="{{ URL::asset('img/flag/algeria.png') }}"
-                                            alt="" />    
-                                        
+                                            alt="" />
+
                                     </span> -->
                                     العربية
                                 </option>
@@ -200,7 +200,7 @@
                                 class="svg-icon"></i></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
-                        <a class="dropdown-item" href="{{ route('profile.edit') }}"><i data-feather="user"
+                        <a class="dropdown-item" href="{{ route('users.editV1', Auth::user()->profile ? Auth::user()->profile->id: '0') }}"><i data-feather="user"
                                 class="svg-icon mr-2 ml-1"></i>
                            {{ __('My Profile') }}</a>
                         <!-- <a class="dropdown-item" href="javascript:void(0)"><i data-feather="credit-card"
@@ -214,7 +214,7 @@
                                 class="svg-icon mr-2 ml-1"></i>
                                 {{ __('Account Setting') }}</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ route('logout') }}" 
+                        <a class="dropdown-item" href="{{ route('logout') }}"
                         onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                         <i data-feather="power" class="svg-icon mr-2 ml-1"></i>
                         {{ __('Logout') }}
@@ -222,7 +222,7 @@
                                 @csrf
                             </form>
                         </a>
-<!-- 
+<!--
                         <div class="dropdown-divider"></div>
                         <div class="pl-4 p-3"><a href="{{ route('profile.edit') }}" class="btn btn-sm btn-info">View
                                 Profile</a></div> -->

@@ -27,9 +27,11 @@ return new class extends Migration
             $table->string('language');
             $table->string('theme');
             $table->integer('city_id')->unsigned()->nullable();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

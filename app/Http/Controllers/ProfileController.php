@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Profile;
 
 class ProfileController extends Controller
 {
@@ -22,7 +23,7 @@ class ProfileController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     /**
      * Display the user's profile form.
      */
@@ -69,5 +70,30 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    /**
+     * Display the user's profile form.
+     */
+    public function editV1($id)
+    {
+        // return Inertia::render('Profile/Edit', [
+        //     'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+        //     'status' => session('status'),
+        // ]);
+        try {
+            $profile = Profile::find($id);
+            dd($profile);
+            if ($profile) {
+                return view('users.profile', compact('profile'));
+            }
+            return redirect()->route('dashboard')
+                ->with('error', 'Sale can\'t eddited.');
+        } catch (Throwable $e) {
+            report($e);
+            Log::error($e->getMessage());
+
+            return false;
+        }
     }
 }
