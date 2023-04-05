@@ -69,11 +69,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Store::class);
     }
 
-    public function profile()
+    public function profiles()
     {
-        return $this->belongsTo(Profile::class);
+        return $this->hasMany(Profile::class);
     }
 
+    public function profile()
+    {
+        return $this->profiles()->first();
+    }
     // public function notifications()
     // {
     //     return Notification::all()->where('notifiable_id', 10);

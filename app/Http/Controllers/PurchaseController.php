@@ -11,6 +11,8 @@ use App\Models\Purchase;
 use App\Models\Company;
 use App\Models\Category;
 use App\Models\Brand;
+use App\Models\Product;
+use App\Models\PurchaseItem;
 use App\Models\Store;
 
 class PurchaseController extends Controller
@@ -38,7 +40,6 @@ class PurchaseController extends Controller
         } catch (Throwable $e) {
             // report($e);
             // Log::error($e->getMessage());
-
             return false;
         }
     }
@@ -50,11 +51,7 @@ class PurchaseController extends Controller
     {
         //
         try {
-            $companies =  Company::all();
-            $stores =  Store::all();
-            $categories =  Category::all();
-            $brands = Brand::all(); //collect(['shoes', 'veste']);collect(['levis', 'lacoste']);
-            return view('purchases.create', compact('companies', 'stores', 'categories', 'brands'));
+            return view('purchases.create');
         } catch (Throwable $e) {
             // report($e);
             // Log::error($e->getMessage());
@@ -69,44 +66,53 @@ class PurchaseController extends Controller
     {
         //
         try {
-            // $request->validate(
-            //     [
-            //         'image' => 'required|max:10240|mimes:doc,pdf,docx,jpeg,jpg,png',
-            //     ],
-            //     // custom messages
-            //     [
-            //         'image.required' => __('Image file is required'),
-            //     ]
-            // );
+
             $purchase = new Purchase([
-                'SKU' => $request->input('SKU'),
-                'name_ar' => $request->input('name_ar') ? $request->input('name_ar') : '',
-                'name_en' => $request->input('name_en') ? $request->input('name_en') : '',
-                'name_fr' => $request->input('name_fr') ? $request->input('name_fr') : '',
-                'brand_id' => $request->input('brand_id') ? $request->input('brand_id') : '',
-                'image' => '',
-                'active' => true,
-                'category_id' => $request->input('category_id') ? $request->input('category_id') : '',
-                'code' => $request->input('code') ? $request->input('code') : '',
-                'description' => $request->input('description') ? $request->input('description') : '',
-                'price' => $request->input('price') ? $request->input('price') : '',
-                'discount' => $request->input('discount') ? $request->input('discount') : '',
-                'company_id' => Auth::User()->company->id
+                'status' => "Completed",
+                'date' => $request->input('date') ? $request->input('date') : '',
+                'description' => '',
+                'type' => 'Normal',
+                'net_amount' => 0,
+                'tax' => 0,
+                'total_amount' => 0,
+                'user_id' => Auth::User()->id,
+                'customer_id' => null,
+                'store_id' => Auth::User()->store->id,
             ]);
             $purchase->save();
 
-            // if (!file_exists('data/' . $destinationPath)) {
-            //     File::makeDirectory('data/' . $destinationPath, $mode = 0777, true, true);
-            // }
+            $net_amount = 0;
+            $purchasedProducts = collect((array)json_decode($request->input('products')));
+            foreach ($purchasedProducts as $purchasedProduct) {
 
-            $destinationPath = 'companies/' . (Auth::User()->company->id) . '/' . 'purchases/';
-            $file = $request->file('image');
-            if ($file){
-                $fileName = $purchase->id . '.' . $file->getClientOriginalExtension();
-                Storage::disk('public')->put($destinationPath . $fileName, file_get_contents($file));
-                $purchase->image = $fileName;
-                $purchase->update(['image' => $fileName]);
+                $product = Product::where('SKU', $purchasedProduct->SKU)->first();
+                $total = $purchasedProduct->price * $purchasedProduct->quantity;
+                $purchaseItem = new PurchaseItem([
+                    'total_amount' => $total,
+                    'Quantity' => $purchasedProduct->quantity,
+                    'price' => $purchasedProduct->price,
+                    'date' => $request->input('date') ? $request->input('date') : '',
+                    'description' => '',
+                    'product_price' => $product->price,
+                    'product_discount' => $product->discount,
+                    'product_sku' => $product->SKU,
+                    'product_name' => $product->name,
+                    'user_id' => Auth::User()->id,
+                    'purchase_id' => $purchase->id,
+                    'product_id' => $product->id,
+                ]);
+                $purchaseItem->save();
+                $net_amount += $total;
             }
+            $purchase->net_amount = $net_amount;
+            $purchase->total_amount = $net_amount;
+            $purchase->save();
+
+            return response()->json([
+                'message' => 'Purchase saved successfully',
+                'result' => 'success',
+                'url' => route('purchases.index')
+            ], 200);
 
             return redirect()->route('purchases.index')
                 ->with('success', 'Purchase created successfully.');
@@ -142,12 +148,9 @@ class PurchaseController extends Controller
     {
         //
         try {
-            $purchase = Purchase::find($id);
+            $purchase = Purchase::where('id','=',$id)->withCount('PurchaseItems')->first();
             if ($purchase) {
-                $companies =  Company::all();
-                $categories =  Category::all();
-                $brands = Brand::all();
-                return view('purchases.edit', compact('purchase', 'categories', 'brands', 'companies'));
+                return view('purchases.edit', compact('purchase'));
             }
             return redirect()->route('purchases.index')
                 ->with('error', 'Purchase can\'t eddited.');
@@ -167,28 +170,75 @@ class PurchaseController extends Controller
         //
         try {
             $purchase = Purchase::find($request->purchase_id);
-            $purchase->SKU = $request->input('SKU');
-            $purchase->name_ar = $request->input('name_ar');
-            $purchase->name_en = $request->input('name_en');
-            $purchase->name_fr = $request->input('name_fr');
-            $purchase->description = $request->input('description') ? $request->input('description') : '';
-            $purchase->code = $request->input('code') ? $request->input('code') : '';
-            $purchase->price = $request->input('price') ? $request->input('price') : '';
-            $purchase->discount = $request->input('discount') ? $request->input('discount') : '';
-            $purchase->category_id = $request->input('category_id') ? $request->input('category_id') : null;
-            $purchase->brand_id = $request->input('brand_id') ? $request->input('brand_id') : null;
+            if($purchase){
+                if ($request->input('date')) $purchase->date =  $request->input('date');
+                $purchase->user_id = Auth::User()->id;
+                $purchase->save();
 
-            $destinationPath = 'companies/' . (Auth::User()->company->id) . '/' . 'purchases/';
-            $file = $request->file('image');
-            //to do: delete old image
-            if ($file){
-                $fileName = $purchase->id . '.' . $file->getClientOriginalExtension();
-                Storage::disk('public')->put($destinationPath . $fileName, file_get_contents($file));
-                $purchase->image = $fileName;
-                $purchase->update(['image' => $fileName]);
+                $purchase->purchaseItems()->delete();
+                $net_amount = 0;
+                $purchasedProducts = collect((array)json_decode($request->input('products')));
+                foreach ($purchasedProducts as $purchasedProduct) {
+
+                    $product = Product::where('SKU', $purchasedProduct->SKU)->first();
+                    $total = $purchasedProduct->price * $purchasedProduct->quantity;
+                    $purchaseItem = new PurchaseItem([
+                        'total_amount' => $total,
+                        'Quantity' => $purchasedProduct->quantity,
+                        'price' => $purchasedProduct->price,
+                        'date' => $request->input('date') ? $request->input('date') : '',
+                        'description' => '',
+                        'product_price' => $product->price,
+                        'product_discount' => $product->discount,
+                        'product_sku' => $product->SKU,
+                        'product_name' => $product->name,
+                        'user_id' => Auth::User()->id,
+                        'purchase_id' => $purchase->id,
+                        'product_id' => $product->id,
+                    ]);
+                    $purchaseItem->save();
+                    $net_amount += $total;
+                }
+                $purchase->net_amount = $net_amount;
+                $purchase->total_amount = $net_amount;
+                $purchase->save();
+                return response()->json([
+                    'message' => 'Purchase saved successfully',
+                    'result' => 'success',
+                    'url' => route('purchases.index')
+                ], 200);
             }
 
-            $purchase->save();
+            return response()->json([
+                'message' => 'Purchase not saved',
+                'result' => 'error',
+                'post' => $request->all(),
+                'url' => route('purchases.index')
+            ], 200);
+
+
+            // $purchase->SKU = $request->input('SKU');
+            // $purchase->name_ar = $request->input('name_ar');
+            // $purchase->name_en = $request->input('name_en');
+            // $purchase->name_fr = $request->input('name_fr');
+            // $purchase->description = $request->input('description') ? $request->input('description') : '';
+            // $purchase->code = $request->input('code') ? $request->input('code') : '';
+            // $purchase->price = $request->input('price') ? $request->input('price') : '';
+            // $purchase->discount = $request->input('discount') ? $request->input('discount') : '';
+            // $purchase->category_id = $request->input('category_id') ? $request->input('category_id') : null;
+            // $purchase->brand_id = $request->input('brand_id') ? $request->input('brand_id') : null;
+
+            // $destinationPath = 'companies/' . (Auth::User()->company->id) . '/' . 'purchases/';
+            // $file = $request->file('image');
+            // //to do: delete old image
+            // if ($file){
+            //     $fileName = $purchase->id . '.' . $file->getClientOriginalExtension();
+            //     Storage::disk('public')->put($destinationPath . $fileName, file_get_contents($file));
+            //     $purchase->image = $fileName;
+            //     $purchase->update(['image' => $fileName]);
+            // }
+
+            // $purchase->save();
             return redirect()->route('purchases.index')
                 ->with('success', 'Purchase updated successfully');
         } catch (Throwable $e) {
@@ -202,7 +252,7 @@ class PurchaseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Purchase $purchase)
+    public function destroy($id)
     {
         //
         try {
@@ -210,6 +260,7 @@ class PurchaseController extends Controller
             if ($purchase) {
                 $purchase->delete();
                 return response()->json([
+                    'done' => true,
                     'message' => 'Purchase deleted successfully'
                 ], 200);
             }
@@ -236,6 +287,29 @@ class PurchaseController extends Controller
         } catch (Throwable $e) {
             report($e);
             Log::error($e->getMessage());
+
+            return false;
+        }
+    }
+
+    public function getPurchaseDetails($id)
+    {
+
+        try {
+            $purchase = Purchase::find($id);
+            if ($purchase) {
+                return response()->json([
+                    'message' => 'success',
+                    'purchase' => $purchase,
+                    'purchase_items' => $purchase->purchaseItems
+                ], 200);
+            }
+            return response()->json([
+                'message' => 'Purchase not found'
+            ], 404);
+        } catch (Throwable $e) {
+            // report($e);
+            // Log::error($e->getMessage());
 
             return false;
         }

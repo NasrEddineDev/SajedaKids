@@ -202,11 +202,17 @@ class SaleController extends Controller
                 $sale->net_amount = $net_amount;
                 $sale->total_amount = $net_amount;
                 $sale->save();
+                return response()->json([
+                    'message' => 'Sale saved successfully',
+                    'result' => 'success',
+                    'url' => route('sales.index')
+                ], 200);
             }
 
             return response()->json([
-                'message' => 'Sale saved successfully',
-                'result' => 'success',
+                'message' => 'Sale not saved',
+                'result' => 'error',
+                'post' => $request->all(),
                 'url' => route('sales.index')
             ], 200);
 

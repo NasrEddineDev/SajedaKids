@@ -319,6 +319,17 @@ Html5Qrcode.getCameras().then(devices => {
 
     <script type="text/javascript">
         $(document).ready(function() {
+
+            /****************************************
+             *          Create Sale Table           *
+             ****************************************/
+            var products_table = $('#sale_table').DataTable({
+                "autoWidth": false,
+                "searching": false,
+                "paging": false,
+                "info": false
+            });
+
             // Denotes total number of rows.
             document.getElementById('date').valueAsDate = new Date();
 

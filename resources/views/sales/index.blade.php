@@ -1,5 +1,11 @@
 @extends('layouts.main')
 @Push('css')
+
+
+
+<link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.3.3/css/rowReorder.dataTables.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css" />
+
     <style>
         #addSale {
             margin: 10px;
@@ -74,7 +80,7 @@
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table id="zero_config" class="table table-striped table-bordered no-wrap">
+                            <table id="zero_config_sale" class="table table-striped table-bordered no-wrap">
                                 <thead>
                                     <tr>
                                         <th>{{ __('Id') }}</th>
@@ -267,14 +273,26 @@
 @endsection
 
 @Push('js')
+<script src="https://cdn.datatables.net/rowreorder/1.3.3/js/dataTables.rowReorder.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+
+
+
+
     <script type="text/javascript">
+    var zero_config_sale_table = $('#zero_config_sale').DataTable( {
+        // rowReorder: {
+        //     selector: 'td:nth-child(2)'
+        // },
+        // responsive: true
+    } );
 
         var table = $('#sale_table').DataTable();
-        $('#zero_config tbody').on('click', 'tr', function() {
+        $('#zero_config_sale tbody').on('click', 'tr', function() {
             if ($(this).hasClass('selected')) {
                 $(this).removeClass('selected');
             } else {
-                zero_config_table.$('tr.selected').removeClass('selected');
+                zero_config_sale_table.$('tr.selected').removeClass('selected');
                 $(this).addClass('selected');
             }
 
@@ -305,14 +323,14 @@
                                                 </tr>`);
                         total += sale_item.total_amount;
                     })
-                    $("#total").text(total);
+                    $("#total").val(total+'{{" ".__("DA")}}');
                 }
             })
         });
 
         $('#delete').click(function(e) {
             e.preventDefault();
-            var id = zero_config_table.row( '.selected' ).id();
+            var id = zero_config_sale_table.row( '.selected' ).id();
             if (id){
                 console.log($("#"+id+" #saleTotal").text());
                 $('#deleteModal #saleId').text(id);
@@ -323,13 +341,13 @@
         });
         $('#edit').click(function(e) {
             e.preventDefault();
-            var id = zero_config_table.row( '.selected' ).id();
+            var id = zero_config_sale_table.row( '.selected' ).id();
             window.location.href = '/sales/'+id+'/edit';
         });
 
         $("#confim").click(function(e) {
             e.preventDefault();
-            var id = zero_config_table.row( '.selected' ).id();
+            var id = zero_config_sale_table.row( '.selected' ).id();
             var url = "{{ route('sales.destroy', 'id') }}".replace('id', id);
             console.log(url);
             $.ajax({
@@ -340,7 +358,7 @@
                 type: 'DELETE',
                 success: function(result) {
                     if(result.done){
-                        var res = zero_config_table.row( '.selected' ).remove().draw();
+                        var res = zero_config_sale_table.row( '.selected' ).remove().draw();
                         $('#deleteModal').modal('toggle');
                     }
                     // e.preventDefault();

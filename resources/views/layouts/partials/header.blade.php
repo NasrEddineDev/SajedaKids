@@ -200,7 +200,7 @@
                                 class="svg-icon"></i></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
-                        <a class="dropdown-item" href="{{ route('users.editV1', Auth::user()->profile ? Auth::user()->profile->id: '0') }}"><i data-feather="user"
+                        <a class="dropdown-item" href="{{ route('users.editV1', Auth::user()->profile() ? Auth::user()->profile()->id: '0') }}"><i data-feather="user"
                                 class="svg-icon mr-2 ml-1"></i>
                            {{ __('My Profile') }}</a>
                         <!-- <a class="dropdown-item" href="javascript:void(0)"><i data-feather="credit-card"

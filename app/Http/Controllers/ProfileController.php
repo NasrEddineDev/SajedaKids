@@ -83,7 +83,6 @@ class ProfileController extends Controller
         // ]);
         try {
             $profile = Profile::find($id);
-            dd($profile);
             if ($profile) {
                 return view('users.profile', compact('profile'));
             }

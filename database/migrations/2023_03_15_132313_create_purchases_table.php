@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('status');
             $table->string('date');
             $table->string('description');
+            $table->string('type');
+            $table->double('net_amount');
+            $table->double('tax');
+            $table->double('total_amount');
             $table->integer('user_id')->unsigned();
             $table->integer('supplier_id')->unsigned()->nullable();
             $table->integer('store_id')->unsigned()->nullable();

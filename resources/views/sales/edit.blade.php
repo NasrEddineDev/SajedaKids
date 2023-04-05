@@ -163,7 +163,7 @@
                                 </div>
                                 <div class="form-actions">
                                     <div class="text-right">
-                                        {{ __('Total: ') }} <span id="total">{{ $sale->total_amount }} DA</span>
+                                        {{ __('Total: ') }} <span id="total">{{ $sale->total_amount }}</span> {{__('DA')}}
                                     </div>
                                 </div>
                                 <div class="form-actions">
@@ -278,7 +278,6 @@
 
             var rowIdx = parseInt("{{ $sale->sale_items_count }}");
             var total = parseInt("{{ $sale->total_amount }}");
-
             // jQuery button click event to add a row.
             $('#addProduct').on('click', function() {
 
@@ -355,6 +354,7 @@
                                 var product_total = (data.product.price - discount) * quantity;
                                 var old_product_total = $("#" + id + " .product_total").text();
                                 if (!old_product_total) old_product_total = '0';
+                                total = parseInt($("#total").text());
                                 total = total - parseInt(old_product_total) + product_total;
                                 $("#" + id + " .product_total").text(`${product_total}`);
                                 $("#total").text(total + " DA");
@@ -405,6 +405,7 @@
                                 var product_total = (data.product.price - discount) * quantity;
                                 var old_product_total = $("#" + id + " .product_total").text();
                                 if (!old_product_total) old_product_total = '0';
+                                total = parseInt($("#total").text());
                                 total = total - parseInt(old_product_total) + product_total;
                                 $("#" + id + " .product_total").text(`${product_total}`);
                                 $("#total").text(total + " DA");
@@ -452,6 +453,7 @@
                                 var product_total = (data.product.price - discount) * quantity;
                                 var old_product_total = $("#" + id + " .product_total").text();
                                 if (!old_product_total) old_product_total = '0';
+                                total = parseInt($("#total").text());
                                 total = total - parseInt(old_product_total) + product_total;
                                 $("#" + id + " .product_total").text(`${product_total}`);
                                 $("#total").text(total + " DA");
@@ -473,6 +475,7 @@
                 var row = $(this).closest('tr');
                 var id = row.attr('id');
                 var old_product_total = $("#" + id + " .product_total").text();
+                total = parseInt($("#total").text());
                 total = total - parseInt(old_product_total);
                 $("#total").text(total + " DA");
 
@@ -537,11 +540,12 @@
                     }
                 });
 
-                var formdata = false;
-                formdata = new FormData();
-                formdata.append("date", $('#date').val());
+                // var formdata = false;
+                // formdata = new FormData();
+                // formdata.append();
                 // formdata.append("customer", $('#customer').val());
-                formdata.append("products", JSON.stringify(products));
+                // formdata.append("sale_id", $('#sale_id').val());
+                // formdata.append("products", JSON.stringify(products));
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -550,14 +554,14 @@
                     // type: $(this).attr('method'),
                     type: 'PUT',
                     url: $(this).attr('action'),
-                    data: formdata,
-                    cache: false,
-                    processData: false,
-                    contentType: false,
+                    data: {"sale_id":$('#sale_id').val(), "date": $('#date').val(), "products": JSON.stringify(products)},
+                    // cache: false,
+                    // processData: false,
+                    // contentType: false,
                     success: function(data) {
                         if (data.result == 'success') {
-                            console.log(data);
-                            // window.location.href = data.url;
+                            // console.log(data);
+                            window.location.href = data.url;
                         } else if (data.result == 'failed') {
 
                         }
@@ -681,6 +685,7 @@
                                     var old_product_total = $("#" + id + " .product_total")
                                         .text();
                                     if (!old_product_total) old_product_total = '0';
+                                    total = parseInt($("#total").text());
                                     total = total - parseInt(old_product_total) + product_total;
                                     $("#" + id + " .product_total").text(`${product_total}`);
                                     $("#total").text(total + " DA");
@@ -733,6 +738,7 @@
                                     var old_product_total = $("#" + id + " .product_total")
                                         .text();
                                     if (!old_product_total) old_product_total = '0';
+                                    total = parseInt($("#total").text());
                                     total = total - parseInt(old_product_total) + product_total;
                                     $("#" + id + " .product_total").text(`${product_total}`);
                                     $("#total").text(total + " DA");
@@ -777,11 +783,10 @@
                                     if (!discount) discount = 0;
                                     var quantity = $("#" + id + ' #quantity').val();
                                     if (!quantity) quantity = 0;
-                                    var product_total = (data.product.price - discount) *
-                                        quantity;
-                                    var old_product_total = $("#" + id + " .product_total")
-                                        .text();
-                                    if (!old_product_total) old_product_total = '0';
+                                    var product_total = (data.product.price - discount) * quantity;
+                                    var old_product_total = $("#" + id + " .product_total").text();
+                                    if (!old_product_total) old_product_total = 0;
+                                    total = parseInt($("#total").text());
                                     total = total - parseInt(old_product_total) + product_total;
                                     $("#" + id + " .product_total").text(`${product_total}`);
                                     $("#total").text(total + " DA");

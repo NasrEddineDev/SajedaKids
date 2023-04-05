@@ -12,7 +12,7 @@
    @stack('css')
  </head>
 
- <body class="{{ Auth::check() && Auth::user()->profile && Auth::user()->profile->theme ? Auth::user()->profile->theme : 'default'}}">
+ <body class="{{ Auth::check() && Auth::user()->profile() && Auth::user()->profile()->theme ? Auth::user()->profile()->theme : 'default'}}">
 
     {{-- @include('layouts.partials.nav')
 

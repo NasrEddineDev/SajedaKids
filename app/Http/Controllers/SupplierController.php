@@ -182,7 +182,7 @@ class SupplierController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Supplier $supplier)
+    public function destroy($id)
     {
         //
         try {
@@ -190,6 +190,7 @@ class SupplierController extends Controller
             if ($supplier) {
                 $supplier->delete();
                 return response()->json([
+                    'done' => true,
                     'message' => 'Supplier deleted successfully'
                 ], 200);
             }

@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
+use App\Http\Requests\StorePurchaseRequest;
+use App\Http\Requests\UpdatePurchaseRequest;
 use Illuminate\Support\Facades\Auth;
 use File;
 use Storage;
-use App\Models\Product;
+use App\Models\Purchase;
 use App\Models\Company;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Store;
 
-class ProductController extends Controller
+class PurchaseController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -32,9 +32,9 @@ class ProductController extends Controller
     {
         //
         try {
-            // $products = (Auth::User()->role->name == 'user') ? Auth::User()->Enterprise->products : Product::all();
-            $products = Product::all();
-            return view('products.index', compact('products'));
+            // $purchases = (Auth::User()->role->name == 'user') ? Auth::User()->Enterprise->purchases : Purchase::all();
+            $purchases = Purchase::all();
+            return view('purchases.index', compact('purchases'));
         } catch (Throwable $e) {
             // report($e);
             // Log::error($e->getMessage());
@@ -54,7 +54,7 @@ class ProductController extends Controller
             $stores =  Store::all();
             $categories =  Category::all();
             $brands = Brand::all(); //collect(['shoes', 'veste']);collect(['levis', 'lacoste']);
-            return view('products.create', compact('companies', 'stores', 'categories', 'brands'));
+            return view('purchases.create', compact('companies', 'stores', 'categories', 'brands'));
         } catch (Throwable $e) {
             // report($e);
             // Log::error($e->getMessage());
@@ -65,7 +65,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProductRequest $request)
+    public function store(StorePurchaseRequest $request)
     {
         //
         try {
@@ -78,7 +78,7 @@ class ProductController extends Controller
             //         'image.required' => __('Image file is required'),
             //     ]
             // );
-            $product = new Product([
+            $purchase = new Purchase([
                 'SKU' => $request->input('SKU'),
                 'name_ar' => $request->input('name_ar') ? $request->input('name_ar') : '',
                 'name_en' => $request->input('name_en') ? $request->input('name_en') : '',
@@ -93,23 +93,23 @@ class ProductController extends Controller
                 'discount' => $request->input('discount') ? $request->input('discount') : '',
                 'company_id' => Auth::User()->company->id
             ]);
-            $product->save();
+            $purchase->save();
 
             // if (!file_exists('data/' . $destinationPath)) {
             //     File::makeDirectory('data/' . $destinationPath, $mode = 0777, true, true);
             // }
 
-            $destinationPath = 'companies/' . (Auth::User()->company->id) . '/' . 'products/';
+            $destinationPath = 'companies/' . (Auth::User()->company->id) . '/' . 'purchases/';
             $file = $request->file('image');
             if ($file){
-                $fileName = $product->id . '.' . $file->getClientOriginalExtension();
+                $fileName = $purchase->id . '.' . $file->getClientOriginalExtension();
                 Storage::disk('public')->put($destinationPath . $fileName, file_get_contents($file));
-                $product->image = $fileName;
-                $product->update(['image' => $fileName]);
+                $purchase->image = $fileName;
+                $purchase->update(['image' => $fileName]);
             }
 
-            return redirect()->route('products.index')
-                ->with('success', 'Product created successfully.');
+            return redirect()->route('purchases.index')
+                ->with('success', 'Purchase created successfully.');
         } catch (Throwable $e) {
             report($e);
             Log::error($e->getMessage());
@@ -121,12 +121,12 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(Purchase $purchase)
     {
         //
         try {
-            $product = Product::find($id);
-            return view('products.show', compact('product'));
+            $purchase = Purchase::find($id);
+            return view('purchases.show', compact('purchase'));
         } catch (Throwable $e) {
             report($e);
             Log::error($e->getMessage());
@@ -142,15 +142,15 @@ class ProductController extends Controller
     {
         //
         try {
-            $product = Product::find($id);
-            if ($product) {
+            $purchase = Purchase::find($id);
+            if ($purchase) {
                 $companies =  Company::all();
                 $categories =  Category::all();
                 $brands = Brand::all();
-                return view('products.edit', compact('product', 'categories', 'brands', 'companies'));
+                return view('purchases.edit', compact('purchase', 'categories', 'brands', 'companies'));
             }
-            return redirect()->route('products.index')
-                ->with('error', 'Product can\'t eddited.');
+            return redirect()->route('purchases.index')
+                ->with('error', 'Purchase can\'t eddited.');
         } catch (Throwable $e) {
             report($e);
             Log::error($e->getMessage());
@@ -162,35 +162,35 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductRequest $request)
+    public function update(UpdatePurchaseRequest $request)
     {
         //
         try {
-            $product = Product::find($request->product_id);
-            $product->SKU = $request->input('SKU');
-            $product->name_ar = $request->input('name_ar');
-            $product->name_en = $request->input('name_en');
-            $product->name_fr = $request->input('name_fr');
-            $product->description = $request->input('description') ? $request->input('description') : '';
-            $product->code = $request->input('code') ? $request->input('code') : '';
-            $product->price = $request->input('price') ? $request->input('price') : '';
-            $product->discount = $request->input('discount') ? $request->input('discount') : '';
-            $product->category_id = $request->input('category_id') ? $request->input('category_id') : null;
-            $product->brand_id = $request->input('brand_id') ? $request->input('brand_id') : null;
+            $purchase = Purchase::find($request->purchase_id);
+            $purchase->SKU = $request->input('SKU');
+            $purchase->name_ar = $request->input('name_ar');
+            $purchase->name_en = $request->input('name_en');
+            $purchase->name_fr = $request->input('name_fr');
+            $purchase->description = $request->input('description') ? $request->input('description') : '';
+            $purchase->code = $request->input('code') ? $request->input('code') : '';
+            $purchase->price = $request->input('price') ? $request->input('price') : '';
+            $purchase->discount = $request->input('discount') ? $request->input('discount') : '';
+            $purchase->category_id = $request->input('category_id') ? $request->input('category_id') : null;
+            $purchase->brand_id = $request->input('brand_id') ? $request->input('brand_id') : null;
 
-            $destinationPath = 'companies/' . (Auth::User()->company->id) . '/' . 'products/';
+            $destinationPath = 'companies/' . (Auth::User()->company->id) . '/' . 'purchases/';
             $file = $request->file('image');
             //to do: delete old image
             if ($file){
-                $fileName = $product->id . '.' . $file->getClientOriginalExtension();
+                $fileName = $purchase->id . '.' . $file->getClientOriginalExtension();
                 Storage::disk('public')->put($destinationPath . $fileName, file_get_contents($file));
-                $product->image = $fileName;
-                $product->update(['image' => $fileName]);
+                $purchase->image = $fileName;
+                $purchase->update(['image' => $fileName]);
             }
 
-            $product->save();
-            return redirect()->route('products.index')
-                ->with('success', 'Product updated successfully');
+            $purchase->save();
+            return redirect()->route('purchases.index')
+                ->with('success', 'Purchase updated successfully');
         } catch (Throwable $e) {
             report($e);
             Log::error($e->getMessage());
@@ -202,20 +202,19 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Purchase $purchase)
     {
         //
         try {
-            $product = Product::find($id);
-            if ($product) {
-                $product->delete();
+            $purchase = Purchase::find($id);
+            if ($purchase) {
+                $purchase->delete();
                 return response()->json([
-                    'done' => true,
-                    'message' => 'Product deleted successfully'
+                    'message' => 'Purchase deleted successfully'
                 ], 200);
             }
             return response()->json([
-                'message' => 'Product not found'
+                'message' => 'Purchase not found'
             ], 404);
         } catch (Throwable $e) {
             report($e);
@@ -225,33 +224,15 @@ class ProductController extends Controller
         }
     }
 
-    public function getProducts()
+    public function getPurchases()
     {
         //
         try {
 
             $data = [];
-            $products = (Auth::User()->role->name == 'user') ? Auth::User()->Enterprise->products : Product::all();
+            $purchases = (Auth::User()->role->name == 'user') ? Auth::User()->Enterprise->purchases : Purchase::all();
 
-            return response()->json(['products' => $products]); //->select('id AS value', 'name AS text')]);//->pluck('id' as 'value', 'name' . ' '. 'brand' as 'text')], 404);
-        } catch (Throwable $e) {
-            report($e);
-            Log::error($e->getMessage());
-
-            return false;
-        }
-    }
-
-    public function getProductBySKU($SKU)
-    {
-        //
-        try {
-
-            $product = Product::where('SKU', $SKU)->first();
-            if ($product) {
-                return response()->json(['exist' => true, 'product' => $product]);
-            }
-            return response()->json(['exist' => false, 'product' => $product]);
+            return response()->json(['purchases' => $purchases]); //->select('id AS value', 'name AS text')]);//->pluck('id' as 'value', 'name' . ' '. 'brand' as 'text')], 404);
         } catch (Throwable $e) {
             report($e);
             Log::error($e->getMessage());

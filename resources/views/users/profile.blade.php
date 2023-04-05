@@ -27,7 +27,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">{{ __('Edit User') }}</h4>
-                            <form class="form-sample" method="post" action="{{ route('users.update', $user->id) }}"
+                            <form class="form-sample" method="post" action="{{ route('users.update', Auth::user()->id) }}"
                                 enctype="multipart/form-data">
                                 @csrf
                                 @method('put')
@@ -74,11 +74,13 @@
                                                 <option value="" disabled selected>
                                                     {{ __('Select The Store') }}
                                                 </option>
+                                                @if (isset($stores))
                                                 @foreach ($stores as $store)
                                                 <option value="{{ $store->id }}" {{ $user->store->id == $store->id ? 'selected' : '' }}>
                                                     {{ $store->name }}
                                                 </option>
                                                 @endforeach
+                                                @endif
                                             </select>
                                         </div>
                                     </div>
@@ -89,11 +91,13 @@
                                                 <option value="" disabled selected>
                                                     {{ __('Select The Role') }}
                                                 </option>
+                                                @if (isset($roles))
                                                 @foreach ($roles as $role)
                                                 <option value="{{ $role->id }}" {{ $user->role->id == $role->id ? 'selected' : '' }}>
                                                     {{ $role->name }}
                                                 </option>
                                                 @endforeach
+                                                @endif
                                             </select>
                                         </div>
                                     </div>

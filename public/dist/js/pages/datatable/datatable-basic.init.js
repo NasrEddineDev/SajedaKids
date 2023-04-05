@@ -36,15 +36,7 @@ $('#multi_col_order').DataTable({
 });
 
 
-/****************************************
- *          Create Sale Table           *
- ****************************************/
-var products_table = $('#sale_table').DataTable({
-    "autoWidth": false,
-    "searching": false,
-    "paging": false,
-    "info": false
-});
+
 
 
 

@@ -165,7 +165,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
         //
         try {
@@ -173,6 +173,7 @@ class UserController extends Controller
             if ($user) {
                 $user->delete();
                 return response()->json([
+                    'done' => true,
                     'message' => 'User deleted successfully'
                 ], 200);
             }

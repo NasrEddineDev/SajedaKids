@@ -182,7 +182,7 @@ class CustomerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Customer $customer)
+    public function destroy($id)
     {
         //
         try {
@@ -190,6 +190,7 @@ class CustomerController extends Controller
             if ($customer) {
                 $customer->delete();
                 return response()->json([
+                    'done' => true,
                     'message' => 'Customer deleted successfully'
                 ], 200);
             }

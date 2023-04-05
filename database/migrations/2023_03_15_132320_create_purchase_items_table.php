@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('total_amount');
             $table->string('date');
             $table->string('quantity');
+            $table->double('price');
             $table->string('description');
             $table->string('product_price');
             $table->string('product_discount');
