@@ -43,6 +43,69 @@
             -moz-font-feature-settings: 'liga';
             -moz-osx-font-smoothing: grayscale;
         }
+        
+        /*
+* RTL support
+*/
+.dataTables_wrapper {
+direction: rtl;
+}
+.dataTables_length {
+float: right;
+}
+.dataTables_filter {
+float: left;
+text-align: left;
+}
+#DataTables_Table_0_last {
+-moz-border-radius-bottomright: 0px;
+-webkit-border-bottom-right-radius: 0px;
+-khtml-border-bottom-right-radius: 0px;
+border-bottom-right-radius: 0px;
+
+-moz-border-radius-topright: 0px;
+-webkit-border-top-right-radius: 0px;
+-khtml-border-top-right-radius: 0px;
+border-top-right-radius: 0px;
+
+-moz-border-radius-bottomleft: 6px;
+-webkit-border-bottom-left-radius: 6px;
+-khtml-border-bottom-left-radius: 6px;
+border-bottom-left-radius: 6px;
+
+-moz-border-radius-topleft: 6px;
+-webkit-border-top-left-radius: 6px;
+-khtml-border-top-left-radius: 6px;
+border-top-left-radius: 6px;
+}
+#DataTables_Table_0_first {
+-moz-border-radius-bottomright: 6px;
+-webkit-border-bottom-right-radius: 6px;
+-khtml-border-bottom-right-radius: 6px;
+border-bottom-right-radius: 6px;
+
+-moz-border-radius-topright: 6px;
+-webkit-border-top-right-radius: 6px;
+-khtml-border-top-right-radius: 6px;
+border-top-right-radius: 6px;
+
+-moz-border-radius-bottomleft: 0px;
+-webkit-border-bottom-left-radius: 0px;
+-khtml-border-bottom-left-radius: 0px;
+border-bottom-left-radius: 0px;
+
+-moz-border-radius-topleft: 0px;
+-webkit-border-top-left-radius: 0px;
+-khtml-border-top-left-radius: 0px;
+border-top-left-radius: 0px;
+}
+.dataTables_info {
+float: right;
+}
+.dataTables_paginate {
+float: left;
+text-align: left;
+} 
     </style>
 @endpush
 
@@ -60,10 +123,10 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 {{ App::currentLocale() == 'ar' ? 'text-right' : 'text-left' }}">
                                 <h4 class="card-title">{{ __('Sales List') }}</h4>
                             </div>
-                            <div id="menu" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
+                            <div id="menu" class="col-lg-6 col-md-6 col-sm-6 col-xs-6  {{ App::currentLocale() == 'ar' ? 'text-left' : 'text-right' }}">
                                 <a rel="tooltip" class="" href="{{ route('sales.create') }}" title="Edit">
                                     <i class="material-icons text-success">&#xe89c;</i>
                                 </a>
@@ -198,7 +261,7 @@
 
                             <div class="table-responsive">
                                 <table id="sale_table" class="table table-striped table-bordered no-wrap"
-                                    style="table-layout: fixed">
+                                    style="table-layout: fixed" dir="RTL">
                                     <thead>
                                         <tr>
                                             <th style="width: 15px">{{ __('N°') }}</th>

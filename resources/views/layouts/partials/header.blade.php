@@ -44,7 +44,7 @@
             <!-- ============================================================== -->
             <!-- toggle and nav items -->
             <!-- ============================================================== -->
-            <ul class="navbar-nav float-left mr-auto ml-3 pl-1">
+            <ul class="navbar-nav float-{{ $locale == 'ar' ? 'right' : 'left' }} mr-auto ml-3 pl-1" style="{{ $locale == 'ar' ? 'margin-right:0px!important;' : '' }}">
                 <!-- Notification -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle pl-md-3 position-relative" href="javascript:void(0)"
@@ -141,7 +141,7 @@
                         <div class="customize-input">
                             <select onchange="changeLanguage()" id="changeLanguage"
                                 class="custom-select form-control bg-white custom-radius custom-shadow border-0">
-                                <option value='ar' {{ $locale == 'ar' ? 'selected' : '' }}>
+                                <option value='ar' {{ App::currentLocale() == 'ar' ? 'selected' : '' }}>
                                 <!-- <span class="edu-icon edu-home-admin author-log-ic">
                                 <img class="flag-icon"
                                             src="{{ URL::asset('img/flag/algeria.png') }}"
@@ -150,14 +150,14 @@
                                     </span> -->
                                     العربية
                                 </option>
-                                <option value="en" {{ $locale == 'en' ? 'selected' : '' }}>
+                                <option value="en" {{ App::currentLocale() == 'en' ? 'selected' : '' }}>
                                     <!-- <img class="flag-icon" src="{{ URL::asset('') }}img/flag/united-states.png" alt="" />
                                     <span
                                         class="edu-icon edu-user-rounded author-log-ic lang-image">
                                     </span> -->
                                     English
                                 </option>
-                                <option value="fr" {{ $locale == 'fr' ? 'selected' : '' }}>
+                                <option value="fr" {{ App::currentLocale() == 'fr' ? 'selected' : '' }}>
                                     <!-- <img class="flag-icon"
                                         src="{{ URL::asset('') }}img/flag/france.png" alt="" />
                                     <span class="edu-icon edu-money author-log-ic">
@@ -172,7 +172,7 @@
             <!-- ============================================================== -->
             <!-- Right side toggle and nav items -->
             <!-- ============================================================== -->
-            <ul class="navbar-nav float-right">
+            <ul class="navbar-nav float-{{ $locale == 'ar' ? 'left' : 'right' }}" style="{{ $locale == 'ar' ? 'margin-right:auto;' : '' }}">
                 <!-- ============================================================== -->
                 <!-- Search -->
                 <!-- ============================================================== -->
