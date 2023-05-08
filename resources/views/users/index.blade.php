@@ -60,10 +60,10 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 {{ App::currentLocale() == 'ar' ? 'text-right' : 'text-left' }}">
                                 <h4 class="card-title">{{ __('Users List') }}</h4>
                             </div>
-                            <div id="menu" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
+                            <div id="menu" class="col-lg-6 col-md-6 col-sm-6 col-xs-6  {{ App::currentLocale() == 'ar' ? 'text-left' : 'text-right' }}">
                                 <a rel="tooltip" class="" href="{{ route('users.create') }}" title="Edit">
                                     <i class="material-icons text-success">&#xe89c;</i>
                                 </a>
