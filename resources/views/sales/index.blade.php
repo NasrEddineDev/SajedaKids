@@ -43,7 +43,7 @@
             -moz-font-feature-settings: 'liga';
             -moz-osx-font-smoothing: grayscale;
         }
-        
+
         /*
 * RTL support
 */
@@ -105,7 +105,7 @@ float: right;
 .dataTables_paginate {
 float: left;
 text-align: left;
-} 
+}
     </style>
 @endpush
 
@@ -143,7 +143,7 @@ text-align: left;
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table id="zero_config_sale" class="table table-striped table-bordered no-wrap">
+                            <table id="main_datatable" class="table table-striped table-bordered no-wrap">
                                 <thead>
                                     <tr>
                                         <th>{{ __('Id') }}</th>
@@ -327,7 +327,7 @@ text-align: left;
                 </div>
                 <div class="modal-footer">
                     <button type="button" id='cancel' name='cancel' class="btn btn-success" data-dismiss="modal">{{ __("Cancel") }}</button>
-                    <button type="button" id='confim' name='confim' class="btn btn-danger">{{ __("Confim") }}</button>
+                    <button type="button" id='Confirm' name='Confirm' class="btn btn-danger">{{ __("Confirm") }}</button>
                 </div>
             </div>
         </div>
@@ -343,19 +343,16 @@ text-align: left;
 
 
     <script type="text/javascript">
-    var zero_config_sale_table = $('#zero_config_sale').DataTable( {
-        // rowReorder: {
-        //     selector: 'td:nth-child(2)'
-        // },
-        // responsive: true
-    } );
 
-        var table = $('#sale_table').DataTable();
-        $('#zero_config_sale tbody').on('click', 'tr', function() {
+$(document).ready(function() {
+        var main_datatable_table = $('#main_datatable').DataTable();
+
+        var sale_table = $('#sale_table').DataTable();
+        $('#main_datatable tbody').on('click', 'tr', function() {
             if ($(this).hasClass('selected')) {
                 $(this).removeClass('selected');
             } else {
-                zero_config_sale_table.$('tr.selected').removeClass('selected');
+                main_datatable_table.$('tr.selected').removeClass('selected');
                 $(this).addClass('selected');
             }
 
@@ -371,7 +368,7 @@ text-align: left;
                     console.log(data.sale.date);
                     document.getElementById('date').valueAsDate = new Date(data.sale.date);
                     // products_table.clear().draw();
-                    var rows = table.rows().remove().draw();
+                    var rows = sale_table.rows().remove().draw();
                     $(".dataTables_empty").closest('tr').hide();
                     var rowIdx = 0,
                         total = 0;
@@ -393,7 +390,7 @@ text-align: left;
 
         $('#delete').click(function(e) {
             e.preventDefault();
-            var id = zero_config_sale_table.row( '.selected' ).id();
+            var id = main_datatable_table.row( '.selected' ).id();
             if (id){
                 console.log($("#"+id+" #saleTotal").text());
                 $('#deleteModal #saleId').text(id);
@@ -404,13 +401,13 @@ text-align: left;
         });
         $('#edit').click(function(e) {
             e.preventDefault();
-            var id = zero_config_sale_table.row( '.selected' ).id();
+            var id = main_datatable_table.row( '.selected' ).id();
             window.location.href = '/sales/'+id+'/edit';
         });
 
-        $("#confim").click(function(e) {
+        $("#Confirm").click(function(e) {
             e.preventDefault();
-            var id = zero_config_sale_table.row( '.selected' ).id();
+            var id = main_datatable_table.row( '.selected' ).id();
             var url = "{{ route('sales.destroy', 'id') }}".replace('id', id);
             console.log(url);
             $.ajax({
@@ -421,7 +418,7 @@ text-align: left;
                 type: 'DELETE',
                 success: function(result) {
                     if(result.done){
-                        var res = zero_config_sale_table.row( '.selected' ).remove().draw();
+                        var res = main_datatable_table.row( '.selected' ).remove().draw();
                         $('#deleteModal').modal('toggle');
                     }
                     // e.preventDefault();
@@ -433,6 +430,7 @@ text-align: left;
                     // $('#DangerModalhdbgcl').modal('toggle');
                 }
             });
+        });
         });
     </script>
 @endpush

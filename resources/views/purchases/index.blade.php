@@ -80,7 +80,7 @@
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table id="zero_config_purchase" class="table table-striped table-bordered no-wrap">
+                            <table id="main_datatable" class="table table-striped table-bordered no-wrap">
                                 <thead>
                                     <tr>
                                         <th>{{ __('Id') }}</th>
@@ -264,7 +264,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" id='cancel' name='cancel' class="btn btn-success" data-dismiss="modal">{{ __("Cancel") }}</button>
-                    <button type="button" id='confim' name='confim' class="btn btn-danger">{{ __("Confim") }}</button>
+                    <button type="button" id='Confirm' name='Confirm' class="btn btn-danger">{{ __("Confirm") }}</button>
                 </div>
             </div>
         </div>
@@ -280,19 +280,16 @@
 
 
     <script type="text/javascript">
-    var zero_config_purchase_table = $('#zero_config_purchase').DataTable( {
-        // rowReorder: {
-        //     selector: 'td:nth-child(2)'
-        // },
-        // responsive: true
-    } );
 
-        var table = $('#purchase_table').DataTable();
-        $('#zero_config_purchase tbody').on('click', 'tr', function() {
+$(document).ready(function() {
+        var main_datatable_table = $('#main_datatable').DataTable();
+
+        var purchase_table = $('#purchase_table').DataTable();
+        $('#main_datatable tbody').on('click', 'tr', function() {
             if ($(this).hasClass('selected')) {
                 $(this).removeClass('selected');
             } else {
-                zero_config_purchase_table.$('tr.selected').removeClass('selected');
+                main_datatable_table.$('tr.selected').removeClass('selected');
                 $(this).addClass('selected');
             }
 
@@ -308,7 +305,7 @@
                     console.log(data.purchase.date);
                     document.getElementById('date').valueAsDate = new Date(data.purchase.date);
                     // products_table.clear().draw();
-                    var rows = table.rows().remove().draw();
+                    var rows = purchase_table.rows().remove().draw();
                     $(".dataTables_empty").closest('tr').hide();
                     var rowIdx = 0,
                         total = 0;
@@ -330,7 +327,7 @@
 
         $('#delete').click(function(e) {
             e.preventDefault();
-            var id = zero_config_purchase_table.row( '.selected' ).id();
+            var id = main_datatable_table.row( '.selected' ).id();
             if (id){
                 console.log($("#"+id+" #purchaseTotal").text());
                 $('#deleteModal #purchaseId').text(id);
@@ -341,13 +338,13 @@
         });
         $('#edit').click(function(e) {
             e.preventDefault();
-            var id = zero_config_purchase_table.row( '.selected' ).id();
+            var id = main_datatable_table.row( '.selected' ).id();
             window.location.href = '/purchases/'+id+'/edit';
         });
 
-        $("#confim").click(function(e) {
+        $("#Confirm").click(function(e) {
             e.preventDefault();
-            var id = zero_config_purchase_table.row( '.selected' ).id();
+            var id = main_datatable_table.row( '.selected' ).id();
             var url = "{{ route('purchases.destroy', 'id') }}".replace('id', id);
             console.log(url);
             $.ajax({
@@ -358,7 +355,7 @@
                 type: 'DELETE',
                 success: function(result) {
                     if(result.done){
-                        var res = zero_config_purchase_table.row( '.selected' ).remove().draw();
+                        var res = main_datatable_table.row( '.selected' ).remove().draw();
                         $('#deleteModal').modal('toggle');
                     }
                     // e.preventDefault();
@@ -370,6 +367,7 @@
                     // $('#DangerModalhdbgcl').modal('toggle');
                 }
             });
+        });
         });
     </script>
 @endpush

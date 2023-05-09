@@ -68,6 +68,7 @@ Route::get('setlocale/{lang}', [HomeController::class, 'setlocale'])->name('lang
 Route::get('notifications-mark-as-read', [NotificationController::class, 'setlocale'])->name('notifications.mark-as-read');
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboards.index');
 Route::get('editV1/{id}', [ProfileController::class, 'editV1'])->name('users.editV1');
+Route::get('barcodes', [ProductController::class, 'barcodes'])->name('settings.barcodes');
 
 require __DIR__.'/auth.php';
 

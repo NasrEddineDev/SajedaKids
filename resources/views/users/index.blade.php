@@ -80,7 +80,7 @@
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table id="zero_config_user" class="table table-striped table-bordered no-wrap">
+                            <table id="main_datatable" class="table table-striped table-bordered no-wrap">
                                 <thead>
                                     <tr>
                                         <th>{{ __('Id') }}</th>
@@ -151,7 +151,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" id='cancel' name='cancel' class="btn btn-success" data-dismiss="modal">{{ __("Cancel") }}</button>
-                    <button type="button" id='confim' name='confim' class="btn btn-danger">{{ __("Confim") }}</button>
+                    <button type="button" id='Confirm' name='Confirm' class="btn btn-danger">{{ __("Confirm") }}</button>
                 </div>
             </div>
         </div>
@@ -167,19 +167,16 @@
 
 
     <script type="text/javascript">
-    var zero_config_user_table = $('#zero_config_user').DataTable( {
-        // rowReorder: {
-        //     selector: 'td:nth-child(2)'
-        // },
-        // responsive: true
-    } );
+
+$(document).ready(function() {
+        var main_datatable_table = $('#main_datatable').DataTable();
 
         var table = $('#user_table').DataTable();
-        $('#zero_config_user tbody').on('click', 'tr', function() {
+        $('#main_datatable tbody').on('click', 'tr', function() {
             if ($(this).hasClass('selected')) {
                 $(this).removeClass('selected');
             } else {
-                zero_config_user_table.$('tr.selected').removeClass('selected');
+                main_datatable_table.$('tr.selected').removeClass('selected');
                 $(this).addClass('selected');
             }
 
@@ -217,7 +214,7 @@
 
         $('#delete').click(function(e) {
             e.preventDefault();
-            var id = zero_config_user_table.row( '.selected' ).id();
+            var id = main_datatable_table.row( '.selected' ).id();
             if (id){
                 $('#deleteModal #userId').text(id);
                 $('#deleteModal #userName').text($("#"+id+" #userName").text());
@@ -227,13 +224,13 @@
         });
         $('#edit').click(function(e) {
             e.preventDefault();
-            var id = zero_config_user_table.row( '.selected' ).id();
+            var id = main_datatable_table.row( '.selected' ).id();
             window.location.href = '/users/'+id+'/edit';
         });
 
-        $("#confim").click(function(e) {
+        $("#Confirm").click(function(e) {
             e.preventDefault();
-            var id = zero_config_user_table.row( '.selected' ).id();
+            var id = main_datatable_table.row( '.selected' ).id();
             var url = "{{ route('users.destroy', 'id') }}".replace('id', id);
             console.log(url);
             $.ajax({
@@ -244,7 +241,7 @@
                 type: 'DELETE',
                 success: function(result) {
                     if(result.done){
-                        var res = zero_config_user_table.row( '.selected' ).remove().draw();
+                        var res = main_datatable_table.row( '.selected' ).remove().draw();
                         $('#deleteModal').modal('toggle');
                     }
                     // e.preventDefault();
@@ -256,6 +253,7 @@
                     // $('#DangerModalhdbgcl').modal('toggle');
                 }
             });
+        });
         });
     </script>
 @endpush

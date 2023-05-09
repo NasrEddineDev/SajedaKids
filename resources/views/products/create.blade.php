@@ -21,7 +21,6 @@
 @section('content')
 <div class="basic-form-area mg-b-15">
     <div class="container-fluid">
-        <!-- <div id="reader" width="600px"></div> -->
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -36,10 +35,10 @@
                                             @if(true)
                                             <label>{{ __('SKU') }}</label>
                                             <div class="input-group mb-3">
-                                                <input type="text" class="form-control" id="SKU" name="SKU" placeholder="{{ __('SKU') }}" 
+                                                <input type="text" class="form-control" id="SKU" name="SKU" placeholder="{{ __('SKU') }}"
                                                 aria-label="{{ __('SKU') }}" aria-describedby="basic-addon2" required>
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-outline-secondary" type="button">Scan Barcode</button>
+                                                    <button class="btn btn-outline-secondary" id="scan" type="button">{{ __('Scan Barcode') }}</button>
                                                 </div>
                                             </div>
                                             <!-- <div id="qr-reader" width="600px"></div> -->
@@ -76,7 +75,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>{{ __('Name In Arabic') }}</label>
-                                            <input type="text" class="form-control" id="name_ar" name="name_ar" 
+                                            <input type="text" class="form-control" id="name_ar" name="name_ar"
                                             placeholder="{{ __('Name In Arabic') }}" required>
                                         </div>
                                     </div>
@@ -99,14 +98,14 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>{{ __('Price') }}</label>
-                                            <input type="text" class="form-control" id="price" name="price" 
+                                            <input type="text" class="form-control" id="price" name="price"
                                             placeholder="{{ __('Price') }}" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>{{ __('Discount') }}</label>
-                                            <input type="text" class="form-control" id="discount" name="discount" 
+                                            <input type="text" class="form-control" id="discount" name="discount"
                                             placeholder="{{ __('Discount') }}" required>
                                         </div>
                                     </div>
@@ -183,6 +182,27 @@
             </div>
         </div>
 
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="scanBareCodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{ __("Scan the barcode") }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <span aria-hidden="true">{{ __("Put the camera in the correct position") }}</span><br />
+                <div id="reader" width="600px"></div>
+                {{ __("Product SKU: ") }}<strong><span id='productSKU'></span><br /></strong>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id='cancel' name='cancel' class="btn btn-success" data-dismiss="modal">{{ __("Close") }}</button>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
@@ -266,13 +286,18 @@ Html5Qrcode.getCameras().then(devices => {
 
         function onScanSuccess(decodedText, decodedResult) {
             // Handle on success condition with the decoded text or result.
+            document.getElementById("SKU").innerHTML = decodedText;
+            $('#scanBareCodeModal #productSKU').text(decodedText);
             console.log(`Scan result: ${decodedText}`, decodedResult);
         }
 
         var html5QrcodeScanner = new Html5QrcodeScanner(
             "reader", {
                 fps: 10,
-                qrbox: 250
+                qrbox: {
+                    width: 250,
+                    height: 250,
+                }
             });
         html5QrcodeScanner.render(onScanSuccess);
 
@@ -302,6 +327,16 @@ Html5Qrcode.getCameras().then(devices => {
         //         },
         //     },
         // });
+            $(document).on('click', '#scan', function() {
+            // $('#scanBareCodeModal').modal('toggle');
+            $('#scanBareCodeModal').modal('show');
+            // var id = main_datatable_table.row('.selected').id();
+            // if (id) {
+            //     $('#deleteModal #customerId').text(id);
+            //     $('#deleteModal #productSKU').text($("#" + id + " #customerName").text());
+            //     $('#deleteModal #customerCity').text($("#" + id + " #customerCity").text());
+            // }
+        });
 
     });
 </script>

@@ -259,4 +259,21 @@ class ProductController extends Controller
             return false;
         }
     }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function barcodes()
+    {
+        //
+        try {
+            $products = Product::all();
+            return view('products.barcodes', compact('products'));
+        } catch (Throwable $e) {
+            // report($e);
+            // Log::error($e->getMessage());
+
+            return false;
+        }
+    }
 }

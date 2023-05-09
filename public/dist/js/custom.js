@@ -72,4 +72,105 @@ $(function () {
         //replace the "Choose a file" label
         $(this).next('.custom-file-label').html(fileName);
     })
+
+
+    // add by nasreddine 09-05-2023
+    var main_datatable_table = $('#main_datatable').DataTable({
+        // rowReorder: {
+        //     selector: 'td:nth-child(2)'
+        // },
+        // responsive: true
+        "aLengthMenu": [
+            [5, 10, 25, -1],
+            [5, 10, 25, "All"]
+        ],
+        "iDisplayLength": 10,
+
+        "language": {
+            "sProcessing": "جارٍ التحميل...",
+            "sLengthMenu": "أظهر _MENU_ مدخلات",
+            "sZeroRecords": "لم يعثر على أية سجلات",
+            "sInfo": "إظهار _START_ إلى _END_ من أصل _TOTAL_ مدخل",
+            "sInfoEmpty": "يعرض 0 إلى 0 من أصل 0 سجل",
+            "sInfoFiltered": "(منتقاة من مجموع _MAX_ مُدخل)",
+            "sInfoPostFix": "",
+            "sSearch": "ابحث:",
+            "sUrl": "",
+            "sAll": "",
+            "oPaginate": {
+                "sFirst": "الأول",
+                "sPrevious": "السابق",
+                "sNext": "التالي",
+                "sLast": "الأخير"
+            },
+            "emptyTable": "لا توجد بيانات في الجدول"
+        }
+    });
+
+    var sale_table = $('#sale_table').DataTable({
+        // rowReorder: {
+        //     selector: 'td:nth-child(2)'
+        // },
+        // responsive: true
+        searching: false, paging: false, info: false,
+        "aLengthMenu": [
+            [5, 10, 25, -1],
+            [5, 10, 25, "All"]
+        ],
+        "iDisplayLength": 10,
+
+        "language": {
+            "sProcessing": "جارٍ التحميل...",
+            "sLengthMenu": "أظهر _MENU_ مدخلات",
+            "sZeroRecords": "لم يعثر على أية سجلات",
+            "sInfo": "إظهار _START_ إلى _END_ من أصل _TOTAL_ مدخل",
+            "sInfoEmpty": "يعرض 0 إلى 0 من أصل 0 سجل",
+            "sInfoFiltered": "(منتقاة من مجموع _MAX_ مُدخل)",
+            "sInfoPostFix": "",
+            "sSearch": "ابحث:",
+            "sUrl": "",
+            "sAll": "",
+            "oPaginate": {
+                "sFirst": "الأول",
+                "sPrevious": "السابق",
+                "sNext": "التالي",
+                "sLast": "الأخير"
+            },
+            "emptyTable": "لا توجد بيانات في الجدول"
+        }
+    });
+
+    var purchase_table = $('#purchase_table').DataTable({
+        // rowReorder: {
+        //     selector: 'td:nth-child(2)'
+        // },
+        // responsive: true
+        searching: false, paging: false, info: false,
+        "aLengthMenu": [
+            [5, 10, 25, -1],
+            [5, 10, 25, "All"]
+        ],
+        "iDisplayLength": 10,
+
+        "language": {
+            "sProcessing": "جارٍ التحميل...",
+            "sLengthMenu": "أظهر _MENU_ مدخلات",
+            "sZeroRecords": "لم يعثر على أية سجلات",
+            "sInfo": "إظهار _START_ إلى _END_ من أصل _TOTAL_ مدخل",
+            "sInfoEmpty": "يعرض 0 إلى 0 من أصل 0 سجل",
+            "sInfoFiltered": "(منتقاة من مجموع _MAX_ مُدخل)",
+            "sInfoPostFix": "",
+            "sSearch": "ابحث:",
+            "sUrl": "",
+            "sAll": "",
+            "oPaginate": {
+                "sFirst": "الأول",
+                "sPrevious": "السابق",
+                "sNext": "التالي",
+                "sLast": "الأخير"
+            },
+            "emptyTable": "لا توجد بيانات في الجدول"
+        }
+    });
+
 });

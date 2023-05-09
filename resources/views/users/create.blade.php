@@ -50,13 +50,13 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>{{ __('Password') }}</label>
-                                            <input type="password" class="form-control" id="password" name="password" required placeholder="{{ __('Pasword') }}">
+                                            <input type="password" class="form-control" id="password" name="password" required placeholder="{{ __('Password') }}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>{{ __('Password Confirmation') }}</label>
-                                            <input type="password" class="form-control" id="password_confirmation" required name="password_confirmation" placeholder="{{ __('Pasword Confirmation') }}">
+                                            <input type="password" class="form-control" id="password_confirmation" required name="password_confirmation" placeholder="{{ __('Password Confirmation') }}">
                                         </div>
                                     </div>
                                 </div>

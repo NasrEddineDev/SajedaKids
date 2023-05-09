@@ -130,9 +130,9 @@
                         <i data-feather="settings" class="svg-icon"></i>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="{{route('settings.barcodes')}}">{{__('Barcode')}}</a>
                         <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Another action</a>
                         <a class="dropdown-item" href="#">Something else here</a>
                     </div>
                 </li>

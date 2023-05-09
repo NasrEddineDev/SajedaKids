@@ -24,6 +24,10 @@
     integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 <!-- Custom CSS -->
 <link rel="stylesheet" href="{{ URL::asset('dist/css/style.min.css') }}" />
+<link rel="stylesheet" href="{{ URL::asset('dist/css/custom.css') }}" />
+@if (App::currentLocale() == 'ar')
+<link rel="stylesheet" href="{{ URL::asset('dist/css/custom_ar.css') }}" />
+@endif
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>

@@ -96,8 +96,8 @@
             <!-- footer -->
             <!-- ============================================================== -->
             <footer class="footer text-center text-muted">
-                All Rights Reserved by Mesbah Company. Designed and Developed by <a
-                    href="https://mesbah.dz">Mesbah High Tech</a>.
+                {{__("All Rights Reserved by Mesbah Company. Designed and Developed by")}} <a
+                    href="https://mesbah.dz">{{__("Mesbah High Tech")}}</a>.
             </footer>
             <!-- ============================================================== -->
             <!-- End footer -->
