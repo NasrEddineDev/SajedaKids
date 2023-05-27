@@ -26,11 +26,11 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">{{ __('Edit Product') }}</h4>
-                    <form class="form-sample" method="post" action="{{ route('products.update', $product->id) }}" enctype="multipart/form-data">
+                    <h4 class="card-title">{{ __('Edit Category') }}</h4>
+                    <form class="form-sample" method="post" action="{{ route('categories.update', $category->id) }}" enctype="multipart/form-data">
                         @csrf
                         @method('put')
-                        <input hidden type="text" class="form-control" value="{{ $product->id ?? ''}}" id="product_id" name="product_id">
+                        <input hidden type="text" class="form-control" value="{{ $category->id ?? ''}}" id="category_id" name="category_id">
                         <div class="form-body">
                             <div class="row">
                                 <div class="col-md-6">
@@ -40,7 +40,7 @@
                                             <div class="col-md-8">
                                                 <label>{{ __('SKU') }}</label>
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" id="SKU" name="SKU" placeholder="{{ __('SKU') }}" aria-label="{{ __('SKU') }}" aria-describedby="basic-addon2" value="{{ $product->SKU ?? ''}}" required>
+                                                    <input type="text" class="form-control" id="SKU" name="SKU" placeholder="{{ __('SKU') }}" aria-label="{{ __('SKU') }}" aria-describedby="basic-addon2" value="{{ $category->SKU ?? ''}}" required>
                                                     <div class="input-group-append">
 
                                                         <button class="btn btn-light" type="button" id="scanBareCode">
@@ -59,7 +59,7 @@
 
                                         @else
                                         <label>{{ __('Code') }}</label>
-                                        <input type="text" class="form-control" id="code" name="code" placeholder="{{ __('Code') }}" value="{{ $product->code ?? ''}}">
+                                        <input type="text" class="form-control" id="code" name="code" placeholder="{{ __('Code') }}" value="{{ $category->code ?? ''}}">
                                         @endif
                                     </div>
                                 </div>
@@ -84,37 +84,23 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>{{ __('Name In Arabic') }}</label>
-                                        <input type="text" class="form-control" id="name_ar" name="name_ar" placeholder="{{ __('Name In Arabic') }}" value="{{ $product->name_ar ?? ''}}">
+                                        <input type="text" class="form-control" id="name_ar" name="name_ar" placeholder="{{ __('Name In Arabic') }}" value="{{ $category->name_ar ?? ''}}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>{{ __('Name In French') }}</label>
-                                        <input type="text" class="form-control" id="name_fr" name="name_fr" placeholder="{{ __('Name In French') }}" value="{{ $product->name_fr ?? ''}}">
+                                        <input type="text" class="form-control" id="name_fr" name="name_fr" placeholder="{{ __('Name In French') }}" value="{{ $category->name_fr ?? ''}}">
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>{{ __('Price') }}</label>
-                                        <input type="text" class="form-control" id="price" name="price" placeholder="{{ __('Price') }}" value="{{ $product->price ?? ''}}">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>{{ __('Discount') }}</label>
-                                        <input type="text" class="form-control" id="discount" name="discount" placeholder="{{ __('Discount') }}" value="{{ $product->discount ?? ''}}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <!-- <div class="col-md-6">
                                     <div class="form-group">
                                         <label>{{ __('Name In English') }}</label>
-                                        <input type="text" class="form-control" id="name_en" name="name_en" placeholder="{{ __('Name In English') }}" value="{{ $product->name_en ?? ''}}">
+                                        <input type="text" class="form-control" id="name_en" name="name_en" placeholder="{{ __('Name In English') }}" value="{{ $category->name_en ?? ''}}">
                                     </div>
-                                </div> -->
+                                </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>{{ __('Category') }}</label>
@@ -123,17 +109,33 @@
                                                 {{ __('Select The Category') }}
                                             </option>
                                             @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}" {{ $product->category?->id == $category->id ? 'selected' : '' }}>
+                                            <option value="{{ $category->id }}" {{ $category->category->id == $category->id ? 'selected' : '' }}>
                                                 {{ $category->name }}
                                             </option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>{{ __('Price') }}</label>
+                                        <input type="text" class="form-control" id="price" name="price" placeholder="{{ __('Price') }}" value="{{ $category->price ?? ''}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>{{ __('Discount') }}</label>
+                                        <input type="text" class="form-control" id="discount" name="discount" placeholder="{{ __('Discount') }}" value="{{ $category->discount ?? ''}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>{{ __('Description') }}</label>
-                                        <input type="text" class="form-control" id="description" name="description" placeholder="{{ __('Description') }}" value="{{ $product->description ?? ''}}">
+                                        <input type="text" class="form-control" id="description" name="description" placeholder="{{ __('Description') }}" value="{{ $category->description ?? ''}}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -144,7 +146,7 @@
                                                 {{ __('Select The Brand') }}
                                             </option>
                                             @foreach ($brands as $brand)
-                                            <option value="{{ $product->brand?->id }}" {{ $product->brand?->id == $brand?->id ? 'selected' : '' }}>
+                                            <option value="{{ $category->brand?->id }}" {{ $category->brand?->id == $brand?->id ? 'selected' : '' }}>
                                                 {{ $brand->name }}
                                             </option>
                                             @endforeach
@@ -172,7 +174,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>{{ __('Description') }}</label>
-                                        <input type="text" class="form-control" id="description" value="{{ $product->description ?? ''}}" name="description" placeholder="{{ __('Description') }}">
+                                        <input type="text" class="form-control" id="description" value="{{ $category->description ?? ''}}" name="description" placeholder="{{ __('Description') }}">
                                     </div>
                                 </div>
                             </div> -->
@@ -181,7 +183,7 @@
                             <div class="text-center">
                                 <button type="submit" class="btn btn-info">{{ __('Save') }}</button>
 
-                                <a href="{{ route('products.index') }}">
+                                <a href="{{ route('categories.index') }}">
                                     <button type="button" class="btn btn-dark">{{ __('Cancel') }}</button>
                                 </a>
                             </div>
@@ -205,7 +207,7 @@
             <div class="modal-body">
                 <span aria-hidden="true">{{ __("Put the camera in the correct position") }}</span><br />
                 <div id="reader" width="600px"></div>
-                {{ __("Product SKU: ") }}<strong><span id='productSKU'></span><br /></strong>
+                {{ __("Category SKU: ") }}<strong><span id='categorySKU'></span><br /></strong>
             </div>
             <div class="modal-footer">
                 <button type="button" id='cancel' name='cancel' class="btn btn-success" data-dismiss="modal">{{ __("Close") }}</button>
@@ -231,7 +233,7 @@
         function onScanSuccess(decodedText, decodedResult) {
             // Handle on success condition with the decoded text or result.
             $('#SKU').val(decodedText);
-            $('#scanBareCodeModal #productSKU').text(decodedText);
+            $('#scanBareCodeModal #categorySKU').text(decodedText);
             $('#scanBareCodeModal').modal('hide');
             //console.log(`Scan result: ${decodedText}`, decodedResult);
         }
