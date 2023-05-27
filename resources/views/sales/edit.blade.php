@@ -139,7 +139,7 @@
                                                                     value="{{ $saleItem->quantity }}">
                                                             </td>
                                                             <td id="product_details">
-                                                                {{ 'Product Name: ' . $saleItem->product_name . ', Price: ' . $saleItem->product_price }}
+                                                                {{ __('Product Name: ') . $saleItem->product_name . ', '.__('Price: ') . $saleItem->product_price }}
                                                             </td>
                                                             <td class="text-success"><span
                                                                     class="product_total">{{ $saleItem->total_amount }}</span>DA
@@ -268,7 +268,7 @@
             //                     `Product Name: ${data.product.name_ar}, Price: ${data.product.price}`
             //                 );
             //             } else {
-            //                 alert('This Product Not Exist an will not added');
+            //                 alert('This Product Not Exist and will not added');
             //             }
             //         }
             //     })
@@ -359,10 +359,10 @@
                                 $("#" + id + " .product_total").text(`${product_total}`);
                                 $("#total").text(total + " DA");
                                 $("#" + id + " #product_details").text(
-                                    `Product Name: ${data.product.name_ar}, Price: ${data.product.price}`
+                                    `{{__("Product Name: ")}}${data.product.name_ar}, {{__("Price: ")}}${data.product.price}`
                                 );
                             } else {
-                                alert('This Product Not Exist an will not added');
+                                alert('{{__("This Product Not Exist and will not added")}}');
                             }
                         }
                     })
@@ -410,7 +410,7 @@
                                 $("#" + id + " .product_total").text(`${product_total}`);
                                 $("#total").text(total + " DA");
                             } else {
-                                alert('This Product Not Exist an will not added');
+                                alert('{{__("This Product Not Exist and will not added")}}');
                             }
                         }
                     })
@@ -458,7 +458,7 @@
                                 $("#" + id + " .product_total").text(`${product_total}`);
                                 $("#total").text(total + " DA");
                             } else {
-                                alert('This Product Not Exist an will not added');
+                                alert('{{__("This Product Not Exist and will not added")}}');
                             }
                         }
                     })
@@ -690,10 +690,10 @@
                                     $("#" + id + " .product_total").text(`${product_total}`);
                                     $("#total").text(total + " DA");
                                     $("#" + id + " #product_details").text(
-                                        `Product Name: ${data.product.name_ar}, Price: ${data.product.price}`
+                                        `{{__("Product Name: ")}}${data.product.name_ar}, {{__("Price: ")}}${data.product.price}`
                                     );
                                 } else {
-                                    alert('This Product Not Exist an will not added');
+                                    alert('{{__("This Product Not Exist and will not added")}}');
                                 }
                             }
                         })
@@ -743,7 +743,7 @@
                                     $("#" + id + " .product_total").text(`${product_total}`);
                                     $("#total").text(total + " DA");
                                 } else {
-                                    alert('This Product Not Exist an will not added');
+                                    alert('{{__("This Product Not Exist and will not added")}}');
                                 }
                             }
                         })
@@ -791,7 +791,7 @@
                                     $("#" + id + " .product_total").text(`${product_total}`);
                                     $("#total").text(total + " DA");
                                 } else {
-                                    alert('This Product Not Exist an will not added');
+                                    alert('{{__("This Product Not Exist and will not added")}}');
                                 }
                             }
                         })

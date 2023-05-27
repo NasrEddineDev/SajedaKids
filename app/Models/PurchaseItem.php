@@ -19,7 +19,7 @@ class PurchaseItem extends Model
      */
     protected $fillable = [
         'total_amount',
-        'Quantity',
+        'quantity',
         'price',
         'date',
         'description',

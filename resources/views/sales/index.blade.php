@@ -162,7 +162,7 @@ text-align: left;
                                         <tr id="{{ $sale->id }}">
                                             <td>{{ $sale->id }}</td>
                                             <td id="saleDate">{{ $sale->date }}</td>
-                                            <td>{{ $sale->type }}</td>
+                                            <td>{{ __($sale->type) }}</td>
                                             <td id="saleTotal">{{ $sale->total_amount }}</td>
                                             <td>{{ $sale->user->name }}</td>
                                             <td>{{ $sale->store->name }}</td>
@@ -364,8 +364,6 @@ $(document).ready(function() {
                 url: "/getsaledetails/" + selectedSaleId,
                 type: "GET",
                 success: function(data) {
-                    console.log(data);
-                    console.log(data.sale.date);
                     document.getElementById('date').valueAsDate = new Date(data.sale.date);
                     // products_table.clear().draw();
                     var rows = sale_table.rows().remove().draw();
@@ -378,7 +376,7 @@ $(document).ready(function() {
                                                 <td>${sale_item.product_sku}</td>
                                                 <td>${sale_item.discount}</td>
                                                 <td>${sale_item.quantity}</td>
-                                                <td>Product Name: ${sale_item.product_name}, Price: ${sale_item.product_price}</td>
+                                                <td>{{__('Product Name: ')}}${sale_item.product_name}, {{__('Price: ')}}${sale_item.product_price}</td>
                                                 <td>${sale_item.total_amount}</td>
                                                 </tr>`);
                         total += sale_item.total_amount;
@@ -392,7 +390,6 @@ $(document).ready(function() {
             e.preventDefault();
             var id = main_datatable_table.row( '.selected' ).id();
             if (id){
-                console.log($("#"+id+" #saleTotal").text());
                 $('#deleteModal #saleId').text(id);
                 $('#deleteModal #saleDate').text($("#"+id+" #saleDate").text());
                 $('#deleteModal #saleTotal').text($("#"+id+" #saleTotal").text());
@@ -409,7 +406,6 @@ $(document).ready(function() {
             e.preventDefault();
             var id = main_datatable_table.row( '.selected' ).id();
             var url = "{{ route('sales.destroy', 'id') }}".replace('id', id);
-            console.log(url);
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

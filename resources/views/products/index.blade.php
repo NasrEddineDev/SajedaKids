@@ -88,9 +88,10 @@
                                         <th>{{ __('Id') }}</th>
                                         <th>{{ __('Name') }}</th>
                                         <th>{{ __('SKU') }}</th>
-                                        <th>{{ __('Image') }}</th>
+                                        <th>{{ __('Quantity') }}</th>
                                         <th>{{ __('Price') }}</th>
                                         <th>{{ __('Discount') }}</th>
+                                        <th>{{ __('Image') }}</th>
                                         <th>{{ __('Category') }}</th>
                                         <!-- <th>{{ __('Brand') }}</th> -->
                                         <th>{{ __('Active') }}</th>
@@ -103,13 +104,14 @@
                                             <td>{{ $product->id }}</td>
                                             <td id="productName">{{ $product->name }}</td>
                                             <td id="productSKU">{{ $product->SKU }}</td>
+                                            <td>{{ $product->quantity }}</td>
+                                            <td>{{ $product->price }}</td>
+                                            <td>{{ $product->discount }}</td>
                                             <td class="showedImage">
                                                 <img class="img-thumbnail"
                                                     src="https://t4.ftcdn.net/jpg/03/18/30/85/360_F_318308547_FALKncfWsTmjzwd0y0muNeCFOULPLB7Q.webp"
                                                     alt="...">
                                             </td>
-                                            <td>{{ $product->price }}</td>
-                                            <td>{{ $product->discount }}</td>
                                             <td>{{ $product->category?->name }}</td>
                                             <!-- <td>{{ $product->brand?->name }}</td> -->
                                             <td id="status"><button
@@ -273,7 +275,6 @@
                 e.preventDefault();
                 var id = main_datatable_table.row('.selected').id();
                 var url = "{{ route('products.destroy', 'id') }}".replace('id', id);
-                console.log(url);
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -338,7 +339,6 @@ $(document).on('#printModal', 'hidden.bs.modal', function () {
                     type: 'POST',
                     data: {'product_id': id},
                     success: function(result) {
-                        console.log(result);
                         $('#printModal').modal('show')
                         $("#images").html("");
                         $("#images").html(`                        

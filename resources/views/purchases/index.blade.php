@@ -99,7 +99,7 @@
                                         <tr id="{{ $purchase->id }}">
                                             <td>{{ $purchase->id }}</td>
                                             <td id="purchaseDate">{{ $purchase->date }}</td>
-                                            <td>{{ $purchase->type }}</td>
+                                            <td>{{ __($purchase->type) }}</td>
                                             <td id="purchaseTotal">{{ $purchase->total_amount }}</td>
                                             <td>{{ $purchase->user->name }}</td>
                                             <td>{{ $purchase->store->name }}</td>
@@ -301,8 +301,6 @@ $(document).ready(function() {
                 url: "/getpurchasedetails/" + selectedPurchaseId,
                 type: "GET",
                 success: function(data) {
-                    console.log(data);
-                    console.log(data.purchase.date);
                     document.getElementById('date').valueAsDate = new Date(data.purchase.date);
                     // products_table.clear().draw();
                     var rows = purchase_table.rows().remove().draw();
@@ -315,7 +313,7 @@ $(document).ready(function() {
                                                 <td>${purchase_item.product_sku}</td>
                                                 <td>${purchase_item.price}</td>
                                                 <td>${purchase_item.quantity}</td>
-                                                <td>Product Name: ${purchase_item.product_name}, Price: ${purchase_item.product_price}</td>
+                                                <td>{{__('Product Name: ')}}${purchase_item.product_name}, {{__('Price: ')}}${purchase_item.product_price}</td>
                                                 <td>${purchase_item.total_amount}</td>
                                                 </tr>`);
                         total += parseInt(purchase_item.total_amount);
@@ -329,7 +327,6 @@ $(document).ready(function() {
             e.preventDefault();
             var id = main_datatable_table.row( '.selected' ).id();
             if (id){
-                console.log($("#"+id+" #purchaseTotal").text());
                 $('#deleteModal #purchaseId').text(id);
                 $('#deleteModal #purchaseDate').text($("#"+id+" #purchaseDate").text());
                 $('#deleteModal #purchaseTotal').text($("#"+id+" #purchaseTotal").text());
@@ -346,7 +343,6 @@ $(document).ready(function() {
             e.preventDefault();
             var id = main_datatable_table.row( '.selected' ).id();
             var url = "{{ route('purchases.destroy', 'id') }}".replace('id', id);
-            console.log(url);
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

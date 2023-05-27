@@ -195,76 +195,31 @@
     </div>
 
 </div>
-<!-- </div> -->
+<!-- </div> --><!-- Modal -->
+<div class="modal fade" id="scanBareCodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{ __("Scan the barcode") }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <span aria-hidden="true">{{ __("Put the camera in the correct position") }}</span><br />
+                <div id="reader" width="600px"></div>
+                {{ __("Product SKU: ") }}<strong><span id='productSKU'></span><br /></strong>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id='cancel' name='cancel' class="btn btn-success" data-dismiss="modal">{{ __("Close") }}</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @Push('js')
 <script src="{{ URL::asset('dist/js/html5-qrcode.min.js') }}"></script>
-{{-- <script>
-        $(document).ready(function() {
-            function onScanSuccess(decodedText, decodedResult) {
-  // handle the scanned code as you like, for example:
-  console.log(`Code matched = ${decodedText}`, decodedResult);
-}
 
-function onScanFailure(error) {
-  // handle scan failure, usually better to ignore and keep scanning.
-  // for example:
-  console.warn(`Code scan error = ${error}`);
-}
-
-let html5QrcodeScanner = new Html5QrcodeScanner(
-  "reader",
-  { fps: 10, qrbox: {width: 250, height: 250} },
-  /* verbose= */ false);
-html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-
-
-        const html5QrCode = new Html5Qrcode("reader");
-        const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-            /* handle success */
-            console.log(`Scan result: ${decodedText}`, decodedResult);
-            document.getElementById('kode_barang').value=decodedText;
-            // ...
-            html5QrcodeScanner.clear();
-        };
-        const config = { fps: 10, qrbox: 250 };// Select front camera or fail with `OverconstrainedError`.
-        // html5QrCode.start({ facingMode: { exact: "environment"} }, config, qrCodeSuccessCallback);
-
-
-        $("#btnsearch").click(function(e){
-            // This method will trigger user permissions
-Html5Qrcode.getCameras().then(devices => {
-  /**
-   * devices would be an array of objects of type:
-   * { id: "id", label: "label" }
-   */
-  if (devices && devices.length) {
-    var cameraId = devices[0].id;
-    // .. use this to start scanning.
-  }
-}).catch(err => {
-  // handle err
-});
-        html5QrCode.start({ facingMode: { exact: "environment"} }, config, qrCodeSuccessCallback);
-            // e.preventDefault();
-            // var url = $("#Delete").attr("href");
-            // var id = url.substring(url.lastIndexOf('/') + 1);
-            // $.ajax({
-            //     headers: {
-            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //     },
-            //     url: url,
-            //     type: 'DELETE',
-            //     success: function(result) {
-            //         $('#DangerModalhdbgcl').modal('toggle');
-            //         $('table#table tr#'+id).remove();
-            //     }
-            // });
-        });
-        html5QrCode.start({ facingMode: { exact: "user"} }, config, qrCodeSuccessCallback);
-        });
-        </script> --}}
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -277,42 +232,41 @@ Html5Qrcode.getCameras().then(devices => {
 
         function onScanSuccess(decodedText, decodedResult) {
             // Handle on success condition with the decoded text or result.
-            console.log(`Scan result: ${decodedText}`, decodedResult);
+            $('#SKU').val(decodedText);
+            $('#scanBareCodeModal #productSKU').text(decodedText);
+            $('#scanBareCodeModal').modal('hide');
+            //console.log(`Scan result: ${decodedText}`, decodedResult);
         }
 
         var html5QrcodeScanner = new Html5QrcodeScanner(
             "reader", {
-                fps: 10,
-                qrbox: 250
+                fps: 20,
+                qrbox: {
+                    width: 250,
+                    height: 250,
+                }
             });
         html5QrcodeScanner.render(onScanSuccess);
 
-        // $.validator.addMethod("formatcheck", function(value, element, regexp) {
-        //     /* Check if the value is truthy (avoid null.constructor) & if it's not a RegEx. (Edited: regex --> regexp)*/
-        //     if (regexp && regexp.constructor != RegExp) {
-        //         /* Create a new regular expression using the regex argument. */
-        //         regexp = new RegExp(regexp);
-        //     }
-        //     /* Check whether the argument is global and, if so set its last index to 0. */
-        //     else if (regexp.global) regexp.lastIndex = 0;
-        //     /* Return whether the element is optional or the result of the validation. */
-        //     return this.optional(element) || regexp.test(value);
-        // });
-
-        // var account_validator = $(".form-sample").validate({
-        //     rules: {
-        //         hs_code: {
-        //             // required: true,
-        //             formatcheck: '[0-9]{2}.[0-9]{4}.[0-9]{4}',
-        //         },
-        //     },
-        //     messages: {
-        //         hs_code: {
-        //             // required: " __('This field is required.') }}",
-        //             formatcheck: "{{ __('Incorrect Format') }}",
-        //         },
-        //     },
-        // });
+        $(document).on("click", "#scanBareCode", function(e) {
+            e.preventDefault();
+            $("#barcode").val('0').change();
+            $('#scanBareCodeModal').modal('show');
+        });
+        $(document).on("click", "#generateBareCode", function(e) {
+            e.preventDefault();
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '{{ route("settings.get-new-barcode") }}',
+                type: 'GET',
+                success: function(result) {
+                    $('#SKU').val(result.barcode);
+                    $("#showedBarcode").attr("src", result.path);
+                }
+            });
+        });
 
     });
 </script>

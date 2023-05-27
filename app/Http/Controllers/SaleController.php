@@ -89,7 +89,7 @@ class SaleController extends Controller
                 $total = ($product->price - $saledProduct->discount)*$saledProduct->quantity;
                 $saleItem = new SaleItem([
                     'total_amount' => $total,
-                    'Quantity' => $saledProduct->quantity,
+                    'quantity' => $saledProduct->quantity,
                     'discount' => $saledProduct->discount,
                     'date' => $request->input('date') ? $request->input('date') : '',
                     'description' => '',
@@ -103,6 +103,8 @@ class SaleController extends Controller
                 ]);
                 $saleItem->save();
                 $net_amount += $total;
+                $product->quantity = $product->quantity - $saledProduct->quantity;
+                $product->update();
             }
             $sale->net_amount = $net_amount;
             $sale->total_amount = $net_amount;
@@ -175,6 +177,12 @@ class SaleController extends Controller
                 $sale->user_id = Auth::User()->id;
                 $sale->save();
 
+                foreach ($sale->saleItems as $saleItem) {
+                    $product = Product::where('SKU', $saleItem->product_sku)->first();
+                    $product->quantity = $product->quantity + $saleItem->quantity;
+                    $product->update();
+                }
+
                 $sale->saleItems()->delete();
                 $net_amount = 0;
                 $saledProducts = collect((array)json_decode($request->input('products')));
@@ -184,7 +192,7 @@ class SaleController extends Controller
                     $total = ($product->price - $saledProduct->discount)*$saledProduct->quantity;
                     $saleItem = new SaleItem([
                         'total_amount' => $total,
-                        'Quantity' => $saledProduct->quantity,
+                        'quantity' => $saledProduct->quantity,
                         'discount' => $saledProduct->discount,
                         'date' => $request->input('date') ? $request->input('date') : '',
                         'description' => '',
@@ -198,6 +206,8 @@ class SaleController extends Controller
                     ]);
                     $saleItem->save();
                     $net_amount += $total;
+                    $product->quantity = $product->quantity - $saleItem->quantity;
+                    $product->update();
                 }
                 $sale->net_amount = $net_amount;
                 $sale->total_amount = $net_amount;

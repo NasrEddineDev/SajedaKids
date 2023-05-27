@@ -102,10 +102,28 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>{{ __('Name In English') }}</label>
-                                            <input type="text" class="form-control" id="name_en" name="name_en" placeholder="{{ __('Name In English') }}">
+                                            <label>{{ __('Price') }}</label>
+                                            <input type="text" class="form-control" id="price" name="price" placeholder="{{ __('Price') }}" required>
                                         </div>
                                     </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>{{ __('Discount') }}</label>
+                                            <input type="text" class="form-control" id="discount" name="discount" placeholder="{{ __('Discount') }}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <!-- <div class="form-group">
+                                        <label>{{ __('Name In English') }}</label>
+                                        <input type="text" class="form-control" id="name_en" name="name_en" placeholder="{{ __('Name In English') }}">
+                                    </div> -->
+                                    <!-- <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>{{ __('Brand') }}</label>
+                                            <input type="text" class="form-control" id="brand" name="brand" placeholder="{{ __('Brand') }}">
+                                        </div>
+                                    </div> -->
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>{{ __('Category') }}</label>
@@ -121,30 +139,14 @@
                                             </select>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>{{ __('Price') }}</label>
-                                            <input type="text" class="form-control" id="price" name="price" placeholder="{{ __('Price') }}" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>{{ __('Discount') }}</label>
-                                            <input type="text" class="form-control" id="discount" name="discount" placeholder="{{ __('Discount') }}" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>{{ __('Description') }}</label>
                                             <input type="text" class="form-control" id="description" name="description" placeholder="{{ __('Description') }}">
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <!-- <div class="form-group">
+                                    <!-- <div class="col-md-6">
+                                        <div class="form-group">
                                             <label>{{ __('Brand') }}</label>
                                             <select name="brand_id" id="brand_id" class="form-control" required>
                                                 <option value="0" disabled selected>
@@ -156,8 +158,8 @@
                                                 </option>
                                                 @endforeach
                                             </select>
-                                        </div> -->
-                                    </div>
+                                        </div>
+                                    </div> -->
                                 </div>
                             </div>
                             <div class="form-actions">
@@ -221,7 +223,7 @@
 
         var html5QrcodeScanner = new Html5QrcodeScanner(
             "reader", {
-                fps: 10,
+                fps: 20,
                 qrbox: {
                     width: 250,
                     height: 250,

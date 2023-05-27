@@ -87,7 +87,7 @@ class ProductController extends Controller
                 'name_fr' => $request->input('name_fr') ? $request->input('name_fr') : '',
                 'brand_id' => $request->input('brand_id') ? $request->input('brand_id') : null,
                 'image' => '',
-                // 'quantity' => 0,
+                'quantity' => 0,
                 'active' => true,
                 'category_id' => $request->input('category_id') ? $request->input('category_id') : null,
                 'code' => $request->input('code') ? $request->input('code') : '',
@@ -172,7 +172,7 @@ class ProductController extends Controller
             $product = Product::find($request->product_id);
             $product->SKU = $request->input('SKU');
             $product->name_ar = $request->input('name_ar');
-            $product->name_en = $request->input('name_en');
+            // $product->name_en = $request->input('name_en');
             $product->name_fr = $request->input('name_fr');
             $product->description = $request->input('description') ? $request->input('description') : '';
             $product->code = $request->input('code') ? $request->input('code') : '';

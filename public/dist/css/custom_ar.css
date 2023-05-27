@@ -25,3 +25,7 @@
 .modal .modal-content{
     text-align: right;;
 }
+
+#main_datatable > thead > tr > th{
+    text-align: right;;
+}

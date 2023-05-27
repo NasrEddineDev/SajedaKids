@@ -119,7 +119,7 @@
                                         <input type="text" class="form-control" id="quantity" name="quantity" placeholder="الكمية" aria-label="{{ __('Quantity') }}" aria-describedby="basic-addon2" required value="{{ $purchaseItem->quantity }}">
                                     </td>
                                     <td id="product_details">
-                                        {{ 'Product Name: ' . $purchaseItem->product_name . ', Price: ' . $purchaseItem->product_price }}
+                                        {{ __('Product Name: ') . $purchaseItem->product_name . ', '.__('Price: ') . $purchaseItem->product_price }}
                                     </td>
                                     <td class="text-success"><span class="product_total">{{ $purchaseItem->total_amount }}</span>{{__('DA')}}
                                     </td>
@@ -298,10 +298,10 @@
                             $("#" + id + " .product_total").text(`${product_total}`);
                             $("#total").text(total);
                             $("#" + id + " #product_details").text(
-                                `Product Name: ${data.product.name_ar}, Price: ${data.product.price}`
+                                `{{__("Product Name: ")}}${data.product.name_ar}, {{__("Price: ")}}${data.product.price}`
                             );
                         } else {
-                            alert('This Product Not Exist and will not added');
+                            alert('{{__("This Product Not Exist and will not added")}}');
                         }
                     }
                 })
@@ -349,7 +349,7 @@
                             $("#" + id + " .product_total").text(`${product_total}`);
                             $("#total").text(total);
                         } else {
-                            alert('This Product Not Exist and will not added');
+                            alert('{{__("This Product Not Exist and will not added")}}');
                         }
                     }
                 })
@@ -397,7 +397,7 @@
                             $("#" + id + " .product_total").text(`${product_total}`);
                             $("#total").text(total);
                         } else {
-                            alert('This Product Not Exist and will not added');
+                            alert('{{__("This Product Not Exist and will not added")}}');
                         }
                     }
                 })
@@ -423,9 +423,6 @@
             child.each(function() {
                 // Getting <tr> id.
                 id = $(this).attr('id');
-
-
-
 
                 // Getting the <p> inside the .row-index class.
                 var idx = $(this).children('.row-index').children('p');
@@ -620,10 +617,10 @@
                                 $("#" + id + " .product_total").text(`${product_total}`);
                                 $("#total").text(total);
                                 $("#" + id + " #product_details").text(
-                                    `Product Name: ${data.product.name_ar}, Price: ${data.product.price}`
+                                    `{{__("Product Name: ")}}${data.product.name_ar}, {{__("Price: ")}}${data.product.price}`
                                 );
                             } else {
-                                alert('This Product Not Exist and will not added');
+                                alert('{{__("This Product Not Exist and will not added")}}');
                             }
                         }
                     })
@@ -672,7 +669,7 @@
                                 $("#" + id + " .product_total").text(`${product_total}`);
                                 $("#total").text(total);
                             } else {
-                                alert('This Product Not Exist and will not added');
+                                alert('{{__("This Product Not Exist and will not added")}}');
                             }
                         }
                     })
@@ -720,7 +717,7 @@
                                 $("#" + id + " .product_total").text(`${product_total}`);
                                 $("#total").text(total);
                             } else {
-                                alert('This Product Not Exist and will not added');
+                                alert('{{__("This Product Not Exist and will not added")}}');
                             }
                         }
                     })

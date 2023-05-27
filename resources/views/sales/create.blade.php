@@ -78,7 +78,7 @@
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                             <button id="addProduct" type="button"
-                                                class="btn btn-success btn-rounded float-right">
+                                                class="btn btn-success btn-rounded {{ App::currentLocale() == 'ar' ? 'float-left' : 'float-right' }}">
                                                 <i class="fas fa-plus-circle"></i>{{ __('New Product') }}</button>
                                         </div>
                                     </div>
@@ -207,7 +207,7 @@
                                         <button type="submit" id="save" name="save"
                                             class="btn btn-info">{{ __('Save') }}</button>
 
-                                        <a href="{{ route('products.index') }}">
+                                        <a href="{{ route('sales.index') }}">
                                             <button type="button" class="btn btn-dark">{{ __('Cancel') }}</button>
                                         </a>
                                     </div>
@@ -266,77 +266,6 @@
 @Push('js')
     <script src="{{ URL::asset('assets/libs/jquery/dist/jquery.validate.min.js') }}"></script>
     <script src="{{ URL::asset('dist/js/html5-qrcode.min.js') }}"></script>
-    {{-- <script>
-        $(document).ready(function() {
-            var today = moment().format('MM/DD/YYYY');
-            $('#date').val(today);
-            alert(today);
-
-            
-
-            function onScanSuccess(decodedText, decodedResult) {
-  // handle the scanned code as you like, for example:
-  console.log(`Code matched = ${decodedText}`, decodedResult);
-}
-
-function onScanFailure(error) {
-  // handle scan failure, usually better to ignore and keep scanning.
-  // for example:
-  console.warn(`Code scan error = ${error}`);
-}
-
-let html5QrcodeScanner = new Html5QrcodeScanner(
-  "reader",
-  { fps: 10, qrbox: {width: 250, height: 250} },
-  /* verbose= */ false);
-html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-
-
-        const html5QrCode = new Html5Qrcode("reader");
-        const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-            /* handle success */
-            console.log(`Scan result: ${decodedText}`, decodedResult);
-            document.getElementById('kode_barang').value=decodedText;
-            // ...
-            html5QrcodeScanner.clear();
-        };
-        const config = { fps: 10, qrbox: 250 };// Select front camera or fail with `OverconstrainedError`.
-        // html5QrCode.start({ facingMode: { exact: "environment"} }, config, qrCodeSuccessCallback);
-
-
-        $("#btnsearch").click(function(e){
-            // This method will trigger user permissions
-Html5Qrcode.getCameras().then(devices => {
-  /**
-   * devices would be an array of objects of type:
-   * { id: "id", label: "label" }
-   */
-  if (devices && devices.length) {
-    var cameraId = devices[0].id;
-    // .. use this to start scanning.
-  }
-}).catch(err => {
-  // handle err
-});
-        html5QrCode.start({ facingMode: { exact: "environment"} }, config, qrCodeSuccessCallback);
-            // e.preventDefault();
-            // var url = $("#Delete").attr("href");
-            // var id = url.substring(url.lastIndexOf('/') + 1);
-            // $.ajax({
-            //     headers: {
-            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //     },
-            //     url: url,
-            //     type: 'DELETE',
-            //     success: function(result) {
-            //         $('#DangerModalhdbgcl').modal('toggle');
-            //         $('table#table tr#'+id).remove();
-            //     }
-            // });
-        });
-        html5QrCode.start({ facingMode: { exact: "user"} }, config, qrCodeSuccessCallback);
-        });
-        </script> --}}
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -461,10 +390,10 @@ Html5Qrcode.getCameras().then(devices => {
                                 $("#" + id + " .product_total").text(`${product_total}`);
                                 $("#total").text(total + " DA");
                                 $("#" + id + " #product_details").text(
-                                    `Product Name: ${data.product.name_ar}, Price: ${data.product.price}`
+                                    `{{ __('Product Name: ') }}${data.product.name_ar}, {{ __('Price: ') }}${data.product.price}`
                                 );
                             } else {
-                                alert('This Product Not Exist an will not added');
+                                alert('{{ __("This Product Not Exist and will not added") }}');
                             }
                         }
                     })
@@ -511,7 +440,7 @@ Html5Qrcode.getCameras().then(devices => {
                                 $("#" + id + " .product_total").text(`${product_total}`);
                                 $("#total").text(total + " DA");
                             } else {
-                                alert('This Product Not Exist an will not added');
+                                alert('{{ __("This Product Not Exist and will not added") }}');
                             }
                         }
                     })
@@ -558,7 +487,7 @@ Html5Qrcode.getCameras().then(devices => {
                                 $("#" + id + " .product_total").text(`${product_total}`);
                                 $("#total").text(total + " DA");
                             } else {
-                                alert('This Product Not Exist an will not added');
+                                alert('{{ __("This Product Not Exist and will not added") }}');
                             }
                         }
                     })

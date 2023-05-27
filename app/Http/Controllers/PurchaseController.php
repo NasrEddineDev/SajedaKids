@@ -89,7 +89,7 @@ class PurchaseController extends Controller
                 $total = $purchasedProduct->price * $purchasedProduct->quantity;
                 $purchaseItem = new PurchaseItem([
                     'total_amount' => $total,
-                    'quantity' => $purchasedProduct->quantity ? $purchasedProduct->quantity : 0,
+                    'quantity' => $purchasedProduct->quantity,
                     'price' => $purchasedProduct->price,
                     'date' => $request->input('date') ? $request->input('date') : '',
                     'description' => '',
@@ -103,7 +103,8 @@ class PurchaseController extends Controller
                 ]);
                 $purchaseItem->save();
                 $net_amount += $total;
-                // $product->quantity = $product->quantity + $purchasedProduct->quantity;
+                $product->quantity = $product->quantity + $purchasedProduct->quantity;
+                $product->update();
             }
             $purchase->net_amount = $net_amount;
             $purchase->total_amount = $net_amount;
@@ -176,16 +177,21 @@ class PurchaseController extends Controller
                 $purchase->user_id = Auth::User()->id;
                 $purchase->save();
 
+                foreach ($purchase->purchaseItems as $purchaseItem) {
+                    $product = Product::where('SKU', $purchaseItem->product_sku)->first();
+                    $product->quantity = $product->quantity - $purchaseItem->quantity;
+                    $product->update();
+                }
                 $purchase->purchaseItems()->delete();
+
                 $net_amount = 0;
                 $purchasedProducts = collect((array)json_decode($request->input('products')));
                 foreach ($purchasedProducts as $purchasedProduct) {
-
                     $product = Product::where('SKU', $purchasedProduct->SKU)->first();
                     $total = $purchasedProduct->price * $purchasedProduct->quantity;
                     $purchaseItem = new PurchaseItem([
                         'total_amount' => $total,
-                        'Quantity' => $purchasedProduct->quantity,
+                        'quantity' => $purchasedProduct->quantity,
                         'price' => $purchasedProduct->price,
                         'date' => $request->input('date') ? $request->input('date') : '',
                         'description' => '',
@@ -199,6 +205,8 @@ class PurchaseController extends Controller
                     ]);
                     $purchaseItem->save();
                     $net_amount += $total;
+                    $product->quantity = $product->quantity + $purchaseItem->quantity;
+                    $product->update();
                 }
                 $purchase->net_amount = $net_amount;
                 $purchase->total_amount = $net_amount;

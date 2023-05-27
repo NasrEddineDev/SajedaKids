@@ -19,7 +19,7 @@ class SaleItem extends Model
      */
     protected $fillable = [
         'total_amount',
-        'Quantity',
+        'quantity',
         'discount',
         'date',
         'description',
