@@ -220,9 +220,28 @@
 
         </div>
     </div>
-
+    <div class="modal fade" id="scanBareCodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{ __("Scan the barcode") }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <span aria-hidden="true">{{ __("Put the camera in the correct position") }}</span><br />
+                <div id="reader" width="600px"></div>
+                {{ __("Product SKU: ") }}<strong><span id='productSKU'></span><br /></strong>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id='cancel' name='cancel' class="btn btn-success" data-dismiss="modal">{{ __("Close") }}</button>
+            </div>
+        </div>
+    </div>
+</div>
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -241,7 +260,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 @endsection
 
 @Push('js')
@@ -252,6 +271,8 @@
             var today = moment().format('MM/DD/YYYY');
             $('#date').val(today);
             alert(today);
+
+            
 
             function onScanSuccess(decodedText, decodedResult) {
   // handle the scanned code as you like, for example:
@@ -320,15 +341,37 @@ Html5Qrcode.getCameras().then(devices => {
     <script type="text/javascript">
         $(document).ready(function() {
 
+            function onScanSuccess(decodedText, decodedResult) {
+            // Handle on success condition with the decoded text or result.
+            document.getElementById("SKU").innerHTML = decodedText;
+            $('#scanBareCodeModal #productSKU').text(decodedText);
+            console.log(`Scan result: ${decodedText}`, decodedResult);
+        }
+
+        var html5QrcodeScanner = new Html5QrcodeScanner(
+            "reader", {
+                fps: 10,
+                qrbox: {
+                    width: 250,
+                    height: 250,
+                }
+            });
+        html5QrcodeScanner.render(onScanSuccess);
+
+        $(document).on("click", "#scanBareCode", function(e) {
+            e.preventDefault();
+            $("#barcode").val('0').change();
+            $('#scanBareCodeModal').modal('show');
+        });
             /****************************************
              *          Create Sale Table           *
              ****************************************/
-            var products_table = $('#sale_table').DataTable({
-                "autoWidth": false,
-                "searching": false,
-                "paging": false,
-                "info": false
-            });
+            // var products_table = $('#sale_table').DataTable({
+            //     "autoWidth": false,
+            //     "searching": false,
+            //     "paging": false,
+            //     "info": false
+            // });
 
             // Denotes total number of rows.
             document.getElementById('date').valueAsDate = new Date();
@@ -347,7 +390,7 @@ Html5Qrcode.getCameras().then(devices => {
                         <input type="text" class="form-control" id="SKU" name="SKU" placeholder="رقم الكود"
                         aria-label="${"{{ __('SKU') }}"}" aria-describedby="basic-addon2" required>
                         <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button"  data-toggle="modal" data-target="#exampleModal">
+                            <button class="btn btn-outline-secondary" id="scanBareCode" type="button"  data-toggle="modal" data-target="#exampleModal">
                             <i class="fas fa-barcode"></i></button>
                         </div>
                     </div>

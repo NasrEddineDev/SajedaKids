@@ -33,7 +33,7 @@
                                         <span
                                             class="badge bg-primary font-12 text-white font-weight-medium badge-pill ml-2 d-lg-block d-md-none">+18.33%</span>
                                     </div>
-                                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">New Clients</h6>
+                                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">{{__('New Clients')}}</h6>
                                 </div>
                                 <div class="ml-auto mt-md-3 mt-lg-0">
                                     <span class="opacity-7 text-muted"><i data-feather="user-plus"></i></span>
@@ -47,7 +47,7 @@
                                 <div>
                                     <h2 class="text-dark mb-1 w-100 text-truncate font-weight-medium"><sup
                                             class="set-doller">$</sup>18,306</h2>
-                                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Earnings of Month
+                                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">{{__('Earnings of Month')}}
                                     </h6>
                                 </div>
                                 <div class="ml-auto mt-md-3 mt-lg-0">
@@ -65,7 +65,7 @@
                                         <span
                                             class="badge bg-danger font-12 text-white font-weight-medium badge-pill ml-2 d-md-none d-lg-block">-18.33%</span>
                                     </div>
-                                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">New Projects</h6>
+                                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">{{__('New Products')}}</h6>
                                 </div>
                                 <div class="ml-auto mt-md-3 mt-lg-0">
                                     <span class="opacity-7 text-muted"><i data-feather="file-plus"></i></span>
@@ -78,7 +78,7 @@
                             <div class="d-flex d-lg-flex d-md-block align-items-center">
                                 <div>
                                     <h2 class="text-dark mb-1 font-weight-medium">864</h2>
-                                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Projects</h6>
+                                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">{{__('Products')}}</h6>
                                 </div>
                                 <div class="ml-auto mt-md-3 mt-lg-0">
                                     <span class="opacity-7 text-muted"><i data-feather="globe"></i></span>
@@ -97,22 +97,22 @@
                     <div class="col-lg-4 col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Total Sales</h4>
+                                <h4 class="card-title">{{__('Total Sales')}}</h4>
                                 <div id="campaign-v2" class="mt-2" style="height:283px; width:100%;"></div>
                                 <ul class="list-style-none mb-0">
                                     <li>
                                         <i class="fas fa-circle text-primary font-10 mr-2"></i>
-                                        <span class="text-muted">Direct Sales</span>
+                                        <span class="text-muted">{{__('Direct Sales')}}</span>
                                         <span class="text-dark float-right font-weight-medium">$2346</span>
                                     </li>
                                     <li class="mt-3">
                                         <i class="fas fa-circle text-danger font-10 mr-2"></i>
-                                        <span class="text-muted">Referral Sales</span>
+                                        <span class="text-muted">{{__('Online Sales')}}</span>
                                         <span class="text-dark float-right font-weight-medium">$2108</span>
                                     </li>
                                     <li class="mt-3">
                                         <i class="fas fa-circle text-cyan font-10 mr-2"></i>
-                                        <span class="text-muted">Affiliate Sales</span>
+                                        <span class="text-muted">{{__('Installment Sales')}}</span>
                                         <span class="text-dark float-right font-weight-medium">$1204</span>
                                     </li>
                                 </ul>
@@ -122,10 +122,10 @@
                     <div class="col-lg-4 col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Net Income</h4>
+                                <h4 class="card-title">{{__('Net Income')}}</h4>
                                 <div class="net-income mt-4 position-relative" style="height:294px;"></div>
                                 <ul class="list-inline text-center mt-5 mb-2">
-                                    <li class="list-inline-item text-muted font-italic">Sales for this month</li>
+                                    <li class="list-inline-item text-muted font-italic">{{__('Sales for this month')}}</li>
                                 </ul>
                             </div>
                         </div>
@@ -133,13 +133,13 @@
                     <div class="col-lg-4 col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title mb-4">Earning by Location</h4>
+                                <h4 class="card-title mb-4">{{__('Earning by Location')}}</h4>
                                 <div class="" style="height:180px">
                                     <div id="visitbylocate" style="height:100%"></div>
                                 </div>
                                 <div class="row mb-3 align-items-center mt-1 mt-5">
                                     <div class="col-4 text-right">
-                                        <span class="text-muted font-14">India</span>
+                                        <span class="text-muted font-14">Frenda</span>
                                     </div>
                                     <div class="col-5">
                                         <div class="progress" style="height: 5px;">
@@ -153,7 +153,7 @@
                                 </div>
                                 <div class="row mb-3 align-items-center">
                                     <div class="col-4 text-right">
-                                        <span class="text-muted font-14">UK</span>
+                                        <span class="text-muted font-14">Alger</span>
                                     </div>
                                     <div class="col-5">
                                         <div class="progress" style="height: 5px;">
@@ -167,7 +167,7 @@
                                 </div>
                                 <div class="row mb-3 align-items-center">
                                     <div class="col-4 text-right">
-                                        <span class="text-muted font-14">USA</span>
+                                        <span class="text-muted font-14">Ain mesbah</span>
                                     </div>
                                     <div class="col-5">
                                         <div class="progress" style="height: 5px;">
@@ -181,7 +181,7 @@
                                 </div>
                                 <div class="row align-items-center">
                                     <div class="col-4 text-right">
-                                        <span class="text-muted font-14">China</span>
+                                        <span class="text-muted font-14">Karman</span>
                                     </div>
                                     <div class="col-5">
                                         <div class="progress" style="height: 5px;">
@@ -208,7 +208,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex align-items-start">
-                                    <h4 class="card-title mb-0">Earning Statistics</h4>
+                                    <h4 class="card-title mb-0">{{__('Earning Statistics')}}</h4>
                                     <div class="ml-auto">
                                         <div class="dropdown sub-dropdown">
                                             <button class="btn btn-link text-muted dropdown-toggle" type="button"
@@ -217,9 +217,9 @@
                                                 <i data-feather="more-vertical"></i>
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd1">
-                                                <a class="dropdown-item" href="#">Insert</a>
-                                                <a class="dropdown-item" href="#">Update</a>
-                                                <a class="dropdown-item" href="#">Delete</a>
+                                                <a class="dropdown-item" href="#">{{__('Insert')}}</a>
+                                                <a class="dropdown-item" href="#">{{__('Update')}}</a>
+                                                <a class="dropdown-item" href="#">{{__('Delete')}}</a>
                                             </div>
                                         </div>
                                     </div>
@@ -228,7 +228,7 @@
                                     <div class="stats ct-charts position-relative" style="height: 315px;"></div>
                                 </div>
                                 <ul class="list-inline text-center mt-4 mb-0">
-                                    <li class="list-inline-item text-muted font-italic">Earnings for this month</li>
+                                    <li class="list-inline-item text-muted font-italic">{{__('Earnings for this month')}}</li>
                                 </ul>
                             </div>
                         </div>
@@ -236,7 +236,7 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Recent Activity</h4>
+                                <h4 class="card-title">{{__('Recent Activity')}}</h4>
                                 <div class="mt-4 activity">
                                     <div class="d-flex align-items-start border-left-line pb-3">
                                         <div>
@@ -245,7 +245,7 @@
                                             </a>
                                         </div>
                                         <div class="ml-3 mt-2">
-                                            <h5 class="text-dark font-weight-medium mb-2">New Product Sold!</h5>
+                                            <h5 class="text-dark font-weight-medium mb-2">{{__('New Product Sold!')}}</h5>
                                             <p class="font-14 mb-2 text-muted">John Musa just purchased <br> Cannon 5M
                                                 Camera.
                                             </p>
@@ -260,7 +260,7 @@
                                             </a>
                                         </div>
                                         <div class="ml-3 mt-2">
-                                            <h5 class="text-dark font-weight-medium mb-2">New Support Ticket</h5>
+                                            <h5 class="text-dark font-weight-medium mb-2">{{__('New Support Ticket')}}</h5>
                                             <p class="font-14 mb-2 text-muted">Richardson just create support <br>
                                                 ticket</p>
                                             <span class="font-weight-light font-14 text-muted">25 Minutes Ago</span>
@@ -273,7 +273,7 @@
                                             </a>
                                         </div>
                                         <div class="ml-3 mt-2">
-                                            <h5 class="text-dark font-weight-medium mb-2">Notification Pending Order!
+                                            <h5 class="text-dark font-weight-medium mb-2">{{__('Notification Pending Order!')}}
                                             </h5>
                                             <p class="font-14 mb-2 text-muted">One Pending order from Ryne <br> Doe</p>
                                             <span class="font-weight-light font-14 mb-1 d-block text-muted">2 Hours
@@ -297,7 +297,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex align-items-center mb-4">
-                                    <h4 class="card-title">Top Leaders</h4>
+                                    <h4 class="card-title">{{__('Top Employees')}}</h4>
                                     <div class="ml-auto">
                                         <div class="dropdown sub-dropdown">
                                             <button class="btn btn-link text-muted dropdown-toggle" type="button"
@@ -306,9 +306,9 @@
                                                 <i data-feather="more-vertical"></i>
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd1">
-                                                <a class="dropdown-item" href="#">Insert</a>
-                                                <a class="dropdown-item" href="#">Update</a>
-                                                <a class="dropdown-item" href="#">Delete</a>
+                                                <a class="dropdown-item" href="#">{{__('Insert')}}</a>
+                                                <a class="dropdown-item" href="#">{{__('Update')}}</a>
+                                                <a class="dropdown-item" href="#">{{__('Delete')}}</a>
                                             </div>
                                         </div>
                                     </div>
@@ -317,18 +317,18 @@
                                     <table class="table no-wrap v-middle mb-0">
                                         <thead>
                                             <tr class="border-0">
-                                                <th class="border-0 font-14 font-weight-medium text-muted">Team Lead
+                                                <th class="border-0 font-14 font-weight-medium text-muted">{{__('Employee')}}
                                                 </th>
-                                                <th class="border-0 font-14 font-weight-medium text-muted px-2">Project
+                                                <th class="border-0 font-14 font-weight-medium text-muted px-2">{{__('Store')}}
                                                 </th>
-                                                <th class="border-0 font-14 font-weight-medium text-muted">Team</th>
+                                                <th class="border-0 font-14 font-weight-medium text-muted">{{__('Products')}}</th>
                                                 <th class="border-0 font-14 font-weight-medium text-muted text-center">
-                                                    Status
+                                                    {{__('Status')}}
                                                 </th>
                                                 <th class="border-0 font-14 font-weight-medium text-muted text-center">
-                                                    Weeks
+                                                    {{__('Weeks')}}
                                                 </th>
-                                                <th class="border-0 font-14 font-weight-medium text-muted">Budget</th>
+                                                <th class="border-0 font-14 font-weight-medium text-muted">{{__('Budget')}}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -336,7 +336,7 @@
                                                 <td class="border-top-0 px-2 py-4">
                                                     <div class="d-flex no-block align-items-center">
                                                         <div class="mr-3"><img
-                                                                src="../assets/images/users/widget-table-pic1.jpg"
+                                                                src="../assets/images/users/widget-table-pic3.jpg"
                                                                 alt="user" class="rounded-circle" width="45"
                                                                 height="45" /></div>
                                                         <div class="">
@@ -441,7 +441,7 @@
                                                 <td class="px-2 py-4">
                                                     <div class="d-flex no-block align-items-center">
                                                         <div class="mr-3"><img
-                                                                src="../assets/images/users/widget-table-pic4.jpg"
+                                                                src="../assets/images/users/widget-table-pic2.jpg"
                                                                 alt="user" class="rounded-circle" width="45"
                                                                 height="45" /></div>
                                                         <div class="">
@@ -483,7 +483,7 @@
     <!-- ============================================================== -->
 @endsection
 
-@Push('js') 
+@Push('js')
     <!--This page JavaScript -->
 
     <script src="{{ URL::asset('assets/extra-libs/c3/d3.min.js') }}"></script>

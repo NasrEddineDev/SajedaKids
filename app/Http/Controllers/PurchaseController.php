@@ -89,7 +89,7 @@ class PurchaseController extends Controller
                 $total = $purchasedProduct->price * $purchasedProduct->quantity;
                 $purchaseItem = new PurchaseItem([
                     'total_amount' => $total,
-                    'Quantity' => $purchasedProduct->quantity,
+                    'quantity' => $purchasedProduct->quantity ? $purchasedProduct->quantity : 0,
                     'price' => $purchasedProduct->price,
                     'date' => $request->input('date') ? $request->input('date') : '',
                     'description' => '',
@@ -103,6 +103,7 @@ class PurchaseController extends Controller
                 ]);
                 $purchaseItem->save();
                 $net_amount += $total;
+                // $product->quantity = $product->quantity + $purchasedProduct->quantity;
             }
             $purchase->net_amount = $net_amount;
             $purchase->total_amount = $net_amount;

@@ -15,7 +15,7 @@
 <meta name="author" content="">
 <!-- Favicon icon -->
 <link rel="icon" type="image/png" sizes="16x16" href="{{ URL::asset('img/logo.jpg') }}">
-<title>Adminmart Template - The Ultimate Multipurpose admin template</title>
+<title>{{ __("Sajeda Kids")}}</title>
 <!-- This page plugin CSS -->
 <link rel="stylesheet" href="{{ URL::asset('assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css') }}" />
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />

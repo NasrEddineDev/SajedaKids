@@ -16,7 +16,7 @@
     <!--Menu sidebar -->
     <script src="{{ URL::asset('dist/js/sidebarmenu.js') }}"></script>
     <!--Custom JavaScript -->
-    <script src="{{ URL::asset('dist/js/custom.min.js') }}"></script>
+    <!-- <script src="{{ URL::asset('dist/js/custom.min.js') }}"></script> -->
     <script src="{{ URL::asset('dist/js/custom.js') }}"></script>
     <!--This page plugins -->
     <script src="{{ URL::asset('assets/extra-libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>

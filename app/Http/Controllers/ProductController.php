@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use File;
+use DNS1D;
 use Storage;
+use Image;
 use App\Models\Product;
 use App\Models\Company;
 use App\Models\Category;
@@ -83,10 +85,11 @@ class ProductController extends Controller
                 'name_ar' => $request->input('name_ar') ? $request->input('name_ar') : '',
                 'name_en' => $request->input('name_en') ? $request->input('name_en') : '',
                 'name_fr' => $request->input('name_fr') ? $request->input('name_fr') : '',
-                'brand_id' => $request->input('brand_id') ? $request->input('brand_id') : '',
+                'brand_id' => $request->input('brand_id') ? $request->input('brand_id') : null,
                 'image' => '',
+                // 'quantity' => 0,
                 'active' => true,
-                'category_id' => $request->input('category_id') ? $request->input('category_id') : '',
+                'category_id' => $request->input('category_id') ? $request->input('category_id') : null,
                 'code' => $request->input('code') ? $request->input('code') : '',
                 'description' => $request->input('description') ? $request->input('description') : '',
                 'price' => $request->input('price') ? $request->input('price') : '',
@@ -101,7 +104,7 @@ class ProductController extends Controller
 
             $destinationPath = 'companies/' . (Auth::User()->company->id) . '/' . 'products/';
             $file = $request->file('image');
-            if ($file){
+            if ($file) {
                 $fileName = $product->id . '.' . $file->getClientOriginalExtension();
                 Storage::disk('public')->put($destinationPath . $fileName, file_get_contents($file));
                 $product->image = $fileName;
@@ -181,7 +184,7 @@ class ProductController extends Controller
             $destinationPath = 'companies/' . (Auth::User()->company->id) . '/' . 'products/';
             $file = $request->file('image');
             //to do: delete old image
-            if ($file){
+            if ($file) {
                 $fileName = $product->id . '.' . $file->getClientOriginalExtension();
                 Storage::disk('public')->put($destinationPath . $fileName, file_get_contents($file));
                 $product->image = $fileName;
@@ -269,6 +272,138 @@ class ProductController extends Controller
         try {
             $products = Product::all();
             return view('products.barcodes', compact('products'));
+        } catch (Throwable $e) {
+            // report($e);
+            // Log::error($e->getMessage());
+
+            return false;
+        }
+    }
+
+    public function getNewBarcode()
+    {
+        //
+        try {
+            $product = 'test';
+            $barcode = '';
+            while ($product) {
+                $barcode = rand(1000000000, 9999999999);
+                $product = Product::where('SKU', $barcode)->first();
+            }
+            $path = DNS1D::getBarcodePNGPath((string)$barcode, 'UPCA');
+            return response()->json(['barcode' => $barcode, 'path' => $path]);
+        } catch (Throwable $e) {
+            // report($e);
+            // Log::error($e->getMessage());
+
+            return false;
+        }
+    }
+
+    // public function getBarcode($product_id)
+    // {
+    //     //
+    //     try {
+    //         $product = Product::find($product_id)->first();
+    //         if ($product) {
+    //             $path = DNS1D::getBarcodePNGPath($product->SKU, 'UPCA');
+    //             return response()->json([ 'barcode' => $product->SKU, 'path' => $path]);
+    //         }
+    //         return response()->json([ 'message' => 'Product not found']);
+    //         } catch (Throwable $e) {
+    //         // report($e);
+    //         // Log::error($e->getMessage());
+
+    //         return false;
+    //     }
+    // }
+    public function downloadsBarcodeImage(){
+        $path = "/barcodes/print.jpg";
+        return response()->download(public_path($path));
+    }
+    public function printBarcode(Request $request)
+    {
+        //
+        try {
+            $product = Product::where('id', $request->product_id)->first();
+            if ($product) {
+
+                $barcode_width = 131;
+                $barcode_height = 66;
+
+                $source_image = 'barcodes/white_40_20m.jpg';
+                $destination_image = 'barcodes/print.jpg';
+                $destination_file = 'barcodes/print.pdf';
+                $path_barcode = 'barcodes/temp.png';
+                //TODO: check error
+                // Image::make(file_get_contents(base64_decode(
+                //     DNS1D::getBarcodePNGPath((string)rand(1000000000, 9999999999), 'UPCA', 2,63,array(0,0,0), true)
+                // )))->save($path_barcode);
+
+
+                // \Storage::disk('public')->put($path_barcode,);
+                // public_path("/barcodes")
+                // $path_barcode = DNS1D::getBarcodePNGPath((string)rand(1000000000, 9999999999), 'UPCA', 1,63,array(0,0,0), true);
+                $img = Image::make($source_image);
+                $img->resize(151, 76);
+                // $img->resize(300, 300);
+
+                // $img->text($product->SKU, 50, 10, function($font) {
+                //     $font->file('dist/css/fonts/Gilmer-Bold.ttf');
+                //     $font->size(16);
+                //     $font->color('#000');
+                //     $font->align('center');
+                //     $font->valign('top');
+                //     $font->angle(0);
+                // });
+
+                if ($request->add_product_price) {
+                    $img->text($product->price, 50, 50, function ($font) {
+                        $font->size(100);
+                        $font->color('#e1e1e1');
+                        $font->align('center');
+                        $font->valign('bottom');
+                        $font->angle(90);
+                    });
+                }
+
+                if ($request->add_product_name) {
+                    $img->text($product->price, 20, 20, function ($font) {
+                        $font->size(100);
+                        $font->color('#e1e1e1');
+                        $font->align('center');
+                        $font->valign('bottom');
+                        $font->angle(90);
+                    });
+                }
+                $path_barcode11 = DNS1D::getBarcodePNGPath($product->SKU, 'UPCA', 1,63,array(0,0,0), true);
+
+                // $barcode = Image::make('barcodes8590604653.png');
+                $barcode = Image::make(public_path($path_barcode11));
+                $barcode->resize($barcode_width, $barcode_height);
+                $barcode->save($path_barcode);
+                $img->insert($path_barcode, 'top-right', 10, 10);
+
+                $img->save($destination_image);
+                //TODO: delete the barcode image
+                return response()->json(['barcode' => $product->SKU, 'path' =>url($destination_image)]);
+            }
+            return response()->json(['message' => 'Product not found']);
+
+            $product = 'test';
+            $barcode = '';
+            while ($product) {
+                $barcode = rand(1000000000, 9999999999);;
+                $product = Product::where('SKU', $barcode)->first();
+            }
+
+            $path_barcode = DNS1D::getBarcodePNGPath((string)$barcode, 'UPCA');
+            $img = Image::make($source_image);
+            // $img->resize(300, 300);
+            $img->insert($path_barcode, 'top-right', 50, 50);
+            $img->save($destination_image);
+
+            return response()->json(['path' => $destination_image]);
         } catch (Throwable $e) {
             // report($e);
             // Log::error($e->getMessage());

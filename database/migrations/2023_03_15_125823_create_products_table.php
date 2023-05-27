@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('image');
             $table->double('price');
             $table->double('discount');
+            $table->double('quantity');
             $table->string('description');
             $table->integer('company_id')->unsigned();
             $table->integer('brand_id')->unsigned()->nullable();

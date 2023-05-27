@@ -112,7 +112,8 @@ $(function () {
         //     selector: 'td:nth-child(2)'
         // },
         // responsive: true
-        searching: false, paging: false, info: false,
+        "ordering": false,
+        "searching": false, "paging": false, "info": false,
         "aLengthMenu": [
             [5, 10, 25, -1],
             [5, 10, 25, "All"]
@@ -145,7 +146,8 @@ $(function () {
         //     selector: 'td:nth-child(2)'
         // },
         // responsive: true
-        searching: false, paging: false, info: false,
+        "ordering": false,
+        "searching": false, "paging": false, "info": false,
         "aLengthMenu": [
             [5, 10, 25, -1],
             [5, 10, 25, "All"]

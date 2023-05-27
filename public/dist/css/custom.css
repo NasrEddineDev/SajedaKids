@@ -1,1 +1,23 @@
 
+input#SKU + .input-group-append{
+    width: 30%;
+}
+.custom-file{
+    text-align: left;
+}
+#printModal .form-check-label{
+    margin: 0px 25px;
+}
+#printModal .form-check{
+    text-align: center;
+}
+
+#printModal .modal-body{
+    text-align: center;
+}
+
+@media (max-width: 767.98px) {
+.topbar .top-navbar .navbar-nav>.nav-item>.nav-link {
+    line-height: 38px;
+}
+}

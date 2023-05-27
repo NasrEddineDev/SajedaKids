@@ -130,14 +130,14 @@
                         <i data-feather="settings" class="svg-icon"></i>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{{route('settings.barcodes')}}">{{__('Barcode')}}</a>
+                        <a class="dropdown-item" href="#" disable>{{__('Barcode')}}</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Another action</a>
                         <a class="dropdown-item" href="#">Something else here</a>
                     </div>
                 </li>
-                <li class="nav-item d-none d-md-block">
-                    <a class="nav-link" href="javascript:void(0)">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#">
                         <div class="customize-input">
                             <select onchange="changeLanguage()" id="changeLanguage"
                                 class="custom-select form-control bg-white custom-radius custom-shadow border-0">
