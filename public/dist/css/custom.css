@@ -9,7 +9,7 @@ input#SKU + .input-group-append{
     margin: 0px 25px;
 }
 #printModal .form-check{
-    text-align: center;
+    text-align: right;
 }
 
 #printModal .modal-body{

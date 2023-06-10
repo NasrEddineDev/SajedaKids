@@ -172,8 +172,8 @@ class ProductController extends Controller
             $product = Product::find($request->product_id);
             $product->SKU = $request->input('SKU');
             $product->name_ar = $request->input('name_ar');
-            // $product->name_en = $request->input('name_en');
-            $product->name_fr = $request->input('name_fr');
+            // $product->name_en = $request->input('name_en') ? $request->input('name_en') : '';
+            $product->name_fr = $request->input('name_fr') ? $request->input('name_fr') : '';
             $product->description = $request->input('description') ? $request->input('description') : '';
             $product->code = $request->input('code') ? $request->input('code') : '';
             $product->price = $request->input('price') ? $request->input('price') : '';
@@ -290,7 +290,7 @@ class ProductController extends Controller
                 $barcode = rand(1000000000, 9999999999);
                 $product = Product::where('SKU', $barcode)->first();
             }
-            $path = DNS1D::getBarcodePNGPath((string)$barcode, 'UPCA');
+            $path = DNS1D::getBarcodePNGPath((string)$barcode, 'EAN13');
             return response()->json(['barcode' => $barcode, 'path' => $path]);
         } catch (Throwable $e) {
             // report($e);
@@ -306,7 +306,7 @@ class ProductController extends Controller
     //     try {
     //         $product = Product::find($product_id)->first();
     //         if ($product) {
-    //             $path = DNS1D::getBarcodePNGPath($product->SKU, 'UPCA');
+    //             $path = DNS1D::getBarcodePNGPath($product->SKU, 'EAN13');
     //             return response()->json([ 'barcode' => $product->SKU, 'path' => $path]);
     //         }
     //         return response()->json([ 'message' => 'Product not found']);
@@ -317,17 +317,21 @@ class ProductController extends Controller
     //         return false;
     //     }
     // }
-    public function downloadsBarcodeImage(){
+    public function downloadsBarcodeImage()
+    {
         $path = "/barcodes/print.jpg";
         return response()->download(public_path($path));
     }
+
     public function printBarcode(Request $request)
     {
         //
         try {
             $product = Product::where('id', $request->product_id)->first();
+            //return response()->json(['request' => $request->all()]);
             if ($product) {
 
+                //40mmX20mm
                 $barcode_width = 131;
                 $barcode_height = 66;
 
@@ -337,56 +341,83 @@ class ProductController extends Controller
                 $path_barcode = 'barcodes/temp.png';
                 //TODO: check error
                 // Image::make(file_get_contents(base64_decode(
-                //     DNS1D::getBarcodePNGPath((string)rand(1000000000, 9999999999), 'UPCA', 2,63,array(0,0,0), true)
+                //     DNS1D::getBarcodePNGPath((string)rand(1000000000, 9999999999), 'EAN13', 2,63,array(0,0,0), true)
                 // )))->save($path_barcode);
-
 
                 // \Storage::disk('public')->put($path_barcode,);
                 // public_path("/barcodes")
-                // $path_barcode = DNS1D::getBarcodePNGPath((string)rand(1000000000, 9999999999), 'UPCA', 1,63,array(0,0,0), true);
+                // $path_barcode = DNS1D::getBarcodePNGPath((string)rand(1000000000, 9999999999), 'EAN13', 1,63,array(0,0,0), true);
+
                 $img = Image::make($source_image);
                 $img->resize(151, 76);
-                // $img->resize(300, 300);
 
-                // $img->text($product->SKU, 50, 10, function($font) {
-                //     $font->file('dist/css/fonts/Gilmer-Bold.ttf');
-                //     $font->size(16);
-                //     $font->color('#000');
-                //     $font->align('center');
-                //     $font->valign('top');
-                //     $font->angle(0);
+                if ($request->add_product_price == "true") {
+                    $name = (App()->currentLocale() ==  'ar' ? 'جد ' . $product->price : $product->price . ' DA');
+                    $x = 40;
+                    $y = 19;
+                    $img->text($name, $x, $y, function ($font) {
+                        $font->file('dist/css/fonts/arial.ttf');
+                        $font->size(18);
+                        $font->color('#000000');
+                        $font->align('center');
+                        $font->valign('bottom');
+                        // $font->angle(90);
+                    });
+                }
+
+                // $Arabic = new I18N_Arabic('Glyphs');
+                // $name = $Arabic->utf8Glyphs($student->name_ar);
+                // $img->text($name, 800, 220, function ($font) {
+                //     $font->file('fonts/trado.ttf');
+                //     $font->size(40);
+                //     $font->align('right');
                 // });
-
-                if ($request->add_product_price) {
-                    $img->text($product->price, 50, 50, function ($font) {
-                        $font->size(100);
-                        $font->color('#e1e1e1');
+                if ($request->add_product_name == "true") {
+                    $name = '';
+                    if (!preg_match('/[^A-Za-z0-9]/', $product->name)) $name = $product->name;
+                    else{
+                        $persian_text_rev = \PersianRender\PersianRender::render($product->name);
+                        for ($i = mb_strlen($persian_text_rev); $i >= 0; $i--) {
+                            $name .= mb_substr($persian_text_rev, $i, 1);
+                        }
+                    }
+                    $x = 114;
+                    $y = 19;
+                    $img->text($name, $x, $y, function ($font) {
+                        $font->file('dist/css/fonts/arial.ttf');
+                        $font->size(18);
+                        $font->color('#000000');
                         $font->align('center');
                         $font->valign('bottom');
-                        $font->angle(90);
                     });
                 }
 
-                if ($request->add_product_name) {
-                    $img->text($product->price, 20, 20, function ($font) {
-                        $font->size(100);
-                        $font->color('#e1e1e1');
+                if ($request->add_product_barcode == "true") {
+                    $path_barcode11 = DNS1D::getBarcodePNGPath((string)$product->SKU, 'EAN13'); //, 1,23,array(0,0,0), true);
+                    $barcode = Image::make(public_path($path_barcode11));
+                    $barcode->resize($barcode_width, $barcode_height - 30);
+                    $barcode->save($path_barcode);
+                    $img->insert($path_barcode, 'top-right', 10, 20);
+
+                    $name = $product->SKU;
+                    $x = 75;
+                    $y = 72;
+                    $img->text($name, $x, $y, function ($font) {
+                        $font->file('dist/css/fonts/arial.ttf');
+                        $font->size(18);
+                        $font->color('#000000');
                         $font->align('center');
                         $font->valign('bottom');
-                        $font->angle(90);
                     });
                 }
-                $path_barcode11 = DNS1D::getBarcodePNGPath($product->SKU, 'UPCA', 1,63,array(0,0,0), true);
-
-                // $barcode = Image::make('barcodes8590604653.png');
-                $barcode = Image::make(public_path($path_barcode11));
-                $barcode->resize($barcode_width, $barcode_height);
-                $barcode->save($path_barcode);
-                $img->insert($path_barcode, 'top-right', 10, 10);
 
                 $img->save($destination_image);
                 //TODO: delete the barcode image
-                return response()->json(['barcode' => $product->SKU, 'path' =>url($destination_image)]);
+                return response()->json([
+                    'barcode' => $product->SKU,
+                    'path' => url($destination_image),
+                    'request' => $request->all()
+                ]);
             }
             return response()->json(['message' => 'Product not found']);
 
@@ -397,7 +428,7 @@ class ProductController extends Controller
                 $product = Product::where('SKU', $barcode)->first();
             }
 
-            $path_barcode = DNS1D::getBarcodePNGPath((string)$barcode, 'UPCA');
+            $path_barcode = DNS1D::getBarcodePNGPath((string)$barcode, 'EAN13');
             $img = Image::make($source_image);
             // $img->resize(300, 300);
             $img->insert($path_barcode, 'top-right', 50, 50);

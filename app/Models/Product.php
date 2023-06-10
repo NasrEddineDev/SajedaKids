@@ -30,7 +30,7 @@ class Product extends Model
 
     public function getNameAttribute()
     {
-        return App::currentLocale() == 'ar' ? "{$this->name_ar}" : (App::currentLocale() == 'en' ? "{$this->name_en}" : "{$this->name_fr}");
+        return App::currentLocale() == 'ar' && !empty("{$this->name_ar}") ? "{$this->name_ar}" : (App::currentLocale() == 'en'  && !empty("{$this->name_en}") ? "{$this->name_en}" : "{$this->name_fr}");
     }
 
     public function brand()
