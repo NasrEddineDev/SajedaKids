@@ -111,11 +111,11 @@
                                         </td>
                                         <td>
                                             <input type="text" class="form-control" id="discount" name="discount" placeholder="{{ __('Discount') }}"
-                                            aria-label="{{ __('Discount') }}" aria-describedby="basic-addon2" required>
+                                            aria-label="{{ __('Discount') }}" aria-describedby="basic-addon2" required  vlue="0">
                                         </td>
                                         <td>
                                             <input type="text" class="form-control" id="quantity" name="quantity" placeholder="{{ __('Quantity') }}"
-                                            aria-label="{{ __('Quantity') }}" aria-describedby="basic-addon2" required vlaue="1">
+                                            aria-label="{{ __('Quantity') }}" aria-describedby="basic-addon2" required vlue="1">
                                         </td>
                                         <td>Product 01, Price, Levis, shoes</td>
                                         <td>1500DA</td>
@@ -326,11 +326,14 @@
                 </td>
                 <td>
                     <input type="text" class="form-control" id="discount" name="discount" placeholder="التخفيض دج"
-                    aria-label="{{ __('Discount') }}" aria-describedby="basic-addon2" required>
+                    aria-label="{{ __('Discount') }}" aria-describedby="basic-addon2" required value="0">
                 </td>
                 <td>
-                    <input type="text" class="form-control" id="quantity" name="quantity" placeholder="الكمية"
-                    aria-label="{{ __('Quantity') }}" aria-describedby="basic-addon2" required value="1">
+                <div class="form-group">
+                    <span style="width:50%;float:left" id="total_quantity"></span>
+                    <input style="width:50%;float:right" type="text" class="form-control" id="quantity" name="quantity" placeholder="الكمية"
+                    aria-label="{{ __('Quantity') }}" aria-describedby="basic-addon2" required value="1" min="1" max="1">
+                </div>    
                 </td>
                 <td id="product_details"></td>
                 <td class="text-success"><span class="product_total"></span>DA</td>
@@ -383,6 +386,10 @@
                                 if (!discount) discount = 0;
                                 var quantity = $("#" + id + ' #quantity').val();
                                 if (!quantity) quantity = 0;
+                                $("#" + id + ' #quantity').attr({
+                                    "max" : data.product.quantity,
+                                    "min" : 1
+                                });
                                 var product_total = (data.product.price - discount) * quantity;
                                 var old_product_total = $("#" + id + " .product_total").text();
                                 if (!old_product_total) old_product_total = '0';
@@ -392,6 +399,7 @@
                                 $("#" + id + " #product_details").text(
                                     `{{ __('Product Name: ') }}${data.product.name_ar}, {{ __('Price: ') }}${data.product.price}`
                                 );
+                                $("#total_quantity").text(data.product.quantity-quantity);
                             } else {
                                 alert('{{ __("This Product Not Exist and will not added") }}');
                             }
@@ -439,6 +447,7 @@
                                 total = total - parseInt(old_product_total) + product_total;
                                 $("#" + id + " .product_total").text(`${product_total}`);
                                 $("#total").text(total + " DA");
+                                $("#total_quantity").text(data.product.quantity-quantity);
                             } else {
                                 alert('{{ __("This Product Not Exist and will not added") }}');
                             }
@@ -486,6 +495,7 @@
                                 total = total - parseInt(old_product_total) + product_total;
                                 $("#" + id + " .product_total").text(`${product_total}`);
                                 $("#total").text(total + " DA");
+                                $("#total_quantity").text(data.product.quantity-quantity);
                             } else {
                                 alert('{{ __("This Product Not Exist and will not added") }}');
                             }

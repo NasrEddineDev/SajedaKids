@@ -266,7 +266,7 @@ text-align: left;
                                         <tr>
                                             <th style="width: 15px">{{ __('N°') }}</th>
                                             <th style="width: 160px">{{ __('SKU') }}</th>
-                                            <th style="width: 100px">{{ __('Discount') }}</th>
+                                            <th style="width: 100px">{{ __('Price') }}</th>
                                             <th style="width: 100px">{{ __('Quantity') }}</th>
                                             <th style="width: 300px">{{ __('Product Details') }}</th>
                                             <th style="width: 100px">{{ __('Total') }}</th>
@@ -374,7 +374,7 @@ $(document).ready(function() {
                         $('#tbody').append(`<tr id="${++rowIdx}">
                                                 <td>${rowIdx}</td>
                                                 <td>${sale_item.product_sku}</td>
-                                                <td>${sale_item.discount}</td>
+                                                <td>${sale_item.product_price - sale_item.discount}</td>
                                                 <td>${sale_item.quantity}</td>
                                                 <td>{{__('Product Name: ')}}${sale_item.product_name}, {{__('Price: ')}}${sale_item.product_price}</td>
                                                 <td>${sale_item.total_amount}</td>
