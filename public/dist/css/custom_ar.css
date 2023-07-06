@@ -21,11 +21,11 @@
 #purchase_table_length, #purchase_table_info, #sale_table_length, #sale_table_info{
     float: right;
 }
-
+/* sale_table_wrapper */
 .modal .modal-content{
     text-align: right;;
 }
 
-#main_datatable > thead > tr > th{
+#sale_table > thead > tr > th, #purchase_table > thead > tr > th, #main_datatable > thead > tr > th{
     text-align: right;;
 }

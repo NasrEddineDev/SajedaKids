@@ -35,7 +35,6 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @if(true)
                                         <div class="row">
                                             <div class="col-md-8">
                                                 <label>{{ __('SKU') }}</label>
@@ -57,14 +56,15 @@
                                             </div>
                                         </div>
 
-                                        @else
-                                        <label>{{ __('Code') }}</label>
-                                        <input type="text" class="form-control" id="code" name="code" placeholder="{{ __('Code') }}" value="{{ $product->code ?? ''}}">
-                                        @endif
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="row">
+                                    <div class="form-group">
+                                        <label>{{ __('Code') }}</label>
+                                        <input type="text" class="form-control" id="code" name="code" placeholder="{{ __('Code') }}" value="{{ $product->code ?? ''}}">
+                                    </div>
+
+                                    <!-- <div class="row">
                                         <div class="col-md-8">
                                             <label>{{ __('Image') }}</label>
                                             <div class="input-group">
@@ -77,7 +77,7 @@
                                         <div class="col-md-4 d-flex justify-content-center">
                                             <img style="height:100px;" id="showedImage" class="img-thumbnail" src="https://t4.ftcdn.net/jpg/03/18/30/85/360_F_318308547_FALKncfWsTmjzwd0y0muNeCFOULPLB7Q.webp" alt="...">
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                             <div class="row">
@@ -108,6 +108,37 @@
                                     </div>
                                 </div>
                             </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>{{ __('Season') }}</label>
+                                            <select name="season" id="season" class="form-control" required>
+                                                <option value="0" disabled>
+                                                    {{ __('Select The Season') }}
+                                                </option>
+                                                <option value="summer" {{ $product->season == 'summer' ? 'selected' : '' }}>
+                                                    {{ __('Summer') }}
+                                                </option>
+                                                <option value="autumn" {{ $product->season == 'autumn' ? 'selected' : '' }}>
+                                                    {{ __('Autumn') }}
+                                                </option>
+                                                <option value="winter" {{ $product->season == 'winter' ? 'selected' : '' }}>
+                                                    {{ __('Winter') }}
+                                                </option>
+                                                <option value="spring" {{ $product->season == 'spring' ? 'selected' : '' }}>
+                                                    {{ __('Spring') }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>{{ __('Default Discount') }}</label>
+                                            <input type="text" class="form-control" id="default_discount" name="default_discount" placeholder="{{ __('Default Discount') }}" required value="{{ $product->default_discount ?? ''}}">
+                                        </div>
+                                    </div>
+                                </div>
                             <div class="row">
                                 <!-- <div class="col-md-6">
                                     <div class="form-group">

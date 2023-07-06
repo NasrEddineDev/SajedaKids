@@ -82,14 +82,16 @@
                                     <th>{{ __('Id') }}</th>
                                     <th>{{ __('Name') }}</th>
                                     <th>{{ __('SKU') }}</th>
+                                    <th>{{ __('Code') }}</th>
                                     <th>{{ __('Quantity') }}</th>
                                     <th>{{ __('Price') }}</th>
                                     <th>{{ __('Discount') }}</th>
-                                    <th>{{ __('Image') }}</th>
+                                    <th>{{ __('Default Discount') }}</th>
+                                    <!-- <th>{{ __('Image') }}</th> -->
                                     <th>{{ __('Category') }}</th>
                                     <!-- <th>{{ __('Brand') }}</th> -->
-                                    <th>{{ __('Active') }}</th>
-                                    {{-- <th>{{ __('Action') }}</th> --}}
+                                    <!-- <th>{{ __('Active') }}</th> -->
+                                    <!-- <th>{{ __('Action') }}</th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -98,17 +100,19 @@
                                     <td>{{ $product->id }}</td>
                                     <td id="productName">{{ $product->name }}</td>
                                     <td id="productSKU">{{ $product->SKU }}</td>
+                                    <td id="productCode">{{ $product->code }}</td>
                                     <td>{{ $product->quantity }}</td>
                                     <td>{{ $product->price }}</td>
                                     <td>{{ $product->discount }}</td>
-                                    <td class="showedImage">
+                                    <td>{{ $product->default_discount }}</td>
+                                    <!-- <td class="showedImage">
                                         <img class="img-thumbnail" src="https://t4.ftcdn.net/jpg/03/18/30/85/360_F_318308547_FALKncfWsTmjzwd0y0muNeCFOULPLB7Q.webp" alt="...">
-                                    </td>
+                                    </td> -->
                                     <td>{{ $product->category?->name }}</td>
                                     <!-- <td>{{ $product->brand?->name }}</td> -->
-                                    <td id="status"><button class="btn {{ $product->active ? 'btn-success' : 'btn-danger' }}" style="width:50px;border-radius:5px;font-size: 14px;padding:0px;padding-right:5px;padding-left:5px;">
+                                    <!-- <td id="status"><button class="btn {{ $product->active ? 'btn-success' : 'btn-danger' }}" style="width:50px;border-radius:5px;font-size: 14px;padding:0px;padding-right:5px;padding-left:5px;">
                                             {{ $product->active ? __('Yes') : __('No') }}</button>
-                                    </td>
+                                    </td> -->
                                     @can('view-company', App\Models\product::class)
                                     <td>{{ $product->company->name }}</td>
                                     @endcan
@@ -176,6 +180,29 @@
                     <div class="form-check" style="margin:auto">
                         <input type="checkbox" class="form-check-input" id="product_barcode">
                         <label class="form-check-label" for="product_barcode">{{ __('Add barcode') }}</label>
+                    </div>
+                    <div class="form-check" style="margin:auto">
+                        <input type="checkbox" class="form-check-input" id="product_code">
+                        <label class="form-check-label" for="product_code">{{ __('Add code') }}</label>
+                    </div>
+                    <div class="form-check" style="margin:auto">
+                                        <div class="form-group">
+                                            <!-- <label>{{ __('Template') }}</label> -->
+                                            <select name="template" id="template" class="form-control" required>
+                                                <option value="0" disabled>
+                                                    {{ __('Select The Template') }}
+                                                </option>
+                                                <option value="template1" selected>
+                                                    {{ __('Template 01') }}
+                                                </option>
+                                                <option value="template2">
+                                                    {{ __('Template 02') }}
+                                                </option>
+                                                <option value="template3">
+                                                    {{ __('Template 03') }}
+                                                </option>
+                                            </select>
+                                        </div>
                     </div>
                     <div class="form-check" style="margin:auto">
                         <button type="button" id='showImage' name='showImage' class="btn btn-success">
@@ -359,7 +386,6 @@
             // $("#images").html("");
         // $('#print').click(function(e) {
             e.preventDefault();
-
             var id = main_datatable_table.row('.selected').id();
             if (id) {
                 $.ajax({
@@ -370,7 +396,11 @@
                     type: 'POST',
                     data: {
                         'product_id': id, 'add_product_price': $('#product_price').is(':checked'), 
-                        'add_product_name': $('#product_name').is(':checked'), 'add_product_barcode': $('#product_barcode').is(':checked')
+                        'add_product_name': $('#product_name').is(':checked'), 
+                        'add_product_barcode': $('#product_barcode').is(':checked'), 
+                        'add_product_code': $('#product_code').is(':checked'), 
+                        'template': $('#template').find(":selected").val()
+
                     },
                     success: function(result) {
                         // $("#images").html("");

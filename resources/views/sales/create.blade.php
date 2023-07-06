@@ -205,7 +205,10 @@
                                 <div class="form-actions">
                                     <div class="text-center">
                                         <button type="submit" id="save" name="save"
-                                            class="btn btn-info">{{ __('Save') }}</button>
+                                          class="btn btn-success">{{ __('Save') }}</button>
+
+                                        <button type="submit" id="saveAndClose" name="saveAndClose"
+                                          class="btn btn-info">{{ __('Save And Close') }}</button>
 
                                         <a href="{{ route('sales.index') }}">
                                             <button type="button" class="btn btn-dark">{{ __('Cancel') }}</button>
@@ -578,48 +581,56 @@
                     }
                 });
 
-                var formdata = false;
-                formdata = new FormData();
-                formdata.append("date", $('#date').val());
-                // formdata.append("customer", $('#customer').val());
-                formdata.append("products", JSON.stringify(products));
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    type: $(this).attr('method'),
-                    url: $(this).attr('action'),
-                    data: formdata,
-                    cache: false,
-                    processData: false,
-                    contentType: false,
-                    success: function(data) {
-                        if (data.result == 'success') {
-                            window.location.href = data.url;
-                        } else if (data.result == 'failed') {
+                if (products.length>0){
+                    var formdata = false;
+                    formdata = new FormData();
+                    formdata.append("date", $('#date').val());
+                    // formdata.append("customer", $('#customer').val());
+                    formdata.append("products", JSON.stringify(products));
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type: $(this).attr('method'),
+                        url: $(this).attr('action'),
+                        data: formdata,
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        success: function(data) {
+                            if (data.result == 'success') {
+                                var btnClicked = e.originalEvent.submitter;
+                                if (btnClicked.id == 'save'){
+                                    window.location.href = data.url;
+                                }
+                                else if (btnClicked.id == 'saveAndClose'){
+                                    window.location.href = data.url_close;
+                                }
+                            } else if (data.result == 'failed') {
 
-                        }
-                    },
-                    error: function(data) {
-                        var errors;
-                        $(".login-link").addClass("show");
-                        $(".login-link .nav-link").attr("aria-expanded", "true");
-                        $("#login-form1").addClass("show");
-                        if (data.result == 'failed') {
-                            errors = data.errors;
-                        } else {
-                            errors = data.responseJSON.errors;
-                        }
+                            }
+                        },
+                        error: function(data) {
+                            var errors;
+                            $(".login-link").addClass("show");
+                            $(".login-link .nav-link").attr("aria-expanded", "true");
+                            $("#login-form1").addClass("show");
+                            if (data.result == 'failed') {
+                                errors = data.errors;
+                            } else {
+                                errors = data.responseJSON.errors;
+                            }
 
-                        if (!$("#g-recaptcha-response").val()) {
-                            $("#recaptcha1-error").text(
-                                "{{ __('Captcha must be checked') }}");
-                            $("#recaptcha1-error").attr("style", "display:block");
-                        }
+                            if (!$("#g-recaptcha-response").val()) {
+                                $("#recaptcha1-error").text(
+                                    "{{ __('Captcha must be checked') }}");
+                                $("#recaptcha1-error").attr("style", "display:block");
+                            }
 
-                        account_validator1.showErrors(errors);
-                    }
-                });
+                            account_validator1.showErrors(errors);
+                        }
+                    });       
+                }
             });
 
             $('input[type=file]').change(function(event) {

@@ -85,6 +85,7 @@ class ProductController extends Controller
                 'name_ar' => $request->input('name_ar') ? $request->input('name_ar') : '',
                 'name_en' => $request->input('name_en') ? $request->input('name_en') : '',
                 'name_fr' => $request->input('name_fr') ? $request->input('name_fr') : '',
+                'season' => $request->input('season') ? $request->input('season') : 'summer',
                 'brand_id' => $request->input('brand_id') ? $request->input('brand_id') : null,
                 'image' => '',
                 'quantity' => 0,
@@ -93,9 +94,11 @@ class ProductController extends Controller
                 'code' => $request->input('code') ? $request->input('code') : '',
                 'description' => $request->input('description') ? $request->input('description') : '',
                 'price' => $request->input('price') ? $request->input('price') : '',
-                'discount' => $request->input('discount') ? $request->input('discount') : '',
+                'discount' => $request->input('discount') ? $request->input('discount') : 0,
+                'default_discount' => $request->input('default_discount') ? $request->input('default_discount') : 0,
                 'company_id' => Auth::User()->company->id
             ]);
+            dd($product);
             $product->save();
 
             // if (!file_exists('data/' . $destinationPath)) {
@@ -174,10 +177,12 @@ class ProductController extends Controller
             $product->name_ar = $request->input('name_ar');
             // $product->name_en = $request->input('name_en') ? $request->input('name_en') : '';
             $product->name_fr = $request->input('name_fr') ? $request->input('name_fr') : '';
+            $product->season = $request->input('season') ? $request->input('season') : 'summer';
             $product->description = $request->input('description') ? $request->input('description') : '';
             $product->code = $request->input('code') ? $request->input('code') : '';
-            $product->price = $request->input('price') ? $request->input('price') : '';
-            $product->discount = $request->input('discount') ? $request->input('discount') : '';
+            $product->price = $request->input('price') ? $request->input('price') : 0;
+            $product->discount = $request->input('discount') ? $request->input('discount') : 0;
+            $product->default_discount = $request->input('default_discount') ? $request->input('default_discount') : 0;
             $product->category_id = $request->input('category_id') ? $request->input('category_id') : null;
             $product->brand_id = $request->input('brand_id') ? $request->input('brand_id') : null;
 
@@ -287,7 +292,7 @@ class ProductController extends Controller
             $product = 'test';
             $barcode = '';
             while ($product) {
-                $barcode = rand(1000000000, 9999999999);
+                $barcode = rand(1000000000000, 9999999999999);
                 $product = Product::where('SKU', $barcode)->first();
             }
             $path = DNS1D::getBarcodePNGPath((string)$barcode, 'EAN13');
@@ -333,7 +338,7 @@ class ProductController extends Controller
 
                 //40mmX20mm
                 $barcode_width = 131;
-                $barcode_height = 66;
+                $barcode_height = 60;
 
                 $source_image = 'barcodes/white_40_20m.jpg';
                 $destination_image = 'barcodes/print.jpg';
@@ -341,77 +346,211 @@ class ProductController extends Controller
                 $path_barcode = 'barcodes/temp.png';
                 //TODO: check error
                 // Image::make(file_get_contents(base64_decode(
-                //     DNS1D::getBarcodePNGPath((string)rand(1000000000, 9999999999), 'EAN13', 2,63,array(0,0,0), true)
+                //     DNS1D::getBarcodePNGPath((string)rand(1000000000000, 9999999999999), 'EAN13', 2,63,array(0,0,0), true)
                 // )))->save($path_barcode);
 
                 // \Storage::disk('public')->put($path_barcode,);
                 // public_path("/barcodes")
-                // $path_barcode = DNS1D::getBarcodePNGPath((string)rand(1000000000, 9999999999), 'EAN13', 1,63,array(0,0,0), true);
+                // $path_barcode = DNS1D::getBarcodePNGPath((string)rand(1000000000000, 9999999999999), 'EAN13', 1,63,array(0,0,0), true);
 
                 $img = Image::make($source_image);
                 $img->resize(151, 76);
 
-                if ($request->add_product_price == "true") {
-                    $name = (App()->currentLocale() ==  'ar' ? 'جد ' . $product->price : $product->price . ' DA');
-                    $x = 40;
-                    $y = 19;
-                    $img->text($name, $x, $y, function ($font) {
-                        $font->file('dist/css/fonts/arial.ttf');
-                        $font->size(18);
-                        $font->color('#000000');
-                        $font->align('center');
-                        $font->valign('bottom');
-                        // $font->angle(90);
-                    });
-                }
+                if ($request->template == "template1") {
 
-                // $Arabic = new I18N_Arabic('Glyphs');
-                // $name = $Arabic->utf8Glyphs($student->name_ar);
-                // $img->text($name, 800, 220, function ($font) {
-                //     $font->file('fonts/trado.ttf');
-                //     $font->size(40);
-                //     $font->align('right');
-                // });
-                if ($request->add_product_name == "true") {
-                    $name = '';
-                    if (!preg_match('/[^A-Za-z0-9]/', $product->name)) $name = $product->name;
-                    else{
-                        $persian_text_rev = \PersianRender\PersianRender::render($product->name);
-                        for ($i = mb_strlen($persian_text_rev); $i >= 0; $i--) {
-                            $name .= mb_substr($persian_text_rev, $i, 1);
-                        }
+                    if ($request->add_product_price == "true") {
+                        $name = (App()->currentLocale() ==  'ar' ? 'جد ' . $product->price : $product->price . ' DA');
+                        $x = 45;
+                        // $y = 19;
+                        $y = 22;
+                        $img->text($name, $x, $y, function ($font) {
+                            $font->file('dist/css/fonts/arial.ttf');
+                            $font->size(18);
+                            $font->color('#000000');
+                            $font->align('center');
+                            $font->valign('bottom');
+                            // $font->angle(90);
+                        });
                     }
-                    $x = 114;
-                    $y = 19;
-                    $img->text($name, $x, $y, function ($font) {
-                        $font->file('dist/css/fonts/arial.ttf');
-                        $font->size(18);
-                        $font->color('#000000');
-                        $font->align('center');
-                        $font->valign('bottom');
-                    });
-                }
 
-                if ($request->add_product_barcode == "true") {
-                    $path_barcode11 = DNS1D::getBarcodePNGPath((string)$product->SKU, 'EAN13'); //, 1,23,array(0,0,0), true);
-                    $barcode = Image::make(public_path($path_barcode11));
-                    $barcode->resize($barcode_width, $barcode_height - 30);
-                    $barcode->save($path_barcode);
-                    $img->insert($path_barcode, 'top-right', 10, 20);
+                    // $Arabic = new I18N_Arabic('Glyphs');
+                    // $name = $Arabic->utf8Glyphs($student->name_ar);
+                    // $img->text($name, 800, 220, function ($font) {
+                    //     $font->file('fonts/trado.ttf');
+                    //     $font->size(40);
+                    //     $font->align('right');
+                    // });
+                    if ($request->add_product_name == "true") {
+                        $name = '';
+                        if (!preg_match('/[^A-Za-z0-9]/', $product->name)) $name = $product->name;
+                        else {
+                            $persian_text_rev = \PersianRender\PersianRender::render($product->name);
+                            for ($i = mb_strlen($persian_text_rev); $i >= 0; $i--) {
+                                $name .= mb_substr($persian_text_rev, $i, 1);
+                            }
+                        }
+                        $x = 125;
+                        // $y = 19;
+                        $y = 22;
+                        $img->text($name, $x, $y, function ($font) {
+                            $font->file('dist/css/fonts/arial.ttf');
+                            $font->size(18);
+                            $font->color('#000000');
+                            $font->align('center');
+                            $font->valign('bottom');
+                        });
+                    }
 
-                    $name = $product->SKU;
-                    $x = 75;
-                    $y = 72;
-                    $img->text($name, $x, $y, function ($font) {
-                        $font->file('dist/css/fonts/arial.ttf');
-                        $font->size(18);
-                        $font->color('#000000');
-                        $font->align('center');
-                        $font->valign('bottom');
-                    });
+                    if ($request->add_product_barcode == "true") {
+                        $path_barcode11 = DNS1D::getBarcodePNGPath((string)$product->SKU, 'EAN13'); //, 1,23,array(0,0,0), true);
+                        $barcode = Image::make(public_path($path_barcode11));
+                        $barcode->resize($barcode_width, $barcode_height - 30);
+                        $barcode->save($path_barcode);
+                        $img->insert($path_barcode, 'top-right', 10, 23);
+
+                        $name = $product->SKU;
+                        $x = 75;
+                        $y = 68;
+                        // $img->insert($path_barcode, 'top-right', 10, 20);
+
+                        // $name = $product->SKU;
+                        // $x = 75;
+                        // $y = 72;
+
+                        $img->text($name, $x, $y, function ($font) {
+                            $font->file('dist/css/fonts/arial.ttf');
+                            $font->size(18);
+                            $font->color('#000000');
+                            $font->align('center');
+                            $font->valign('bottom');
+                        });
+                    }
+                } else if ($request->template == "template2") {
+                    if ($request->add_product_price == "true") {
+                        $name = (App()->currentLocale() ==  'ar' ? 'جد ' . $product->price : $product->price . ' DA');
+                        $x = 105;
+                        $y = 22;
+                        $img->text($name, $x, $y, function ($font) {
+                            $font->file('dist/css/fonts/arial.ttf');
+                            $font->size(18);
+                            $font->color('#000000');
+                            $font->align('center');
+                            $font->valign('bottom');
+                            // $font->angle(90);
+                        });
+                    }
+
+                    // $Arabic = new I18N_Arabic('Glyphs');
+                    // $name = $Arabic->utf8Glyphs($student->name_ar);
+                    // $img->text($name, 800, 220, function ($font) {
+                    //     $font->file('fonts/trado.ttf');
+                    //     $font->size(40);
+                    //     $font->align('right');
+                    // });
+                    if ($request->add_product_code == "true") {
+                        $code = '';
+                        if (!preg_match('/[^A-Za-z0-9]/', $product->code)) $code = $product->code;
+                        else {
+                            $persian_text_rev = \PersianRender\PersianRender::render($product->code);
+                            for ($i = mb_strlen($persian_text_rev); $i >= 0; $i--) {
+                                $code .= mb_substr($persian_text_rev, $i, 1);
+                            }
+                        }
+                        $x = 30;
+                        $y = 22;
+                        $img->text($code, $x, $y, function ($font) {
+                            $font->file('dist/css/fonts/arial.ttf');
+                            $font->size(18);
+                            $font->color('#000000');
+                            $font->align('center');
+                            $font->valign('bottom');
+                        });
+                    }
+
+                    if ($request->add_product_barcode == "true") {
+                        $path_barcode11 = DNS1D::getBarcodePNGPath((string)$product->SKU, 'EAN13'); //, 1,23,array(0,0,0), true);
+                        $barcode = Image::make(public_path($path_barcode11));
+                        $barcode->resize($barcode_width, $barcode_height - 30);
+                        $barcode->save($path_barcode);
+                        $img->insert($path_barcode, 'top-right', 10, 23);
+
+                        $name = $product->SKU;
+                        $x = 75;
+                        $y = 68;
+                        $img->text($name, $x, $y, function ($font) {
+                            $font->file('dist/css/fonts/arial.ttf');
+                            $font->size(18);
+                            $font->color('#000000');
+                            $font->align('center');
+                            $font->valign('bottom');
+                        });
+                    }
+                } else if ($request->template == "template3") {
+                    if ($request->add_product_price == "true") {
+                        $name = (App()->currentLocale() ==  'ar' ? 'جد ' . $product->price : $product->price . ' DA');
+                        $x = 58;
+                        $y = 22;
+                        $img->text($name, $x, $y, function ($font) {
+                            $font->file('dist/css/fonts/arial.ttf');
+                            $font->size(18);
+                            $font->color('#000000');
+                            $font->align('center');
+                            $font->valign('bottom');
+                            // $font->angle(90);
+                        });
+                    }
+
+                    // $Arabic = new I18N_Arabic('Glyphs');
+                    // $name = $Arabic->utf8Glyphs($student->name_ar);
+                    // $img->text($name, 800, 220, function ($font) {
+                    //     $font->file('fonts/trado.ttf');
+                    //     $font->size(40);
+                    //     $font->align('right');
+                    // });
+                    if ($request->add_product_code == "true") {
+                        $code = '';
+                        if (!preg_match('/[^A-Za-z0-9]/', $product->code)) $code = $product->code;
+                        else {
+                            $persian_text_rev = \PersianRender\PersianRender::render($product->code);
+                            for ($i = mb_strlen($persian_text_rev); $i >= 0; $i--) {
+                                $code .= mb_substr($persian_text_rev, $i, 1);
+                            }
+                        }
+                        $x = 122;
+                        $y = 45;
+                        $img->text($code, $x, $y, function ($font) {
+                            $font->file('dist/css/fonts/arial.ttf');
+                            $font->size(18);
+                            $font->color('#000000');
+                            $font->align('center');
+                            $font->valign('bottom');
+                        });
+                    }
+
+                    if ($request->add_product_barcode == "true") {
+                        $path_barcode11 = DNS1D::getBarcodePNGPath((string)$product->SKU, 'EAN13');
+                        // strlen((string)$product->SKU) == 12 ? 'MSI' : 'MSI'); //, 1,23,array(0,0,0), true);
+                        $barcode = Image::make(public_path($path_barcode11));
+                        $barcode->resize($barcode_width-40, $barcode_height - 30);
+                        $barcode->save($path_barcode);
+                        $img->insert($path_barcode, 'top-right', 50, 23);
+
+                        $name = $product->SKU;
+                        $x = 71;
+                        $y = 68;
+                        $img->text($name, $x, $y, function ($font) {
+                            $font->file('dist/css/fonts/arial.ttf');
+                            $font->size(18);
+                            $font->color('#000000');
+                            $font->align('center');
+                            $font->valign('bottom');
+                        });
+                    }
+
                 }
 
                 $img->save($destination_image);
+
                 //TODO: delete the barcode image
                 return response()->json([
                     'barcode' => $product->SKU,
@@ -424,11 +563,11 @@ class ProductController extends Controller
             $product = 'test';
             $barcode = '';
             while ($product) {
-                $barcode = rand(1000000000, 9999999999);;
+                $barcode = rand(1000000000000, 9999999999999);
                 $product = Product::where('SKU', $barcode)->first();
             }
 
-            $path_barcode = DNS1D::getBarcodePNGPath((string)$barcode, 'EAN13');
+            $path_barcode = DNS1D::getBarcodePNGPath((string)$barcode, 'EAN');
             $img = Image::make($source_image);
             // $img->resize(300, 300);
             $img->insert($path_barcode, 'top-right', 50, 50);

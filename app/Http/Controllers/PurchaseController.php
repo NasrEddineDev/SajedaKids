@@ -113,7 +113,8 @@ class PurchaseController extends Controller
             return response()->json([
                 'message' => 'Purchase saved successfully',
                 'result' => 'success',
-                'url' => route('purchases.index')
+                'url' => route('purchases.index'),
+                'url_close' => route('purchases.index')
             ], 200);
 
             return redirect()->route('purchases.index')

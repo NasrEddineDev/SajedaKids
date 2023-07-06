@@ -18,10 +18,12 @@ return new class extends Migration
             $table->string('name_en');
             $table->string('name_ar');
             $table->string('name_fr');
+            $table->string('season');
             $table->boolean('active');
             $table->string('image');
             $table->double('price');
             $table->double('discount');
+            $table->double('default_discount');
             $table->double('quantity');
             $table->string('description');
             $table->integer('company_id')->unsigned();

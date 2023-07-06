@@ -113,7 +113,8 @@ class SaleController extends Controller
             return response()->json([
                 'message' => 'Sale saved successfully',
                 'result' => 'success',
-                'url' => route('sales.index')
+                'url' => route('sales.create'),
+                'url_close' => route('sales.index')
             ], 200);
 
             return redirect()->route('sales.index')
